@@ -154,19 +154,19 @@ const Category = () => {
         {displayedCategories.map((category) => (
           <div
             key={category.id}
-            className={`cursor-pointer group p-6 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 flex flex-col bg-white hover:bg-[#4640DE] text-gray-800 hover:text-white`}
+            className={`cursor-pointer group p-8 rounded-lg border-[1px] border-[#D6DDEB] transition-all duration-300 flex flex-col bg-white hover:bg-[#4640DE] text-gray-800 hover:text-white`}
           >
             <div className="flex justify-between items-start">
               <div className="text-3xl mb-4">{category.icon}</div>
             </div>
-            <h3 className="font-clash font-[600] text-2xl leading-[120%] group-hover:text-white">
+            <h3 className="font-clash font-[600] text-2xl leading-[120%] group-hover:text-white pt-2">
               {category.name}
             </h3>
             <p
-              className={`font-epilogue font-[400] text-lg leading-[160%] text-[#7C8493] group-hover:text-white flex justify-between items-center`}
+              className={`font-epilogue font-[400] text-lg leading-[160%] text-[#7C8493] group-hover:text-white flex justify-between items-center pt-2`}
             >
               {category.jobs} jobs available{" "}
-              <ArrowRight className="group-hover:text-white" />
+              <ArrowRight className="text-[#25324B] group-hover:text-white" />
             </p>
           </div>
         ))}

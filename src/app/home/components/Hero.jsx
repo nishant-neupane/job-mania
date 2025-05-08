@@ -41,7 +41,7 @@ const Hero = () => {
             </div>
             <div className="flex justify-center items-center gap-4 w-full md:w-1/3">
               <MapPin className="min-w-4" />
-              <select className="border-b border-[#D6DDEB] font-epilogue font-[400] text-base leading-[160%] text-[#25324B] p-1 w-full">
+              <select className="border-b cursor-pointer border-[#D6DDEB] font-epilogue font-[400] text-base leading-[160%] text-[#25324B] p-1 w-full">
                 <option>Kathmandu</option>
                 <option>Bhaktapur</option>
                 <option>Lalitpur</option>
@@ -50,7 +50,7 @@ const Hero = () => {
 
             <button
               onClick={() => handleSubmit()}
-              className="bg-[#4640DE] text-white font-epilogue font-[700] text-base md:text-lg leading-[160%] px-4 md:px-6 py-3 md:py-3 w-full md:w-1/3"
+              className="bg-[#4640DE] hover:scale-[1.03] transition-all duration-300 ease-in-out text-white font-epilogue font-[700] text-base md:text-lg leading-[160%] px-4 md:px-6 py-3 md:py-3 w-full md:w-1/3"
             >
               Search my job
             </button>
