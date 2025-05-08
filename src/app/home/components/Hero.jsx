@@ -42,9 +42,9 @@ const Hero = () => {
             <div className="flex justify-center items-center gap-4 w-full md:w-1/3">
               <MapPin className="min-w-4" />
               <select className="border-b border-[#D6DDEB] font-epilogue font-[400] text-base leading-[160%] text-[#25324B] p-1 w-full">
-                <option>Florence, Italy</option>
-                <option>Remote</option>
-                <option>New York, USA</option>
+                <option>Kathmandu</option>
+                <option>Bhaktapur</option>
+                <option>Lalitpur</option>
               </select>
             </div>
 
