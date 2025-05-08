@@ -143,7 +143,7 @@ const Category = () => {
         </h1>
         <button
           onClick={() => setShowAll(!showAll)}
-          className="flex items-center font-epilogue text-base leading-[160%] text-[#4640DE] hover:scale-[1.03] transition-all duration-300 ease-in-out"
+          className="hidden md:flex items-center font-epilogue text-base leading-[160%] text-[#4640DE] hover:scale-[1.03] transition-all duration-300 ease-in-out"
         >
           {showAll ? "Show less" : "Show all jobs"}
           <span className="ml-1">{showAll ? "↑" : "↓"}</span>
@@ -170,6 +170,15 @@ const Category = () => {
             </p>
           </div>
         ))}
+      </div>
+      <div className="flex md:hidden justify-center md:justify-end mt-6">
+        <button
+          onClick={() => setShowAll(!showAll)}
+          className="flex items-center font-epilogue text-base leading-[160%] text-[#4640DE] hover:scale-[1.03] transition-all duration-300 ease-in-out"
+        >
+          {showAll ? "Show less" : "Show all jobs"}
+          <span className="ml-1">{showAll ? "↑" : "↓"}</span>
+        </button>
       </div>
     </div>
   );
