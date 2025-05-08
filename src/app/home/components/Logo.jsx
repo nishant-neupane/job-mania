@@ -17,8 +17,8 @@ const logos = [
 ];
 
 const Logo = () => (
-  <div className="container py-8 bg-white">
-    <p className="font-epilogue font-[400] text-lg leading-[160%] text-[#202430] pb-4">
+  <div className="py-12 bg-white">
+    <p className="container font-epilogue font-[400] text-lg leading-[160%] text-[#202430] pb-4">
       Companies we helped grow
     </p>
     <div className="overflow-hidden">
@@ -27,7 +27,7 @@ const Logo = () => (
           <div
             key={index}
             className="flex-shrink-0 grayscale hover:grayscale-0 transition duration-300 ease-in-out hover:cursor-pointer"
-            style={{ width: 120, height: 120 }}
+            style={{ width: 100, height: 100 }}
           >
             <Image
               src={logo.src}
