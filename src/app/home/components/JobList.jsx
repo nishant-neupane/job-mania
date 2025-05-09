@@ -30,7 +30,7 @@ const JobList = () => {
       id: 3,
       company: "Dropbox",
       title: "Brand Designer",
-      location: "San Francisco, USA",
+      location: "Bhaktapur, Nepal",
       type: "Full Time",
       tags: ["Marketing", "Design"],
       icon: "/home/open/grid1.png",
@@ -39,7 +39,7 @@ const JobList = () => {
       id: 4,
       company: "Macro",
       title: "Brand Designer",
-      location: "San Francisco, USA",
+      location: "Bhaktapur, Nepal",
       type: "Full Time",
       tags: ["Marketing", "Design"],
       icon: "/home/open/grid1.png",
@@ -48,7 +48,7 @@ const JobList = () => {
       id: 5,
       company: "Trafalgar",
       title: "Interactive Developer",
-      location: "Hamburg, Germany",
+      location: "Lalitpur, Nepal",
       type: "Full Time",
       tags: ["Marketing", "Design"],
       icon: "/home/open/grid1.png",
@@ -57,7 +57,7 @@ const JobList = () => {
       id: 6,
       company: "Udacity",
       title: "Interactive Developer",
-      location: "Hamburg, Germany",
+      location: "Lalitpur, Nepal",
       type: "Full Time",
       tags: ["Marketing", "Design"],
       icon: "/home/open/grid1.png",
@@ -66,7 +66,7 @@ const JobList = () => {
       id: 7,
       company: "Packer",
       title: "HR Manager",
-      location: "Lucerne, Switzerland",
+      location: "Kathmandu, Nepal",
       type: "Full Time",
       tags: ["Marketing", "Design"],
       icon: "/home/open/grid1.png",
@@ -75,7 +75,7 @@ const JobList = () => {
       id: 8,
       company: "Webflow",
       title: "HR Manager",
-      location: "Lucerne, Switzerland",
+      location: "Kathmandu, Nepal",
       type: "Full Time",
       tags: ["Marketing", "Design"],
       icon: "/home/open/grid1.png",
@@ -112,7 +112,7 @@ const JobList = () => {
             )}
           </button>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 z-[3]">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 z-[3]">
           {visibleJobs.map((job) => (
             <div
               key={job.id}
@@ -136,7 +136,7 @@ const JobList = () => {
                   <span className="font-epilogue font-[600] text-sm leading-[160%] bg-[#56CDAD1A] text-[#56CDAD] px-3 py-1 rounded-full">
                     {job.type}
                   </span>
-                  <div className="flex gap-2 pl-2">
+                  <div className="flex flex-col sm:flex-row gap-2 pl-2">
                     {job.tags.map((tag) => (
                       <span
                         key={tag}

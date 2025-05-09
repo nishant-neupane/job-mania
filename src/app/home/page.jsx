@@ -6,9 +6,12 @@ import Category from "./components/Category";
 const page = () => {
   return (
     <div>
-      {/* <Hero />
-      <Logo /> */}
+      <Hero />
+      <Logo />
       <Category />
+      <Jobs />
+      <FeaturedJobs />
+      <JobList />
     </div>
   );
 };
