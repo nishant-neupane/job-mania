@@ -24,7 +24,7 @@ const Footer = () => {
   ];
 
   return (
-    <footer className="bg-[#141522] text-white px-6 md:px-16 py-10">
+    <footer className="bg-[#202430] text-white px-6 md:px-16 py-12 mt-12">
       <div className="container grid lg:grid-cols-4 gap-8 border-b border-gray-700 pb-10">
         <div>
           <Link href="/">
