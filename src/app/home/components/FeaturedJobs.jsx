@@ -106,30 +106,32 @@ const FeaturedJobs = () => {
         {visibleJobs.map((job) => (
           <div
             key={job.id}
-            className="border-[1px] border-[#D6DDEB] p-6 hover:scale-[1.03] transition-all duration-300 ease-in-out cursor-pointer"
+            className="flex flex-col justify-between border-[1px] border-[#D6DDEB] p-6 hover:scale-[1.03] transition-all duration-300 ease-in-out cursor-pointer"
           >
-            <div className="flex justify-between items-start pb-3">
-              <Image
-                src={`/home/feature/grid${job.id}.png`}
-                alt={`${job.company} logo`}
-                width={48}
-                height={48}
-                className="object-contain"
-              />
-              <span className="font-epilogue font-[400] text-base leading-[160%] text-[#4640DE] border-[1px] border-[#4640DE] py-1 px-2">
-                {job.type}
-              </span>
+            <div>
+              <div className="flex justify-between items-start pb-3">
+                <Image
+                  src={`/home/feature/grid${job.id}.png`}
+                  alt={`${job.company} logo`}
+                  width={48}
+                  height={48}
+                  className="object-contain"
+                />
+                <span className="font-epilogue font-[400] text-base leading-[160%] text-[#4640DE] border-[1px] border-[#4640DE] py-1 px-2">
+                  {job.type}
+                </span>
+              </div>
+              <h3 className="font-epilogue font-[600] text-lg leading-[160%] text-[#25324B]">
+                {job.position}
+              </h3>
+              <p className="font-epilogue font-[400] text-base leading-[160%] text-[#515B6F] pb-3 flex items-center">
+                <MapPin className="w-4 h-4 mr-1 text-gray-500" />
+                {job.company} ・ {job.location}
+              </p>
+              <p className="font-epilogue font-[400] text-base leading-[160%] text-[#7C8493] pb-3">
+                {job.company} is looking for {job.position} to help the team ...
+              </p>
             </div>
-            <h3 className="font-epilogue font-[600] text-lg leading-[160%] text-[#25324B]">
-              {job.position}
-            </h3>
-            <p className="font-epilogue font-[400] text-base leading-[160%] text-[#515B6F] pb-3 flex items-center">
-              <MapPin className="w-4 h-4 mr-1 text-gray-500" />
-              {job.company} ・ {job.location}
-            </p>
-            <p className="font-epilogue font-[400] text-base leading-[160%] text-[#7C8493] pb-3">
-              {job.company} is looking for {job.position} to help the team ...
-            </p>
             <div className="flex gap-2">
               {job.tags.map((tag) => (
                 <span
