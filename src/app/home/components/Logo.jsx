@@ -4,16 +4,16 @@ import Image from "next/image";
 import "./Logo.css";
 
 const logos = [
-  { name: "Vodafone", src: "/logos/vodafone.png" },
-  { name: "Intel", src: "/logos/intel.png" },
-  { name: "Tesla", src: "/logos/tesla.png" },
-  { name: "AMD", src: "/logos/AMD.png" },
-  { name: "Talkkit", src: "/logos/talkkit.png" },
-  { name: "Vodafone", src: "/logos/vodafone.png" },
-  { name: "Intel", src: "/logos/intel.png" },
-  { name: "Tesla", src: "/logos/tesla.png" },
-  { name: "AMD", src: "/logos/AMD.png" },
-  { name: "Talkkit", src: "/logos/talkkit.png" },
+  { name: "Vodafone", src: "/home/logos/vodafone.png" },
+  { name: "Intel", src: "/home/logos/intel.png" },
+  { name: "Tesla", src: "/home/logos/tesla.png" },
+  { name: "AMD", src: "/home/logos/AMD.png" },
+  { name: "Talkkit", src: "/home/logos/talkkit.png" },
+  { name: "Vodafone", src: "/home/logos/vodafone.png" },
+  { name: "Intel", src: "/home/logos/intel.png" },
+  { name: "Tesla", src: "/home/logos/tesla.png" },
+  { name: "AMD", src: "/home/logos/AMD.png" },
+  { name: "Talkkit", src: "/home/logos/talkkit.png" },
 ];
 
 const Logo = () => (

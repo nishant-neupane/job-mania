@@ -9,7 +9,7 @@ const Header = () => {
         <div className="flex gap-4 sm:gap-8 items-center">
           <Link href="/">
             <Image
-              src="/Header/logo.png"
+              src="/home/Header/logo.png"
               width={160}
               height={36}
               alt="Logo"

@@ -16,7 +16,7 @@ const Hero = () => {
               5000+ Jobs
               <div className="pt-1">
                 <Image
-                  src="/Hero/underline.svg"
+                  src="/home/Hero/underline.svg"
                   alt="underline"
                   width={455}
                   height={39}
@@ -63,7 +63,7 @@ const Hero = () => {
         </div>
       </div>
       <div className="absolute bottom-0 right-0 hidden lg:flex">
-        <Image src="/hero/ractangle.png" width={483} height={716} alt="" />
+        <Image src="/home/hero/ractangle.png" width={483} height={716} alt="" />
       </div>
     </div>
   );

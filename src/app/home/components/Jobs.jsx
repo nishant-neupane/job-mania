@@ -3,15 +3,15 @@ import React from "react";
 
 const Jobs = () => {
   return (
-    <div className="container">
+    <div className="container my-12">
       <div className="bg-[#4640DE] grid grid-cols-1 lg:grid-cols-2 relative">
         <div className="absolute bottom-0 right-0 hidden lg:flex">
           <Image src="/hero/ractangle.png" width={200} height={716} alt="" />
         </div>
-        <div className="absolute top-0 left-0 hidden lg:flex rotate-180">
+        <div className="absolute -top-1 -left-1 hidden lg:flex rotate-180">
           <Image src="/hero/ractangle.png" width={200} height={716} alt="" />
         </div>
-        <div className="flex flex-col justify-center p-6 lg:p-0 pl-0 lg:pl-14">
+        <div className="flex flex-col justify-center p-6 lg:p-0 lg:pl-14">
           <p className="font-clash font-[600] text-5xl leading-[110%] max-w-[364px] text-white">
             Start posting jobs today
           </p>
