@@ -4,6 +4,7 @@ import Logo from "./home/components/Logo";
 import Category from "./home/components/Category";
 import Jobs from "./home/components/Jobs";
 import FeaturedJobs from "./home/components/FeaturedJobs";
+import JobList from "./home/components/JobList";
 
 const Home = () => {
   return (
@@ -13,6 +14,7 @@ const Home = () => {
       <Category />
       <Jobs />
       <FeaturedJobs />
+      <JobList />
     </div>
   );
 };
