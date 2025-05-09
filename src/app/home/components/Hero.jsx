@@ -7,7 +7,7 @@ const Hero = () => {
     console.log("clicked");
   };
   return (
-    <div className="bg-[#f9f9fd]">
+    <div className="bg-[#f9f9fd] relative">
       <div className="container px-4 sm:px-6 lg:px-8 py-12 md:py-24">
         <div className="">
           <h1 className="font-clash font-[600] text-4xl sm:text-5xl md:text-6xl lg:text-7xl leading-[110%] max-w-[480px]">
@@ -61,6 +61,9 @@ const Hero = () => {
             Researcher, Android, Admin
           </div>
         </div>
+      </div>
+      <div className="absolute bottom-0 right-0 hidden lg:flex">
+        <Image src="/hero/ractangle.png" width={483} height={716} alt="" />
       </div>
     </div>
   );
