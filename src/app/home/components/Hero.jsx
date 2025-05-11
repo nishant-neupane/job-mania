@@ -31,17 +31,17 @@ const Hero = () => {
           </p>
 
           <div className="mt-8 flex flex-col justify-between md:flex-row items-stretch md:items-center gap-4 md:gap-8 bg-white rounded-lg shadow-md p-4 w-full max-w-3xl">
-            <div className="flex justify-center items-center gap-4 w-full md:w-1/3">
+            <div className="flex justify-center items-center gap-4 w-full md:w-1/3 border-b border-[#D6DDEB]">
               <Search className="min-w-4" />
               <input
                 type="text"
                 placeholder="Job title or keyword"
-                className="border-b border-[#D6DDEB] font-epilogue font-[400] text-base leading-[160%] text-[#7C8493] p-1 w-full"
+                className="font-epilogue font-[400] text-base leading-[160%] text-[#7C8493] p-1 w-full"
               />
             </div>
-            <div className="flex justify-center items-center gap-4 w-full md:w-1/3">
+            <div className="flex justify-center items-center gap-4 w-full md:w-1/3 border-b border-[#D6DDEB]">
               <MapPin className="min-w-4" />
-              <select className="border-b cursor-pointer border-[#D6DDEB] font-epilogue font-[400] text-base leading-[160%] text-[#25324B] p-1 w-full">
+              <select className="cursor-pointer font-epilogue font-[400] text-base leading-[160%] text-[#25324B] p-1 w-full">
                 <option>Kathmandu</option>
                 <option>Bhaktapur</option>
                 <option>Lalitpur</option>

@@ -1,138 +1,727 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
+import { useRouter } from "next/navigation";
+import { Search, MapPin, X, Filter, ChevronDown } from "lucide-react";
+import Image from "next/image";
 
 const jobsData = [
   {
     id: 1,
     title: "Social Media Assistant",
-    company: "Nomad",
-    location: "Paris, France",
+    company: "CloudFactory",
+    location: "Kathmandu, Nepal",
     tags: ["Design", "Marketing"],
     applicants: 4,
     capacity: 10,
     type: "Full Time",
     category: "Marketing",
     level: "Entry",
-    salary: 1000,
+    salary: 40000,
   },
   {
     id: 2,
     title: "Brand Designer",
-    company: "Dropbox",
-    location: "San Francisco, USA",
+    company: "Fusemachines",
+    location: "Lalitpur, Nepal",
     tags: ["Design"],
     applicants: 2,
     capacity: 10,
     type: "Full Time",
     category: "Design",
     level: "Mid",
-    salary: 2500,
+    salary: 80000,
   },
   {
     id: 3,
     title: "Interactive Developer",
-    company: "Maze",
-    location: "Hamburg, Germany",
+    company: "Leapfrog Technology",
+    location: "Kathmandu, Nepal",
     tags: ["UI Design"],
     applicants: 6,
     capacity: 10,
     type: "Contract",
     category: "Design",
     level: "Senior",
-    salary: 3500,
+    salary: 120000,
   },
   {
     id: 4,
-    title: "Email Marketing",
-    company: "Webflow",
-    location: "Remote",
+    title: "Email Marketing Specialist",
+    company: "Verisk Nepal",
+    location: "Bhaktapur, Nepal",
     tags: ["Marketing"],
     applicants: 8,
     capacity: 10,
     type: "Remote",
     category: "Marketing",
     level: "Mid",
-    salary: 2000,
+    salary: 70000,
   },
   {
     id: 5,
     title: "Lead Engineer",
-    company: "Convex",
-    location: "Berlin, Germany",
+    company: "Cotiviti Nepal",
+    location: "Kathmandu, Nepal",
     tags: ["Technology"],
     applicants: 3,
     capacity: 10,
     type: "Full Time",
     category: "Technology",
     level: "Senior",
-    salary: 4000,
+    salary: 150000,
   },
   {
     id: 6,
     title: "Product Designer",
-    company: "Figma",
-    location: "Remote",
+    company: "Deerwalk",
+    location: "Lalitpur, Nepal",
     tags: ["Design"],
     applicants: 7,
     capacity: 10,
     type: "Remote",
     category: "Design",
     level: "Senior",
-    salary: 3200,
+    salary: 110000,
   },
   {
     id: 7,
-    title: "Customer Manager",
-    company: "Pitch",
-    location: "Berlin, Germany",
+    title: "Customer Relationship Manager",
+    company: "Nepal Payment Solutions",
+    location: "Kathmandu, Nepal",
     tags: ["Marketing"],
     applicants: 5,
     capacity: 10,
     type: "Part Time",
     category: "Marketing",
     level: "Mid",
-    salary: 1800,
+    salary: 60000,
   },
   {
     id: 8,
     title: "Frontend Developer",
-    company: "HubSpot",
-    location: "Remote",
+    company: "F1Soft International",
+    location: "Kathmandu, Nepal",
     tags: ["Technology"],
     applicants: 9,
     capacity: 10,
     type: "Remote",
     category: "Technology",
     level: "Senior",
-    salary: 3800,
+    salary: 130000,
   },
   {
     id: 9,
     title: "Marketing Intern",
-    company: "Nike",
-    location: "Portland, USA",
+    company: "Daraz Nepal",
+    location: "Bhaktapur, Nepal",
     tags: ["Marketing"],
     applicants: 1,
     capacity: 10,
     type: "Internship",
     category: "Marketing",
     level: "Entry",
-    salary: 800,
+    salary: 20000,
   },
   {
     id: 10,
     title: "Sales Representative",
-    company: "Salesforce",
-    location: "New York, USA",
+    company: "CG Corp Global",
+    location: "Lalitpur, Nepal",
     tags: ["Sales"],
     applicants: 4,
     capacity: 10,
     type: "Full Time",
     category: "Sales",
     level: "Mid",
-    salary: 2200,
+    salary: 75000,
   },
 ];
+
+function HeroSection({
+  searchTerm,
+  setSearchTerm,
+  locationTerm,
+  setLocationTerm,
+}) {
+  const [recentSearches, setRecentSearches] = useState([]);
+  const [showRecentSearches, setShowRecentSearches] = useState(false);
+  const [showLocationDropdown, setShowLocationDropdown] = useState(false);
+  const searchRef = useRef(null);
+  const locationRef = useRef(null);
+  const router = useRouter();
+
+  const locations = [
+    "Kathmandu, Nepal",
+    "Lalitpur, Nepal",
+    "Bhaktapur, Nepal",
+    "Pokhara, Nepal",
+    "Biratnagar, Nepal",
+    "Birgunj, Nepal",
+  ];
+
+  const handleSearch = () => {
+    if (searchTerm.trim()) {
+      const trimmed = searchTerm.trim();
+      if (!recentSearches.includes(trimmed)) {
+        const updated = [trimmed, ...recentSearches.slice(0, 4)];
+        setRecentSearches(updated);
+        localStorage.setItem("recentJobSearches", JSON.stringify(updated));
+      }
+    }
+
+    setShowRecentSearches(false);
+    setShowLocationDropdown(false);
+
+    const query = `?search=${encodeURIComponent(
+      searchTerm
+    )}&location=${encodeURIComponent(locationTerm)}`;
+    router.push(`/search${query}`);
+  };
+
+  const handleRecentSearchClick = (term) => {
+    setSearchTerm(term);
+    setShowRecentSearches(false);
+  };
+
+  const handleLocationSelect = (location) => {
+    setLocationTerm(location);
+    setShowLocationDropdown(false);
+  };
+
+  const clearSearch = () => {
+    setSearchTerm("");
+    searchRef.current?.focus();
+  };
+
+  const clearLocation = () => {
+    setLocationTerm("");
+    locationRef.current?.focus();
+  };
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (!searchRef.current?.contains(event.target)) {
+        setShowRecentSearches(false);
+      }
+      if (!locationRef.current?.contains(event.target)) {
+        setShowLocationDropdown(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  useEffect(() => {
+    const saved = localStorage.getItem("recentJobSearches");
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed)) {
+          setRecentSearches(parsed);
+        }
+      } catch (e) {
+        console.error("Error parsing recent searches:", e);
+      }
+    }
+  }, []);
+
+  return (
+    <div className="text-center pb-6 flex flex-col justify-center ">
+      <h1 className="font-clash font-[600] text-5xl text-[#25324B] leading-[110%] pb-6">
+        Find your{" "}
+        <span className="relative">
+          <span className="text-[#26A4FF] z-10 relative">dream job</span>
+          <Image
+            src="/home/Hero/underline.svg"
+            alt="underline"
+            width={355}
+            height={39}
+            className="absolute left-0 -bottom-4 object-contain"
+          />
+        </span>
+      </h1>
+      <p className="font-epilogue font-[400] text-lg leading-[160%] text-[#515B6F] mb-4">
+        Find your next career at companies like HubSpot, Nike, and Dropbox
+      </p>
+
+      <div className="w-full flex items-center justify-center pt-6 pb-3">
+        <div className="flex flex-col md:flex-row items-stretch justify-between bg-white shadow-md px-4 py-4 w-full gap-4 md:gap-2">
+          <div className="flex-1 relative" ref={searchRef}>
+            <div className="flex items-center w-full border-b border-[#D6DDEB] pb-2">
+              <Search className="min-w-5 text-gray-400" />
+              <input
+                type="text"
+                placeholder="Job title or keyword"
+                className="w-full p-2 pl-3 outline-none text-[#25324B]"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                onFocus={() => setShowRecentSearches(true)}
+                onKeyDown={(e) => e.key === "Enter" && handleSearch()}
+              />
+              {searchTerm && (
+                <button
+                  onClick={clearSearch}
+                  className="p-1 rounded-full hover:bg-gray-100"
+                >
+                  <X size={16} className="text-gray-400" />
+                </button>
+              )}
+            </div>
+
+            {showRecentSearches && recentSearches.length > 0 && (
+              <div className="absolute z-10 mt-1 w-full bg-white rounded-md shadow-lg py-2 max-h-60 overflow-auto">
+                <p className="px-4 py-1 text-xs font-medium text-gray-500 uppercase">
+                  Recent Searches
+                </p>
+                {recentSearches.map((term, index) => (
+                  <div
+                    key={index}
+                    className="px-4 py-2 hover:bg-gray-100 cursor-pointer flex items-center"
+                    onClick={() => handleRecentSearchClick(term)}
+                  >
+                    <Search size={14} className="mr-2 text-gray-400" />
+                    <span>{term}</span>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
+          <div className="flex-1 relative" ref={locationRef}>
+            <div className="flex items-center w-full border-b border-[#D6DDEB] pb-2">
+              <MapPin className="min-w-5 text-gray-400" />
+              <input
+                type="text"
+                placeholder="Location"
+                className="w-full p-2 pl-3 outline-none text-[#25324B]"
+                value={locationTerm}
+                onChange={(e) => setLocationTerm(e.target.value)}
+                onFocus={() => setShowLocationDropdown(true)}
+                onKeyDown={(e) => e.key === "Enter" && handleSearch()}
+              />
+              {locationTerm && (
+                <button
+                  onClick={clearLocation}
+                  className="p-1 rounded-full hover:bg-gray-100"
+                >
+                  <X size={16} className="text-gray-400" />
+                </button>
+              )}
+            </div>
+
+            {showLocationDropdown && (
+              <div className="absolute z-10 mt-1 w-full bg-white rounded-md shadow-lg py-2 max-h-60 overflow-auto">
+                {locations
+                  .filter((loc) =>
+                    loc.toLowerCase().includes(locationTerm.toLowerCase())
+                  )
+                  .map((location, index) => (
+                    <div
+                      key={index}
+                      className="px-4 py-2 hover:bg-gray-100 cursor-pointer flex items-center"
+                      onClick={() => handleLocationSelect(location)}
+                    >
+                      <MapPin size={14} className="mr-2 text-gray-400" />
+                      <span>{location}</span>
+                    </div>
+                  ))}
+              </div>
+            )}
+          </div>
+
+          <button
+            onClick={handleSearch}
+            className="bg-[#4640DE] hover:bg-[#3530C0] transition-colors duration-300 text-white px-6 py-3 rounded-md font-medium flex items-center justify-center gap-2"
+          >
+            <Search size={18} />
+            <span>Search</span>
+          </button>
+        </div>
+      </div>
+      <p className="font-epilogue font-[400] text-base leading-[160%] text-[#515B6F] pb-10 text-center sm:text-left">
+        Popular : UI Designer, UX Researcher, Android, Admin
+      </p>
+    </div>
+  );
+}
+
+function MobileFilterButton({ showMobileFilters, setShowMobileFilters }) {
+  return (
+    <div className="md:hidden">
+      <button
+        onClick={() => setShowMobileFilters(true)}
+        className="flex items-center justify-center gap-2 bg-blue-500 text-white px-4 py-2 rounded-lg w-full"
+      >
+        <Filter size={18} />
+        <span>Filter Jobs</span>
+      </button>
+    </div>
+  );
+}
+
+function JobCard({ job }) {
+  return (
+    <div className="border rounded-lg p-4 flex flex-col md:flex-row justify-between items-start md:items-center">
+      <div>
+        <h4 className="font-semibold text-lg">{job.title}</h4>
+        <p className="text-gray-500">
+          {job.company} • {job.location}
+        </p>
+        <div className="flex flex-wrap gap-2 mt-1">
+          {job.tags.map((tag) => (
+            <span
+              key={tag}
+              className="bg-purple-100 text-purple-700 px-2 py-1 rounded text-xs"
+            >
+              {tag}
+            </span>
+          ))}
+        </div>
+      </div>
+      <div className="w-full md:w-auto flex flex-col md:items-end items-center mt-4 md:mt-0">
+        <button className="bg-blue-500 text-white px-4 py-1 rounded hover:bg-blue-600">
+          Apply
+        </button>
+        <span className="text-sm text-gray-400 mt-1">
+          {job.applicants} applied of {job.capacity} capacity
+        </span>
+      </div>
+    </div>
+  );
+}
+
+function Pagination({ currentPage, totalPages, setCurrentPage }) {
+  return (
+    <div className="flex justify-center mt-6 gap-2">
+      {Array.from({ length: totalPages }, (_, i) => i + 1).map((n) => (
+        <button
+          key={n}
+          className={`px-3 py-1 rounded text-sm ${
+            n === currentPage
+              ? "bg-blue-500 text-white"
+              : "bg-gray-200 text-gray-800 hover:bg-gray-300"
+          }`}
+          onClick={() => setCurrentPage(n)}
+        >
+          {n}
+        </button>
+      ))}
+    </div>
+  );
+}
+
+function JobList({
+  filteredJobs,
+  sortOption,
+  setSortOption,
+  currentPage,
+  setCurrentPage,
+  jobsPerPage,
+  setSearchTerm,
+  setLocationTerm,
+  setEmploymentTypes,
+  setCategories,
+  setJobLevels,
+  setSalaryRanges,
+}) {
+  const sortedJobs = [...filteredJobs].sort((a, b) => {
+    if (sortOption === "Newest") {
+      return b.id - a.id;
+    } else {
+      return b.applicants - a.applicants;
+    }
+  });
+
+  const indexOfLastJob = currentPage * jobsPerPage;
+  const indexOfFirstJob = indexOfLastJob - jobsPerPage;
+  const currentJobs = sortedJobs.slice(indexOfFirstJob, indexOfLastJob);
+  const totalPages = Math.ceil(sortedJobs.length / jobsPerPage);
+
+  return (
+    <div className="col-span-3">
+      <div className="flex justify-between mb-4 items-center">
+        <span>Showing {filteredJobs.length} results</span>
+        <select
+          className="border rounded px-2 py-1 text-sm"
+          value={sortOption}
+          onChange={(e) => setSortOption(e.target.value)}
+        >
+          <option>Most relevant</option>
+          <option>Newest</option>
+        </select>
+      </div>
+
+      <div className="space-y-4">
+        {currentJobs.length > 0 ? (
+          currentJobs.map((job) => <JobCard key={job.id} job={job} />)
+        ) : (
+          <div className="text-center py-10">
+            <p className="text-gray-500">
+              No jobs found matching your criteria
+            </p>
+            <button
+              className="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+              onClick={() => {
+                setSearchTerm("");
+                setLocationTerm("");
+                setEmploymentTypes([]);
+                setCategories([]);
+                setJobLevels([]);
+                setSalaryRanges([]);
+              }}
+            >
+              Reset Filters
+            </button>
+          </div>
+        )}
+
+        {filteredJobs.length > jobsPerPage && (
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            setCurrentPage={setCurrentPage}
+          />
+        )}
+      </div>
+    </div>
+  );
+}
+
+function FilterSection({
+  showMobileFilters,
+  setShowMobileFilters,
+  employmentTypes,
+  setEmploymentTypes,
+  categories,
+  setCategories,
+  jobLevels,
+  setJobLevels,
+  salaryRanges,
+  setSalaryRanges,
+  toggleFilter,
+}) {
+  const [showEmployment, setShowEmployment] = useState(true);
+  const [showCategories, setShowCategories] = useState(true);
+  const [showJobLevels, setShowJobLevels] = useState(true);
+  const [showSalaries, setShowSalaries] = useState(true);
+
+  const employmentOptions = [
+    { label: "Full-time", count: 3 },
+    { label: "Part-time", count: 5 },
+    { label: "Remote", count: 2 },
+    { label: "Internship", count: 24 },
+    { label: "Contract", count: 3 },
+  ];
+
+  const categoryOptions = [
+    { label: "Design", count: 24 },
+    { label: "Sales", count: 3 },
+    { label: "Marketing", count: 3 },
+    { label: "Business", count: 3 },
+    { label: "Human Resource", count: 6 },
+    { label: "Finance", count: 4 },
+    { label: "Engineering", count: 4 },
+    { label: "Technology", count: 5 },
+  ];
+
+  const jobLevelOptions = [
+    { label: "Entry Level", count: 57 },
+    { label: "Mid Level", count: 3 },
+    { label: "Senior Level", count: 5 },
+    { label: "Director", count: 12 },
+    { label: "VP or Above", count: 8 },
+  ];
+
+  const salaryOptions = [
+    { label: "$700 - $1000", count: 4 },
+    { label: "$1000 - $1500", count: 6 },
+    { label: "$1500 - $2000", count: 10 },
+    { label: "$3000 or above", count: 4 },
+  ];
+
+  const handleApplyFilters = () => setShowMobileFilters(false);
+
+  const clearAllFilters = () => {
+    setEmploymentTypes([]);
+    setCategories([]);
+    setJobLevels([]);
+    setSalaryRanges([]);
+  };
+
+  const renderSection = (
+    title,
+    items,
+    selected,
+    setSelected,
+    toggleSection,
+    isOpen
+  ) => (
+    <div>
+      <div
+        onClick={toggleSection}
+        className="flex justify-between items-center cursor-pointer mb-2"
+      >
+        <h3 className="text-sm font-semibold">{title}</h3>
+        <ChevronDown
+          className={`transition-transform h-4 w-4 ${
+            isOpen ? "rotate-180" : ""
+          }`}
+        />
+      </div>
+      {isOpen && (
+        <div className="space-y-2 mt-2">
+          {items.map(({ label, count }) => (
+            <div key={label} className="flex items-center gap-2">
+              <input
+                type="checkbox"
+                id={label}
+                checked={selected.includes(label)}
+                onChange={() => toggleFilter(selected, setSelected, label)}
+                className="w-4 h-4 accent-blue-500 rounded"
+              />
+              <label
+                htmlFor={label}
+                className={`text-sm px-2 py-0.5 rounded cursor-pointer ${
+                  selected.includes(label)
+                    ? "bg-blue-500 text-white"
+                    : "text-[#515B6F]"
+                }`}
+              >
+                {label} ({count})
+              </label>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+
+  return (
+    <>
+      <div className="hidden md:block col-span-1 space-y-6 bg-white p-4 rounded-lg shadow-md">
+        <div className="flex justify-between items-center">
+          <h3 className="font-bold text-lg">Filters</h3>
+          <button
+            onClick={clearAllFilters}
+            className="text-blue-500 text-sm font-medium hover:underline"
+          >
+            Clear All
+          </button>
+        </div>
+
+        {renderSection(
+          "Type of Employment",
+          employmentOptions,
+          employmentTypes,
+          setEmploymentTypes,
+          () => setShowEmployment(!showEmployment),
+          showEmployment
+        )}
+
+        {renderSection(
+          "Categories",
+          categoryOptions,
+          categories,
+          setCategories,
+          () => setShowCategories(!showCategories),
+          showCategories
+        )}
+
+        {renderSection(
+          "Job Level",
+          jobLevelOptions,
+          jobLevels,
+          setJobLevels,
+          () => setShowJobLevels(!showJobLevels),
+          showJobLevels
+        )}
+
+        {renderSection(
+          "Salary Range",
+          salaryOptions,
+          salaryRanges,
+          setSalaryRanges,
+          () => setShowSalaries(!showSalaries),
+          showSalaries
+        )}
+      </div>
+
+      {showMobileFilters && (
+        <>
+          <div
+            className="md:hidden fixed inset-0 bg-black bg-opacity-50 z-40"
+            onClick={() => setShowMobileFilters(false)}
+          />
+          <div className="md:hidden fixed left-0 top-0 h-full w-4/5 max-w-sm bg-white z-50 overflow-y-auto transition-transform duration-300 ease-in-out shadow-xl">
+            <div className="p-5 space-y-6">
+              <div className="flex justify-between items-center border-b pb-4">
+                <h2 className="text-xl font-bold">Filters</h2>
+                <button
+                  onClick={() => setShowMobileFilters(false)}
+                  className="text-gray-500 hover:text-gray-700"
+                >
+                  <X size={24} />
+                </button>
+              </div>
+
+              {renderSection(
+                "Type of Employment",
+                employmentOptions,
+                employmentTypes,
+                setEmploymentTypes,
+                () => setShowEmployment(!showEmployment),
+                showEmployment
+              )}
+
+              {renderSection(
+                "Categories",
+                categoryOptions,
+                categories,
+                setCategories,
+                () => setShowCategories(!showCategories),
+                showCategories
+              )}
+
+              {renderSection(
+                "Job Level",
+                jobLevelOptions,
+                jobLevels,
+                setJobLevels,
+                () => setShowJobLevels(!showJobLevels),
+                showJobLevels
+              )}
+
+              {renderSection(
+                "Salary Range",
+                salaryOptions,
+                salaryRanges,
+                setSalaryRanges,
+                () => setShowSalaries(!showSalaries),
+                showSalaries
+              )}
+
+              <div className="flex gap-3 pt-4 border-t sticky bottom-0 bg-white pb-4">
+                <button
+                  onClick={clearAllFilters}
+                  className="flex-1 border border-gray-300 py-3 rounded-lg font-medium"
+                >
+                  Clear All
+                </button>
+                <button
+                  onClick={handleApplyFilters}
+                  className="flex-1 bg-blue-500 text-white py-3 rounded-lg font-medium"
+                >
+                  Apply Filters
+                </button>
+              </div>
+            </div>
+          </div>
+        </>
+      )}
+    </>
+  );
+}
 
 export default function JobBoard() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -142,9 +731,17 @@ export default function JobBoard() {
   const [jobLevels, setJobLevels] = useState([]);
   const [salaryRanges, setSalaryRanges] = useState([]);
   const [sortOption, setSortOption] = useState("Most relevant");
-
+  const [showMobileFilters, setShowMobileFilters] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const jobsPerPage = 5;
+
+  const toggleFilter = (filterArray, setFilterArray, value) => {
+    if (filterArray.includes(value)) {
+      setFilterArray(filterArray.filter((item) => item !== value));
+    } else {
+      setFilterArray([...filterArray, value]);
+    }
+  };
 
   const filteredJobs = jobsData.filter((job) => {
     const matchesSearch =
@@ -185,32 +782,6 @@ export default function JobBoard() {
     );
   });
 
-  // Sort jobs
-  const sortedJobs = [...filteredJobs].sort((a, b) => {
-    if (sortOption === "Newest") {
-      return b.id - a.id;
-    } else {
-      // Most relevant (default) - sort by applicants descending
-      return b.applicants - a.applicants;
-    }
-  });
-
-  // Pagination logic
-  const indexOfLastJob = currentPage * jobsPerPage;
-  const indexOfFirstJob = indexOfLastJob - jobsPerPage;
-  const currentJobs = sortedJobs.slice(indexOfFirstJob, indexOfLastJob);
-  const totalPages = Math.ceil(sortedJobs.length / jobsPerPage);
-
-  // Handle filter toggles
-  const toggleFilter = (filterArray, setFilterArray, value) => {
-    if (filterArray.includes(value)) {
-      setFilterArray(filterArray.filter((item) => item !== value));
-    } else {
-      setFilterArray([...filterArray, value]);
-    }
-  };
-
-  // Reset pagination when filters change
   useEffect(() => {
     setCurrentPage(1);
   }, [
@@ -223,216 +794,61 @@ export default function JobBoard() {
     sortOption,
   ]);
 
+  useEffect(() => {
+    if (showMobileFilters) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, [showMobileFilters]);
+
   return (
-    <div className="container bg-white text-black p-4 md:p-10 max-w-7xl mx-auto">
-      {/* Header */}
-      <div className="text-center mb-6">
-        <h1 className="text-3xl font-bold">
-          Find your <span className="text-blue-500">dream job</span>
-        </h1>
-        <p className="text-gray-500">
-          Find your next career at companies like HubSpot, Nike, and Dropbox
-        </p>
-      </div>
+    <div className="container mx-auto px-4 pt-6 pb-12">
+      <HeroSection
+        searchTerm={searchTerm}
+        setSearchTerm={setSearchTerm}
+        locationTerm={locationTerm}
+        setLocationTerm={setLocationTerm}
+      />
 
-      {/* Search Bar */}
-      <div className="flex flex-col md:flex-row gap-4 my-6 items-center justify-center">
-        <input
-          type="text"
-          placeholder="Job title or keyword"
-          className="w-full md:w-1/2 p-2 border rounded"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-y-6 md:gap-6">
+        <MobileFilterButton
+          showMobileFilters={showMobileFilters}
+          setShowMobileFilters={setShowMobileFilters}
         />
-        <input
-          type="text"
-          placeholder="Florence, Italy"
-          className="w-full md:w-1/4 p-2 border rounded"
-          value={locationTerm}
-          onChange={(e) => setLocationTerm(e.target.value)}
+
+        <FilterSection
+          showMobileFilters={showMobileFilters}
+          setShowMobileFilters={setShowMobileFilters}
+          employmentTypes={employmentTypes}
+          setEmploymentTypes={setEmploymentTypes}
+          categories={categories}
+          setCategories={setCategories}
+          jobLevels={jobLevels}
+          setJobLevels={setJobLevels}
+          salaryRanges={salaryRanges}
+          setSalaryRanges={setSalaryRanges}
+          toggleFilter={toggleFilter}
         />
-        <button
-          className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-          onClick={() => {
-            // Reset all filters
-            setSearchTerm("");
-            setLocationTerm("");
-            setEmploymentTypes([]);
-            setCategories([]);
-            setJobLevels([]);
-            setSalaryRanges([]);
-          }}
-        >
-          Reset
-        </button>
-      </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-        {/* Filters */}
-        <div className="col-span-1 space-y-6">
-          {/* Employment Type */}
-          <div>
-            <h3 className="font-semibold mb-2">Type of Employment</h3>
-            {["Full Time", "Part Time", "Remote", "Internship", "Contract"].map(
-              (type) => (
-                <div key={type} className="flex items-center gap-2">
-                  <input
-                    type="checkbox"
-                    id={type}
-                    checked={employmentTypes.includes(type)}
-                    onChange={() =>
-                      toggleFilter(employmentTypes, setEmploymentTypes, type)
-                    }
-                  />
-                  <label htmlFor={type}>{type}</label>
-                </div>
-              )
-            )}
-          </div>
-
-          {/* Categories */}
-          <div>
-            <h3 className="font-semibold mb-2">Categories</h3>
-            {["Design", "Marketing", "Business Dev", "Sales", "Technology"].map(
-              (cat) => (
-                <div key={cat} className="flex items-center gap-2">
-                  <input
-                    type="checkbox"
-                    id={cat}
-                    checked={categories.includes(cat)}
-                    onChange={() =>
-                      toggleFilter(categories, setCategories, cat)
-                    }
-                  />
-                  <label htmlFor={cat}>{cat}</label>
-                </div>
-              )
-            )}
-          </div>
-
-          <div>
-            <h3 className="font-semibold mb-2">Job Level</h3>
-            {["Entry", "Mid", "Senior"].map((level) => (
-              <div key={level} className="flex items-center gap-2">
-                <input
-                  type="checkbox"
-                  id={level}
-                  checked={jobLevels.includes(level)}
-                  onChange={() => toggleFilter(jobLevels, setJobLevels, level)}
-                />
-                <label htmlFor={level}>{level}</label>
-              </div>
-            ))}
-          </div>
-
-          <div>
-            <h3 className="font-semibold mb-2">Salary Range</h3>
-            {["< €1000", "€1000 - €2000", "€2000 - €3000", "> €3000"].map(
-              (range) => (
-                <div key={range} className="flex items-center gap-2">
-                  <input
-                    type="checkbox"
-                    id={range}
-                    checked={salaryRanges.includes(range)}
-                    onChange={() =>
-                      toggleFilter(salaryRanges, setSalaryRanges, range)
-                    }
-                  />
-                  <label htmlFor={range}>{range}</label>
-                </div>
-              )
-            )}
-          </div>
-        </div>
-
-        <div className="col-span-3">
-          <div className="flex justify-between mb-4 items-center">
-            <span>Showing {filteredJobs.length} results</span>
-            <select
-              className="border rounded px-2 py-1 text-sm"
-              value={sortOption}
-              onChange={(e) => setSortOption(e.target.value)}
-            >
-              <option>Most relevant</option>
-              <option>Newest</option>
-            </select>
-          </div>
-
-          <div className="space-y-4">
-            {currentJobs.length > 0 ? (
-              currentJobs.map((job) => (
-                <div
-                  key={job.id}
-                  className="border rounded-lg p-4 flex flex-col md:flex-row justify-between items-start md:items-center"
-                >
-                  <div>
-                    <h4 className="font-semibold text-lg">{job.title}</h4>
-                    <p className="text-gray-500">
-                      {job.company} • {job.location}
-                    </p>
-                    <div className="flex flex-wrap gap-2 mt-1">
-                      {job.tags.map((tag) => (
-                        <span
-                          key={tag}
-                          className="bg-purple-100 text-purple-700 px-2 py-1 rounded text-xs"
-                        >
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                  <div className="flex flex-col items-end mt-4 md:mt-0">
-                    <button className="bg-blue-500 text-white px-4 py-1 rounded hover:bg-blue-600">
-                      Apply
-                    </button>
-                    <span className="text-sm text-gray-400 mt-1">
-                      {job.applicants} applied of {job.capacity} capacity
-                    </span>
-                  </div>
-                </div>
-              ))
-            ) : (
-              <div className="text-center py-10">
-                <p className="text-gray-500">
-                  No jobs found matching your criteria
-                </p>
-                <button
-                  className="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-                  onClick={() => {
-                    setSearchTerm("");
-                    setLocationTerm("");
-                    setEmploymentTypes([]);
-                    setCategories([]);
-                    setJobLevels([]);
-                    setSalaryRanges([]);
-                  }}
-                >
-                  Reset Filters
-                </button>
-              </div>
-            )}
-
-            {filteredJobs.length > jobsPerPage && (
-              <div className="flex justify-center mt-6 gap-2">
-                {Array.from({ length: totalPages }, (_, i) => i + 1).map(
-                  (n) => (
-                    <button
-                      key={n}
-                      className={`px-3 py-1 rounded text-sm ${
-                        n === currentPage
-                          ? "bg-blue-500 text-white"
-                          : "bg-gray-200 text-gray-800 hover:bg-gray-300"
-                      }`}
-                      onClick={() => setCurrentPage(n)}
-                    >
-                      {n}
-                    </button>
-                  )
-                )}
-              </div>
-            )}
-          </div>
-        </div>
+        <JobList
+          filteredJobs={filteredJobs}
+          sortOption={sortOption}
+          setSortOption={setSortOption}
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
+          jobsPerPage={jobsPerPage}
+          setSearchTerm={setSearchTerm}
+          setLocationTerm={setLocationTerm}
+          setEmploymentTypes={setEmploymentTypes}
+          setCategories={setCategories}
+          setJobLevels={setJobLevels}
+          setSalaryRanges={setSalaryRanges}
+        />
       </div>
     </div>
   );
