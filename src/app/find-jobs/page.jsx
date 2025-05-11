@@ -18,6 +18,78 @@ const tagColors = {
   "UI Design": "border-[#00B8D9] border-[1px] text-[#00B8D9]",
   Sales: "border-[#36B37E] border-[1px] text-[#36B37E]",
 };
+// Utility functions to calculate counts from jobsData
+const getEmploymentTypeCounts = (jobs) => {
+  const counts = {};
+  jobs.forEach((job) => {
+    counts[job.type] = (counts[job.type] || 0) + 1;
+  });
+  return ["Full Time", "Part Time", "Remote", "Internship", "Contract"].map(
+    (type) => ({
+      label: type,
+      count: counts[type] || 0,
+    })
+  );
+};
+
+const getCategoryCounts = (jobs) => {
+  const counts = {};
+  jobs.forEach((job) => {
+    counts[job.category] = (counts[job.category] || 0) + 1;
+  });
+  return [
+    "Design",
+    "Sales",
+    "Marketing",
+    "Business",
+    "Human Resource",
+    "Finance",
+    "Engineering",
+    "Technology",
+  ].map((category) => ({
+    label: category,
+    count: counts[category] || 0,
+  }));
+};
+
+const getJobLevelCounts = (jobs) => {
+  const counts = {};
+  jobs.forEach((job) => {
+    counts[job.level] = (counts[job.level] || 0) + 1;
+  });
+  return ["Entry", "Mid", "Senior", "Director", "VP or Above"].map((level) => ({
+    label:
+      level === "Entry"
+        ? "Entry Level"
+        : level === "Mid"
+        ? "Mid Level"
+        : level === "Senior"
+        ? "Senior Level"
+        : level === "VP or Above"
+        ? "VP or Above"
+        : level,
+    count: counts[level] || 0,
+  }));
+};
+const applyJobs = () => {
+  console.log("job Applied");
+};
+
+const getSalaryRangeCounts = (jobs) => {
+  const ranges = [
+    { label: "Rs 70,000 - Rs 100,000", min: 70000, max: 100000 },
+    { label: "Rs 100,000 - Rs 150,000", min: 100000, max: 150000 },
+    { label: "Rs 150,000 - Rs 200,000", min: 150000, max: 200000 },
+    { label: "Rs 300,000 or above", min: 300000, max: Infinity },
+  ];
+
+  return ranges.map((range) => ({
+    label: range.label,
+    count: jobs.filter(
+      (job) => job.salary >= range.min && job.salary <= range.max
+    ).length,
+  }));
+};
 
 const jobsData = [
   {
@@ -271,10 +343,21 @@ function HeroSection({
       </p>
 
       <div className="w-full flex items-center justify-center pt-6 pb-3">
-        <div className="flex flex-col md:flex-row items-stretch justify-between bg-white shadow-md px-4 py-4 w-full gap-4 md:gap-2">
+        <div
+          className="flex flex-col md:flex-row items-stretch justify-between bg-white px-4 py-4 w-full gap-4 md:gap-2"
+          style={{
+            boxShadow: `
+      0px 2.71px 4.4px 0px #C0C0C007,
+      0px 6.86px 11.12px 0px #C0C0C00A,
+      0px 14px 22.68px 0px #C0C0C00C,
+      0px 28.84px 46.72px 0px #C0C0C00F,
+      0px 79px 128px 0px #C0C0C017
+    `,
+          }}
+        >
           <div className="flex-1 relative" ref={searchRef}>
             <div className="flex items-center w-full border-b border-[#D6DDEB] pb-2">
-              <Search className="min-w-5 text-gray-400" />
+              <Search className="min-w-5 text-[#25324B]" />
               <input
                 type="text"
                 placeholder="Job title or keyword"
@@ -289,7 +372,7 @@ function HeroSection({
                   onClick={clearSearch}
                   className="p-1 rounded-full hover:bg-gray-100"
                 >
-                  <X size={16} className="text-gray-400" />
+                  <X size={16} className="text-[#25324B]" />
                 </button>
               )}
             </div>
@@ -305,7 +388,7 @@ function HeroSection({
                     className="px-4 py-2 hover:bg-gray-100 cursor-pointer flex items-center"
                     onClick={() => handleRecentSearchClick(term)}
                   >
-                    <Search size={14} className="mr-2 text-gray-400" />
+                    <Search size={14} className="mr-2 text-[#25324B]" />
                     <span>{term}</span>
                   </div>
                 ))}
@@ -315,7 +398,7 @@ function HeroSection({
 
           <div className="flex-1 relative" ref={locationRef}>
             <div className="flex items-center w-full border-b border-[#D6DDEB] pb-2">
-              <MapPin className="min-w-5 text-gray-400" />
+              <MapPin className="min-w-5 text-[#25324B]" />
               <input
                 type="text"
                 placeholder="Location"
@@ -419,17 +502,19 @@ function JobList({
       {/* Header */}
       <div className="flex justify-between items-center mb-6">
         <div>
-          <h2 className="text-2xl font-semibold text-gray-800">All Jobs</h2>
-          <p className="text-sm text-gray-500">
+          <h2 className="font-clash font-[600] text-[32px] leading-[120%] text-[#25324B] pb-1">
+            All Jobs
+          </h2>
+          <p className="font-epilogue font-[400] text-base leading-[160%] text-[#7C8493]">
             Showing {filteredJobs.length} results
           </p>
         </div>
 
         <div className="flex items-center space-x-4">
-          <div className="text-sm text-gray-500">
+          <div className="font-epilogue font-[400] text-base leading-[160%] text-[#7C8493]">
             Sort by:{" "}
             <select
-              className="text-sm font-medium text-[#25324B] focus:outline-none"
+              className="font-epilogue font-[500] text-base leading-[160%] text-[#25324B] focus:outline-none"
               value={sortOption}
               onChange={(e) => setSortOption(e.target.value)}
             >
@@ -437,7 +522,7 @@ function JobList({
               <option>Newest</option>
             </select>
           </div>
-          <div className="hidden sm:block h-[24px] w-[1px] bg-[#202430]" />
+          <div className="hidden sm:block h-[24px] w-[1px] bg-[#202430]/50" />
           <div className="hidden sm:flex justify-center items-center space-x-2 p-1 rounded-md">
             <button
               className={`p-1 rounded ${
@@ -560,9 +645,11 @@ function JobCard({ job, viewMode }) {
         </div>
       </div>
 
-      {/* Apply Button & Progress Bar Section */}
       <div className="flex flex-col justify-between items-center mt-4">
-        <button className="bg-[#4640DE] text-white font-medium w-full py-2 rounded-sm hover:scale-[1.03] transition-all duration-300 ease-in-out cursor-pointer">
+        <button
+          onClick={() => applyJobs()}
+          className="bg-[#4640DE] text-white font-medium w-full py-2 rounded-sm hover:scale-[1.03] transition-all duration-300 ease-in-out cursor-pointer"
+        >
           Apply
         </button>
         <div className="w-full h-2 bg-gray-200 rounded mt-2">
@@ -658,45 +745,50 @@ function FilterSection({
   salaryRanges,
   setSalaryRanges,
   toggleFilter,
+  jobsData,
 }) {
   const [showEmployment, setShowEmployment] = useState(true);
   const [showCategories, setShowCategories] = useState(true);
   const [showJobLevels, setShowJobLevels] = useState(true);
   const [showSalaries, setShowSalaries] = useState(true);
+  const employmentOptions = getEmploymentTypeCounts(jobsData);
+  const categoryOptions = getCategoryCounts(jobsData);
+  const jobLevelOptions = getJobLevelCounts(jobsData);
+  const salaryOptions = getSalaryRangeCounts(jobsData);
 
-  const employmentOptions = [
-    { label: "Full-time", count: 3 },
-    { label: "Part-time", count: 5 },
-    { label: "Remote", count: 2 },
-    { label: "Internship", count: 24 },
-    { label: "Contract", count: 3 },
-  ];
+  // const employmentOptions = [
+  //   { label: "Full-time", count: 3 },
+  //   { label: "Part-time", count: 5 },
+  //   { label: "Remote", count: 2 },
+  //   { label: "Internship", count: 24 },
+  //   { label: "Contract", count: 3 },
+  // ];
 
-  const categoryOptions = [
-    { label: "Design", count: 24 },
-    { label: "Sales", count: 3 },
-    { label: "Marketing", count: 3 },
-    { label: "Business", count: 3 },
-    { label: "Human Resource", count: 6 },
-    { label: "Finance", count: 4 },
-    { label: "Engineering", count: 4 },
-    { label: "Technology", count: 5 },
-  ];
+  // const categoryOptions = [
+  //   { label: "Design", count: 24 },
+  //   { label: "Sales", count: 3 },
+  //   { label: "Marketing", count: 3 },
+  //   { label: "Business", count: 3 },
+  //   { label: "Human Resource", count: 6 },
+  //   { label: "Finance", count: 4 },
+  //   { label: "Engineering", count: 4 },
+  //   { label: "Technology", count: 5 },
+  // ];
 
-  const jobLevelOptions = [
-    { label: "Entry Level", count: 57 },
-    { label: "Mid Level", count: 3 },
-    { label: "Senior Level", count: 5 },
-    { label: "Director", count: 12 },
-    { label: "VP or Above", count: 8 },
-  ];
+  // const jobLevelOptions = [
+  //   { label: "Entry Level", count: 57 },
+  //   { label: "Mid Level", count: 3 },
+  //   { label: "Senior Level", count: 5 },
+  //   { label: "Director", count: 12 },
+  //   { label: "VP or Above", count: 8 },
+  // ];
 
-  const salaryOptions = [
-    { label: "$700 - $1000", count: 4 },
-    { label: "$1000 - $1500", count: 6 },
-    { label: "$1500 - $2000", count: 10 },
-    { label: "$3000 or above", count: 4 },
-  ];
+  // const salaryOptions = [
+  //   { label: "$700 - $1000", count: 4 },
+  //   { label: "$1000 - $1500", count: 6 },
+  //   { label: "$1500 - $2000", count: 10 },
+  //   { label: "$3000 or above", count: 4 },
+  // ];
 
   const handleApplyFilters = () => setShowMobileFilters(false);
 
@@ -720,8 +812,11 @@ function FilterSection({
         onClick={toggleSection}
         className="flex justify-between items-center cursor-pointer mb-2"
       >
-        <h3 className="text-sm font-semibold">{title}</h3>
+        <h3 className="font-epilogue font-[700] text-base leading-[150%] text-[#25324B]">
+          {title}
+        </h3>
         <ChevronDown
+          strokeWidth={3}
           className={`transition-transform h-4 w-4 ${
             isOpen ? "rotate-180" : ""
           }`}
@@ -736,15 +831,11 @@ function FilterSection({
                 id={label}
                 checked={selected.includes(label)}
                 onChange={() => toggleFilter(selected, setSelected, label)}
-                className="w-4 h-4 accent-blue-500 rounded"
+                className="w-4 h-4 bg-[#4640DE] rounded"
               />
               <label
                 htmlFor={label}
-                className={`text-sm px-2 py-0.5 rounded cursor-pointer ${
-                  selected.includes(label)
-                    ? "bg-blue-500 text-white"
-                    : "text-[#515B6F]"
-                }`}
+                className={`font-epilogue font-[400] text-base leading-[160%] text-[#515B6F] px-2 py-0.5 rounded cursor-pointer`}
               >
                 {label} ({count})
               </label>
@@ -906,18 +997,26 @@ export default function JobBoard() {
       categories.length === 0 || categories.includes(job.category);
 
     const matchesJobLevel =
-      jobLevels.length === 0 || jobLevels.includes(job.level);
+      jobLevels.length === 0 ||
+      jobLevels.some((level) => {
+        if (level === "Entry Level") return job.level === "Entry";
+        if (level === "Mid Level") return job.level === "Mid";
+        if (level === "Senior Level") return job.level === "Senior";
+        return job.level === level;
+      });
 
     const matchesSalaryRange =
       salaryRanges.length === 0 ||
-      (salaryRanges.includes("< €1000") && job.salary < 1000) ||
-      (salaryRanges.includes("€1000 - €2000") &&
-        job.salary >= 1000 &&
-        job.salary <= 2000) ||
-      (salaryRanges.includes("€2000 - €3000") &&
-        job.salary > 2000 &&
-        job.salary <= 3000) ||
-      (salaryRanges.includes("> €3000") && job.salary > 3000);
+      (salaryRanges.includes("Rs 70,000 - Rs 100,000") &&
+        job.salary >= 70000 &&
+        job.salary <= 100000) ||
+      (salaryRanges.includes("Rs 100,000 - Rs 150,000") &&
+        job.salary >= 100000 &&
+        job.salary <= 150000) ||
+      (salaryRanges.includes("Rs 150,000 - Rs 200,000") &&
+        job.salary >= 150000 &&
+        job.salary <= 200000) ||
+      (salaryRanges.includes("Rs 300,000 or above") && job.salary >= 300000);
 
     return (
       matchesSearch &&
@@ -980,6 +1079,7 @@ export default function JobBoard() {
           salaryRanges={salaryRanges}
           setSalaryRanges={setSalaryRanges}
           toggleFilter={toggleFilter}
+          jobsData={jobsData}
         />
 
         <JobList
