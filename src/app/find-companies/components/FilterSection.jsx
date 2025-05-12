@@ -1,50 +1,53 @@
 "use client";
 import { useState } from "react";
 import { ChevronDown, X } from "lucide-react";
-import {
-  getEmploymentTypeCounts,
-  getCategoryCounts,
-  getJobLevelCounts,
-  getSalaryRangeCounts,
-} from "../utils/filters";
-import { jobsData } from "../utils/constants";
 
 export const FilterSection = ({
   showMobileFilters,
   setShowMobileFilters,
-  employmentTypes,
-  setEmploymentTypes,
-  categories,
-  setCategories,
-  jobLevels,
-  setJobLevels,
-  salaryRanges,
-  setSalaryRanges,
+  industries = [],
+  setIndustries,
+  companySizes = [],
+  setCompanySizes,
   toggleFilter,
 }) => {
-  const [showEmployment, setShowEmployment] = useState(true);
-  const [showCategories, setShowCategories] = useState(true);
-  const [showJobLevels, setShowJobLevels] = useState(true);
-  const [showSalaries, setShowSalaries] = useState(true);
+  const [showIndustry, setShowIndustry] = useState(true);
+  const [showCompanySize, setShowCompanySize] = useState(true);
 
-  const employmentOptions = getEmploymentTypeCounts(jobsData);
-  const categoryOptions = getCategoryCounts(jobsData);
-  const jobLevelOptions = getJobLevelCounts(jobsData);
-  const salaryOptions = getSalaryRangeCounts(jobsData);
+  const industryOptions = [
+    { label: "Advertising", count: 43 },
+    { label: "Business Service", count: 4 },
+    { label: "Blockchain", count: 5 },
+    { label: "Cloud", count: 15 },
+    { label: "Consumer Tech", count: 5 },
+    { label: "Education", count: 34 },
+    { label: "Fintech", count: 45 },
+    { label: "Gaming", count: 33 },
+    { label: "Food & Beverage", count: 5 },
+    { label: "Healthcare", count: 3 },
+    { label: "Hosting", count: 5 },
+  ];
+
+  const companySizeOptions = [
+    { label: "1-50", count: 25 },
+    { label: "51-150", count: 57 },
+    { label: "151-250", count: 45 },
+    { label: "251-500", count: 4 },
+    { label: "501-1000", count: 43 },
+    { label: "1000-above", count: 23 },
+  ];
 
   const handleApplyFilters = () => setShowMobileFilters(false);
 
   const clearAllFilters = () => {
-    setEmploymentTypes([]);
-    setCategories([]);
-    setJobLevels([]);
-    setSalaryRanges([]);
+    setIndustries([]);
+    setCompanySizes([]);
   };
 
   const renderSection = (
     title,
     items,
-    selected,
+    selected = [],
     setSelected,
     toggleSection,
     isOpen
@@ -71,7 +74,7 @@ export const FilterSection = ({
               <input
                 type="checkbox"
                 id={label}
-                checked={selected.includes(label)}
+                checked={selected?.includes ? selected.includes(label) : false}
                 onChange={() => toggleFilter(selected, setSelected, label)}
                 className="w-4 h-4 bg-[#4640DE] rounded"
               />
@@ -92,39 +95,21 @@ export const FilterSection = ({
     <>
       <div className="hidden md:block col-span-1 space-y-6 bg-white p-4 rounded-lg shadow-md">
         {renderSection(
-          "Type of Employment",
-          employmentOptions,
-          employmentTypes,
-          setEmploymentTypes,
-          () => setShowEmployment(!showEmployment),
-          showEmployment
+          "Industry",
+          industryOptions,
+          industries,
+          setIndustries,
+          () => setShowIndustry(!showIndustry),
+          showIndustry
         )}
 
         {renderSection(
-          "Categories",
-          categoryOptions,
-          categories,
-          setCategories,
-          () => setShowCategories(!showCategories),
-          showCategories
-        )}
-
-        {renderSection(
-          "Job Level",
-          jobLevelOptions,
-          jobLevels,
-          setJobLevels,
-          () => setShowJobLevels(!showJobLevels),
-          showJobLevels
-        )}
-
-        {renderSection(
-          "Salary Range",
-          salaryOptions,
-          salaryRanges,
-          setSalaryRanges,
-          () => setShowSalaries(!showSalaries),
-          showSalaries
+          "Company Size",
+          companySizeOptions,
+          companySizes,
+          setCompanySizes,
+          () => setShowCompanySize(!showCompanySize),
+          showCompanySize
         )}
       </div>
 
@@ -147,39 +132,21 @@ export const FilterSection = ({
               </div>
 
               {renderSection(
-                "Type of Employment",
-                employmentOptions,
-                employmentTypes,
-                setEmploymentTypes,
-                () => setShowEmployment(!showEmployment),
-                showEmployment
+                "Industry",
+                industryOptions,
+                industries,
+                setIndustries,
+                () => setShowIndustry(!showIndustry),
+                showIndustry
               )}
 
               {renderSection(
-                "Categories",
-                categoryOptions,
-                categories,
-                setCategories,
-                () => setShowCategories(!showCategories),
-                showCategories
-              )}
-
-              {renderSection(
-                "Job Level",
-                jobLevelOptions,
-                jobLevels,
-                setJobLevels,
-                () => setShowJobLevels(!showJobLevels),
-                showJobLevels
-              )}
-
-              {renderSection(
-                "Salary Range",
-                salaryOptions,
-                salaryRanges,
-                setSalaryRanges,
-                () => setShowSalaries(!showSalaries),
-                showSalaries
+                "Company Size",
+                companySizeOptions,
+                companySizes,
+                setCompanySizes,
+                () => setShowCompanySize(!showCompanySize),
+                showCompanySize
               )}
 
               <div className="flex gap-3 pt-4 border-t sticky bottom-0 bg-white pb-4">

@@ -1,10 +1,10 @@
 "use client";
 import { useState, useEffect } from "react";
 import HeroSection from "./components/HeroSection";
-import JobList from "./components/JobList";
-import { FilterSection } from "./components/FilterSection";
-import { MobileFilterButton } from "./components/MobileFilterButton";
-import { jobsData } from "./utils/constants";
+import JobList from "../find-companies/components/JobList";
+import { FilterSection } from "../find-companies/components/FilterSection";
+import { MobileFilterButton } from "../find-companies/components/MobileFilterButton";
+import { jobsData } from "../find-companies/utils/constants";
 
 export default function JobBoard() {
   const [searchTerm, setSearchTerm] = useState("");
