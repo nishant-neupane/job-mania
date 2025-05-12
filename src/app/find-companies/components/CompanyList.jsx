@@ -15,7 +15,7 @@ export default function CompanyList({
   setCompanySizes,
 }) {
   const [viewMode, setViewMode] = useState("list");
-  const companiesPerPage = viewMode === "list" ? 5 : 6;
+  const companiesPerPage = viewMode === "list" ? 6 : 6;
   const sortedCompanies = [...filteredCompanies].sort((a, b) => {
     if (sortOption === "Newest") {
       return b.id - a.id;

@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import { ChevronDown, X } from "lucide-react";
+import { getIndustryOptions, getCompanySizeOptions } from "../utils/filters";
 
 export const FilterSection = ({
   showMobileFilters,
@@ -14,28 +15,8 @@ export const FilterSection = ({
   const [showIndustry, setShowIndustry] = useState(true);
   const [showCompanySize, setShowCompanySize] = useState(true);
 
-  const industryOptions = [
-    { label: "Advertising", count: 43 },
-    { label: "Business Service", count: 4 },
-    { label: "Blockchain", count: 5 },
-    { label: "Cloud", count: 15 },
-    { label: "Consumer Tech", count: 5 },
-    { label: "Education", count: 34 },
-    { label: "Fintech", count: 45 },
-    { label: "Gaming", count: 33 },
-    { label: "Food & Beverage", count: 5 },
-    { label: "Healthcare", count: 3 },
-    { label: "Hosting", count: 5 },
-  ];
-
-  const companySizeOptions = [
-    { label: "1-50", count: 25 },
-    { label: "51-150", count: 57 },
-    { label: "151-250", count: 45 },
-    { label: "251-500", count: 4 },
-    { label: "501-1000", count: 43 },
-    { label: "1000-above", count: 23 },
-  ];
+  const industryOptions = getIndustryOptions();
+  const companySizeOptions = getCompanySizeOptions();
 
   const handleApplyFilters = () => setShowMobileFilters(false);
 
@@ -74,7 +55,7 @@ export const FilterSection = ({
               <input
                 type="checkbox"
                 id={label}
-                checked={selected?.includes ? selected.includes(label) : false}
+                checked={selected.includes(label)}
                 onChange={() => toggleFilter(selected, setSelected, label)}
                 className="w-4 h-4 bg-[#4640DE] rounded"
               />
@@ -93,6 +74,7 @@ export const FilterSection = ({
 
   return (
     <>
+      {/* Desktop Filter Panel */}
       <div className="hidden md:block col-span-1 space-y-6 bg-white p-4 rounded-lg shadow-md">
         {renderSection(
           "Industry",
@@ -113,6 +95,7 @@ export const FilterSection = ({
         )}
       </div>
 
+      {/* Mobile Filter Drawer */}
       {showMobileFilters && (
         <>
           <div

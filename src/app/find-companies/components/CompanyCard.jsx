@@ -5,13 +5,13 @@ import { tagColors } from "../utils/constants";
 
 export default function CompanyCard({ company }) {
   return (
-    <div className="relative bg-white shadow-md rounded-lg p-6 w-full max-w-sm">
+    <div className="relative bg-white shadow-md rounded-lg p-6 w-full max-h-[226px]">
       {/* Job count at top-right */}
       <Link
         href={company.jobsLink || "#"}
         className="absolute top-4 right-4 text-sm font-semibold text-[#A88BFF]"
       >
-        {company.jobCount} Jobs
+        {company.jobs} Jobs
       </Link>
 
       {/* Company Icon */}
