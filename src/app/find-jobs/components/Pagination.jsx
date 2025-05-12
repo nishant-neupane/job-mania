@@ -1,5 +1,6 @@
 "use client";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+
 import React from "react";
 
 const Pagination = ({ currentPage, totalPages, setCurrentPage }) => {
@@ -24,7 +25,6 @@ const Pagination = ({ currentPage, totalPages, setCurrentPage }) => {
 
     return pages;
   };
-
   return (
     <div className="flex justify-center mt-6 items-center gap-2 text-sm text-gray-700">
       <button

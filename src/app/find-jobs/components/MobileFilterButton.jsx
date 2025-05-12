@@ -9,7 +9,7 @@ export const MobileFilterButton = ({ setShowMobileFilters }) => {
         className="flex items-center justify-center gap-2 bg-blue-500 text-white px-4 py-2 rounded-lg w-full"
       >
         <Filter size={18} />
-        <span>Filter Companies</span>
+        <span>Filter Jobs</span>
       </button>
     </div>
   );

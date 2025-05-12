@@ -32,7 +32,7 @@ export default function HeroSection({
       if (!recentSearches.includes(trimmed)) {
         const updated = [trimmed, ...recentSearches.slice(0, 4)];
         setRecentSearches(updated);
-        localStorage.setItem("recentJobSearches", JSON.stringify(updated));
+        localStorage.setItem("recentCompanySearches", JSON.stringify(updated));
       }
     }
 
@@ -80,7 +80,7 @@ export default function HeroSection({
   }, []);
 
   useEffect(() => {
-    const saved = localStorage.getItem("recentJobSearches");
+    const saved = localStorage.getItem("recentCompanySearches");
     if (saved) {
       try {
         const parsed = JSON.parse(saved);
@@ -117,13 +117,8 @@ export default function HeroSection({
           <div
             className="flex flex-col md:flex-row items-stretch justify-between bg-white px-6 py-6 w-full gap-4 md:gap-2"
             style={{
-              boxShadow: `
-      0px 2.71px 4.4px 0px #C0C0C007,
-      0px 6.86px 11.12px 0px #C0C0C00A,
-      0px 14px 22.68px 0px #C0C0C00C,
-      0px 28.84px 46.72px 0px #C0C0C00F,
-      0px 79px 128px 0px #C0C0C017
-    `,
+              boxShadow: 
+                "0px 2.71px 4.4px 0px #C0C0C007, 0px 6.86px 11.12px 0px #C0C0C00A, 0px 14px 22.68px 0px #C0C0C00C, 0px 28.84px 46.72px 0px #C0C0C00F, 0px 79px 128px 0px #C0C0C017",
             }}
           >
             <div className="flex-1 relative" ref={searchRef}>
@@ -131,7 +126,7 @@ export default function HeroSection({
                 <Search className="min-w-5 text-[#25324B]" />
                 <input
                   type="text"
-                  placeholder="Job title or keyword"
+                  placeholder="Company name or keyword"
                   className="w-full p-2 pl-3 outline-none text-[#25324B]"
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
@@ -219,7 +214,7 @@ export default function HeroSection({
           </div>
         </div>
         <p className="font-epilogue font-[400] text-base leading-[160%] text-[#515B6F] text-center sm:text-left">
-          Popular : UI Designer, UX Researcher, Android, Admin
+          Popular : Tech, Finance, Healthcare, E-commerce
         </p>
       </div>
     </div>
