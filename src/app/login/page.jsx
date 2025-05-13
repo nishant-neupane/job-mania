@@ -2,20 +2,38 @@
 import { useState } from "react";
 import AuthLayout from "@/components/AuthLayout";
 import { useRouter } from "next/navigation";
+import { login } from "@/lib/api/Auth";
 
 export default function Login() {
   const [activeTab, setActiveTab] = useState("jobseeker");
+  const [error, setError] = useState(null);
   const router = useRouter();
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    console.log("Logging in as:", activeTab);
-    router.push("/dashboard");
+    const formData = new FormData(e.target);
+    const email = formData.get("email");
+    const password = formData.get("password");
+
+    try {
+      const data = await login({
+        email,
+        password,
+        role: activeTab,
+      });
+
+      localStorage.setItem("token", data.token);
+      localStorage.setItem("user", JSON.stringify(data.user));
+
+      router.push("/dashboard");
+    } catch (error) {
+      console.error("Login failed:", error.message);
+      setError(error.message || "Login failed. Please try again.");
+    }
   };
 
   const handleGoogleLogin = () => {
-    console.log("Google login triggered");
-    router.push("/dashboard");
+    window.location.href = `${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/login/google-oauth2/`;
   };
 
   return (
@@ -25,7 +43,7 @@ export default function Login() {
           <div className="flex justify-center gap-4">
             <button
               className={`px-4 py-2 font-epilogue font-[600] text-base leading-[160%] ${
-                activeTab === "jobseeker" ? " bg-[#E9EBFD] text-[#4640DE]" : ""
+                activeTab === "jobseeker" ? "bg-[#E9EBFD] text-[#4640DE]" : ""
               }`}
               onClick={() => setActiveTab("jobseeker")}
             >
@@ -44,6 +62,10 @@ export default function Login() {
           <h2 className="font-clash font-[600] text-[32px] leading-[120%] text-center text-[#202430]">
             Welcome Back, {activeTab === "jobseeker" ? "Dude" : "Boss"}
           </h2>
+
+          {error && (
+            <div className="p-4 bg-red-100 text-red-700 rounded">{error}</div>
+          )}
 
           <div className="space-y-6">
             <button
@@ -72,10 +94,11 @@ export default function Login() {
                   Email Address
                 </label>
                 <input
+                  name="email"
                   type="email"
                   placeholder="Enter email address"
                   required
-                  className="w-full px-4 py-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 font-epilogue font-[400] text-base leading-[160%] text-[#A8ADB7]"
+                  className="w-full px-4 py-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 font-epilogue font-[400] text-base leading-[160%] text-[#202430]"
                 />
               </div>
 
@@ -84,10 +107,11 @@ export default function Login() {
                   Password
                 </label>
                 <input
+                  name="password"
                   type="password"
                   placeholder="Enter password"
                   required
-                  className="w-full px-4 py-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 font-epilogue font-[400] text-base leading-[160%] text-[#A8ADB7]"
+                  className="w-full px-4 py-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 font-epilogue font-[400] text-base leading-[160%] text-[#202430]"
                 />
               </div>
 
@@ -99,6 +123,9 @@ export default function Login() {
                   />
                   <span>Remember me</span>
                 </label>
+                <a href="/forgot-password" className="text-[#4640DE]">
+                  Forgot password?
+                </a>
               </div>
 
               <button
@@ -110,7 +137,7 @@ export default function Login() {
             </form>
 
             <p className="pt-2 font-epilogue font-[400] text-base leading-[160%] text-[#202430]">
-              Don’t have an account?{" "}
+              Don't have an account?{" "}
               <a href="/signup" className="text-[#4640DE] font-[600]">
                 Sign Up
               </a>

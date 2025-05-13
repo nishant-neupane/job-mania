@@ -2,29 +2,63 @@
 import { useState } from "react";
 import AuthLayout from "@/components/AuthLayout";
 import { useRouter } from "next/navigation";
+import { register, sendOtp, verifyOtp } from "@/lib/api/Auth";
+import OTPModal from "./components/OTPModal";
 
 export default function Signup() {
   const [activeTab, setActiveTab] = useState("jobseeker");
+  const [error, setError] = useState(null);
+  const [showOtpModal, setShowOtpModal] = useState(false);
+  const [emailForOtp, setEmailForOtp] = useState(null);
+  const [pendingUserData, setPendingUserData] = useState(null);
   const router = useRouter();
 
-  const handleSignup = (e) => {
+  const handleSignup = async (e) => {
     e.preventDefault();
-    console.log("Signing up as:", activeTab);
-    router.push("/dashboard");
+    setError(null);
+    const formData = new FormData(e.target);
+    const name = formData.get("name");
+    const email = formData.get("email");
+    const password = formData.get("password");
+
+    try {
+      const data = await register({
+        name,
+        email,
+        password,
+        role: activeTab,
+        ...(activeTab === "company" && { companyName: name }),
+      });
+
+      await sendOtp({ email });
+      setEmailForOtp(email);
+      setPendingUserData({ token: data.token, user: data.user });
+      setShowOtpModal(true);
+    } catch (error) {
+      console.error("Signup failed:", error.message);
+      setError(error.message || "Signup failed. Please try again.");
+    }
+  };
+
+  const handleOtpVerified = async () => {
+    if (pendingUserData) {
+      localStorage.setItem("token", pendingUserData.token);
+      localStorage.setItem("user", JSON.stringify(pendingUserData.user));
+      router.push("/dashboard");
+    }
   };
 
   const handleGoogleSignup = () => {
-    console.log("Google signup triggered");
-    router.push("/dashboard");
+    window.location.href = `${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/login/google-oauth2/?signup=true`;
   };
 
   return (
     <AuthLayout>
       <div className="flex items-center justify-center bg-white py-16 px-6">
         <div className="w-full max-w-lg space-y-8">
-          <div className="flex justify-center">
+          <div className="flex justify-center gap-4">
             <button
-              className={`px-4 py-2 font-epilogue font-[600] text-base leading-[160%] ${
+              className={`px-4 py-2 font-[600] ${
                 activeTab === "jobseeker" ? "bg-[#E9EBFD] text-[#4640DE]" : ""
               }`}
               onClick={() => setActiveTab("jobseeker")}
@@ -32,7 +66,7 @@ export default function Signup() {
               Job Seeker
             </button>
             <button
-              className={`px-4 py-2 font-epilogue font-[600] text-base leading-[160%] ${
+              className={`px-4 py-2 font-[600] ${
                 activeTab === "company" ? "bg-[#E9EBFD] text-[#4640DE]" : ""
               }`}
               onClick={() => setActiveTab("company")}
@@ -41,98 +75,100 @@ export default function Signup() {
             </button>
           </div>
 
-          <h2 className="font-clash font-[600] text-[32px] leading-[120%] text-center text-[#202430]">
-            Get more opportunities
-          </h2>
+          {error && (
+            <div className="p-4 bg-red-100 text-red-700 rounded">{error}</div>
+          )}
 
-          <div className="space-y-6">
-            <button
-              onClick={handleGoogleSignup}
-              className="font-epilogue font-[700] text-base leading-[160%] text-[#4640DE] w-full border border-gray-300 py-3 rounded flex items-center justify-center space-x-2 hover:bg-gray-100"
-            >
-              <img
-                src="https://www.svgrepo.com/show/475656/google-color.svg"
-                alt="Google"
-                className="w-5 h-5"
+          <button
+            onClick={handleGoogleSignup}
+            className="w-full border py-3 rounded flex items-center justify-center space-x-2 hover:bg-gray-100"
+          >
+            <img
+              src="https://www.svgrepo.com/show/475656/google-color.svg"
+              alt="Google"
+              className="w-5 h-5"
+            />
+            <span>Sign up with Google</span>
+          </button>
+
+          <div className="flex items-center justify-center gap-4">
+            <hr className="flex-grow border-t border-gray-300" />
+            <span className="text-[#202430]">Or sign up with email</span>
+            <hr className="flex-grow border-t border-gray-300" />
+          </div>
+
+          <form className="space-y-6" onSubmit={handleSignup}>
+            <div>
+              <label>
+                {activeTab === "jobseeker" ? "Full name" : "Company name"}
+              </label>
+              <input
+                name="name"
+                type="text"
+                placeholder={
+                  activeTab === "jobseeker"
+                    ? "Enter your full name"
+                    : "Enter company name"
+                }
+                required
+                className="w-full px-4 py-3 border rounded"
               />
-              <span>Sign up with Google</span>
-            </button>
-
-            <div className="flex items-center justify-center gap-4">
-              <hr className="flex-grow border-t border-gray-300" />
-              <span className="font-epilogue font-[400] text-base leading-[160%] text-[#202430]">
-                Or sign up with email
-              </span>
-              <hr className="flex-grow border-t border-gray-300" />
             </div>
 
-            <form className="space-y-6" onSubmit={handleSignup}>
-              <div className="space-y-2">
-                <label className="font-epilogue font-[600] text-base leading-[160%] text-[#515B6F]">
-                  Full name
-                </label>
-                <input
-                  type="text"
-                  placeholder="Enter your full name"
-                  required
-                  className="w-full px-4 py-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 font-epilogue font-[400] text-base leading-[160%] text-[#202430]"
-                />
-              </div>
+            <div>
+              <label>Email Address</label>
+              <input
+                name="email"
+                type="email"
+                placeholder={
+                  activeTab === "jobseeker"
+                    ? "Enter your Email"
+                    : "Enter company Email"
+                }
+                required
+                className="w-full px-4 py-3 border rounded"
+              />
+            </div>
 
-              <div className="space-y-2">
-                <label className="font-epilogue font-[600] text-base leading-[160%] text-[#515B6F]">
-                  Email Address
-                </label>
-                <input
-                  type="email"
-                  placeholder="Enter email address"
-                  required
-                  className="w-full px-4 py-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 font-epilogue font-[400] text-base leading-[160%] text-[#202430]"
-                />
-              </div>
+            <div>
+              <label>Password</label>
+              <input
+                name="password"
+                type="password"
+                placeholder={
+                  activeTab === "jobseeker"
+                    ? "Enter your Password"
+                    : "Enter Password"
+                }
+                required
+                className="w-full px-4 py-3 border rounded"
+              />
+            </div>
 
-              <div className="space-y-2">
-                <label className="font-epilogue font-[600] text-base leading-[160%] text-[#515B6F]">
-                  Password
-                </label>
-                <input
-                  type="password"
-                  placeholder="Enter password"
-                  required
-                  className="w-full px-4 py-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 font-epilogue font-[400] text-base leading-[160%] text-[#202430]"
-                />
-              </div>
+            <button
+              type="submit"
+              className="w-full bg-[#4640DE] text-white py-3 rounded hover:bg-[#3730c0]"
+            >
+              Continue
+            </button>
+          </form>
 
-              <button
-                type="submit"
-                className="w-full bg-[#4640DE] text-white py-3 rounded hover:bg-[#3730c0] transition font-epilogue font-[700] text-base leading-[160%]"
-              >
-                Continue
-              </button>
-            </form>
-
-            <p className="pt-2 font-epilogue font-[400] text-base leading-[160%] text-[#202430]">
-              Already have an account?{" "}
-              <a href="/login" className="text-[#4640DE] font-[600]">
-                Login
-              </a>
-            </p>
-
-            <p className="font-epilogue font-[400] text-sm leading-[160%] text-[#7C8493] tracking-wider mt-2">
-              By clicking Continue, you acknowledge that you have read and
-              accept the{" "}
-              <a href="#" className="text-[#4640DE]">
-                Terms of Service
-              </a>{" "}
-              and{" "}
-              <a href="#" className="text-[#4640DE]">
-                Privacy Policy
-              </a>
-              .
-            </p>
-          </div>
+          <p className="pt-2 text-[#202430]">
+            Already have an account?{" "}
+            <a href="/login" className="text-[#4640DE] font-[600]">
+              Login
+            </a>
+          </p>
         </div>
       </div>
+
+      {showOtpModal && emailForOtp && (
+        <OTPModal
+          email={emailForOtp}
+          onVerify={handleOtpVerified}
+          onClose={() => setShowOtpModal(false)}
+        />
+      )}
     </AuthLayout>
   );
 }
