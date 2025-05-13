@@ -51,13 +51,19 @@ const Header = () => {
           </div>
         </div>
         <div className="flex items-center gap-2 sm:gap-4 mb-4">
-          <button className="font-epilogue font-[700] text-sm sm:text-base leading-[160%] text-[#4640DE] px-2 sm:px-0">
+          <Link
+            href="/login"
+            className="font-epilogue font-[700] text-sm sm:text-base leading-[160%] text-[#4640DE] px-2 sm:px-0"
+          >
             Login
-          </button>
+          </Link>
           <div className="w-px h-6 sm:h-8 bg-[#D6DDEB]" />
-          <button className="font-epilogue font-[700] text-sm sm:text-base leading-[160%] text-white bg-[#4640DE] px-3 sm:px-4 py-1 sm:py-2">
+          <Link
+            href="/signup"
+            className="font-epilogue font-[700] text-sm sm:text-base leading-[160%] text-white bg-[#4640DE] px-3 sm:px-4 py-1 sm:py-2"
+          >
             Sign Up
-          </button>
+          </Link>
         </div>
       </div>
     </div>
