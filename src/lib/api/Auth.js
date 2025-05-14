@@ -1,8 +1,11 @@
-const API_BASE = "http://192.168.1.79:8080/api";
+import Cookies from "js-cookie";
 
+const API_BASE = "/backend_api";
+
+// Login API
 export async function login({ email, password, userType }) {
   try {
-    const response = await fetch(`${API_BASE}/login/`, {
+    const response = await fetch(`${API_BASE}/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -12,10 +15,18 @@ export async function login({ email, password, userType }) {
         password,
         role: userType,
       }),
+      credentials: "include", // For cookies set by the backend (if any)
     });
 
     const data = await response.json();
     if (!response.ok) throw new Error(data.detail || "Login failed");
+
+    // Save tokens and user info in cookies
+    Cookies.set("access_token", data.access_token);
+    Cookies.set("refresh_token", data.refresh_token);
+    Cookies.set("role", data.role);
+    Cookies.set("user_id", data.user_id);
+    Cookies.set("username", data.username);
 
     return data;
   } catch (error) {

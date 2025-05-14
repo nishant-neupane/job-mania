@@ -1,11 +1,14 @@
 "use client";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import AuthLayout from "@/components/AuthLayout";
 import { useRouter } from "next/navigation";
 import { login } from "@/lib/api/Auth";
+import { AuthContext } from "@/context/AuthContext";
+import Cookies from "js-cookie";
 
 export default function Login() {
   const [activeTab, setActiveTab] = useState("jobseeker");
+  const { setAuth } = useContext(AuthContext);
   const [error, setError] = useState(null);
   const router = useRouter();
 
@@ -21,11 +24,15 @@ export default function Login() {
         password,
         role: activeTab,
       });
+      setAuth({
+        access_token: Cookies.get("access_token"),
+        refresh_token: Cookies.get("refresh_token"),
+        role: Cookies.get("role"),
+        user_id: Cookies.get("user_id"),
+        username: Cookies.get("username"),
+      });
 
-      localStorage.setItem("token", data.token);
-      localStorage.setItem("user", JSON.stringify(data.user));
-
-      router.push("/dashboard");
+      router.push("/home");
     } catch (error) {
       console.error("Login failed:", error.message);
       setError(error.message || "Login failed. Please try again.");
