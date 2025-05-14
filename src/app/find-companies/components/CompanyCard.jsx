@@ -12,21 +12,22 @@ export default function CompanyCard({ company, viewMode = "grid" }) {
       className={`relative bg-white border border-[#D6DDEB] rounded-lg p-6 transition-all duration-300 w-full
         ${
           isGrid
-            ? "max-w-sm h-[226px]  flex flex-col"
-            : "flex gap-4 items-start h-[226px] "
+            ? "max-w-sm min-h-fit max-h-fit flex flex-col"
+            : "flex gap-4 items-start min-h-fit max-h-fit"
         }
       `}
     >
-      {/* Jobs Link */}
       <Link
-        href={company.jobsLink || "#"}
+        href={`/find-jobs?company=${encodeURIComponent(company.name)}`}
         className="absolute top-4 right-4 text-sm font-semibold text-[#A88BFF] hover:underline"
       >
-        {company.jobs} Jobs
+        {company.jobs.length} Jobs
       </Link>
 
-      {/* Logo */}
-      <div className={`${isGrid ? "mb-4" : "flex-shrink-0"}`}>
+      <Link
+        href={`/find-jobs?company=${encodeURIComponent(company.name)}`}
+        className={`${isGrid ? "mb-4" : "flex-shrink-0"}`}
+      >
         <Image
           src={company.icon}
           alt={company.name}
@@ -34,13 +35,14 @@ export default function CompanyCard({ company, viewMode = "grid" }) {
           height={48}
           className="rounded"
         />
-      </div>
+      </Link>
 
-      {/* Content */}
       <div className={`${isGrid ? "flex flex-col flex-1" : "flex-1"}`}>
-        <h3 className="font-semibold text-lg text-[#25324B] mb-1">
-          {company.name}
-        </h3>
+        <Link href={`/find-jobs?company=${encodeURIComponent(company.name)}`}>
+          <h3 className="font-semibold text-lg text-[#25324B] mb-1 hover:underline">
+            {company.name}
+          </h3>
+        </Link>
         <p
           className={`text-sm text-[#515B6F] leading-[1.5] mb-4 ${
             isGrid ? "line-clamp-3" : "line-clamp-4"
@@ -49,7 +51,6 @@ export default function CompanyCard({ company, viewMode = "grid" }) {
           {company.description}
         </p>
 
-        {/* Tags */}
         <div className="flex flex-wrap gap-2 mt-auto">
           {company.tags.map((tag) => (
             <span
