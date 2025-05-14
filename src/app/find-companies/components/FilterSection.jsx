@@ -74,7 +74,6 @@ export const FilterSection = ({
 
   return (
     <>
-      {/* Desktop Filter Panel */}
       <div className="hidden md:block col-span-1 space-y-6 bg-white p-4 rounded-lg shadow-md">
         {renderSection(
           "Industry",
@@ -95,7 +94,6 @@ export const FilterSection = ({
         )}
       </div>
 
-      {/* Mobile Filter Drawer */}
       {showMobileFilters && (
         <>
           <div

@@ -107,7 +107,7 @@ export default function JobList({
             <JobCard key={job.id} job={job} viewMode={viewMode} />
           ))
         ) : (
-          <div className="text-center py-10">
+          <div className="text-center py-10 col-span-2">
             <p className="text-gray-500">
               No jobs found matching your criteria
             </p>

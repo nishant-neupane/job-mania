@@ -2,20 +2,16 @@ import {
   companiesData,
   staticIndustryLabels,
   staticCompanySizeLabels,
+  staticLocationLabels,
 } from "./constants";
 
-const getCountMap = (key) => {
+const getCountMap = (key, labels) => {
   const countMap = {};
 
-  // Initialize all possible labels with 0 count
-  const allLabels =
-    key === "industry" ? staticIndustryLabels : staticCompanySizeLabels;
-
-  allLabels.forEach((label) => {
+  labels.forEach((label) => {
     countMap[label] = 0;
   });
 
-  // Count actual occurrences in the data
   companiesData.forEach((item) => {
     const value = item[key];
     if (value && countMap.hasOwnProperty(value)) {
@@ -27,7 +23,7 @@ const getCountMap = (key) => {
 };
 
 export const getIndustryOptions = () => {
-  const countMap = getCountMap("industry");
+  const countMap = getCountMap("industry", staticIndustryLabels);
   return staticIndustryLabels.map((label) => ({
     label,
     count: countMap[label] || 0,
@@ -35,8 +31,16 @@ export const getIndustryOptions = () => {
 };
 
 export const getCompanySizeOptions = () => {
-  const countMap = getCountMap("companySize");
+  const countMap = getCountMap("companySize", staticCompanySizeLabels);
   return staticCompanySizeLabels.map((label) => ({
+    label,
+    count: countMap[label] || 0,
+  }));
+};
+
+export const getLocationOptions = () => {
+  const countMap = getCountMap("location", staticLocationLabels);
+  return staticLocationLabels.map((label) => ({
     label,
     count: countMap[label] || 0,
   }));

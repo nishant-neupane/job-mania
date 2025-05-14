@@ -20,7 +20,7 @@ export default function CompanyList({
     if (sortOption === "Newest") {
       return b.id - a.id;
     } else {
-      return b.rating - a.rating; // Changed from applicants to rating for companies
+      return b.rating - a.rating; 
     }
   });
 
@@ -34,7 +34,6 @@ export default function CompanyList({
 
   return (
     <div className="col-span-3 flex flex-col min-h-[80vh]">
-      {/* Header */}
       <div className="flex justify-between items-center mb-6">
         <div>
           <h2 className="font-clash font-[600] text-[32px] leading-[120%] text-[#25324B] pb-1">
@@ -96,7 +95,6 @@ export default function CompanyList({
         </div>
       </div>
 
-      {/* Company Grid/List */}
       <div
         className={`flex-1 ${
           viewMode === "grid"
@@ -113,7 +111,7 @@ export default function CompanyList({
             />
           ))
         ) : (
-          <div className="text-center py-10">
+          <div className="text-center py-10 col-span-2">
             <p className="text-gray-500">
               No companies found matching your criteria
             </p>
@@ -132,7 +130,6 @@ export default function CompanyList({
         )}
       </div>
 
-      {/* Pagination Below Company Cards */}
       {filteredCompanies.length > companiesPerPage && (
         <div className="mt-6">
           <Pagination

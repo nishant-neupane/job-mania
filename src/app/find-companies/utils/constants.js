@@ -18,6 +18,7 @@ export const companiesData = [
     jobs: 12,
     industry: "Fintech",
     companySize: "251-500",
+    location: "Kathmandu, Nepal",
   },
   {
     name: "Khalti",
@@ -27,6 +28,7 @@ export const companiesData = [
     jobs: 8,
     industry: "Fintech",
     companySize: "151-250",
+    location: "Lalitpur, Nepal",
   },
   {
     name: "CloudFactory",
@@ -36,6 +38,7 @@ export const companiesData = [
     jobs: 15,
     industry: "Technology",
     companySize: "501-1000",
+    location: "Kathmandu, Nepal",
   },
   {
     name: "F1Soft International",
@@ -45,6 +48,7 @@ export const companiesData = [
     jobs: 10,
     industry: "Fintech",
     companySize: "251-500",
+    location: "Kathmandu, Nepal",
   },
   {
     name: "Daraz Nepal",
@@ -54,6 +58,7 @@ export const companiesData = [
     jobs: 20,
     industry: "E-commerce",
     companySize: "251-500",
+    location: "Lalitpur, Nepal",
   },
   {
     name: "Nepal Telecom",
@@ -63,6 +68,7 @@ export const companiesData = [
     jobs: 25,
     industry: "Telecom",
     companySize: "1000-above",
+    location: "Kathmandu, Nepal",
   },
   {
     name: "Nabil Bank",
@@ -72,6 +78,7 @@ export const companiesData = [
     jobs: 18,
     industry: "Banking",
     companySize: "501-1000",
+    location: "Kathmandu, Nepal",
   },
   {
     name: "Yeti Airlines",
@@ -81,6 +88,7 @@ export const companiesData = [
     jobs: 14,
     industry: "Aviation",
     companySize: "501-1000",
+    location: "Pokhara, Nepal",
   },
   {
     name: "Code Himalaya",
@@ -90,6 +98,7 @@ export const companiesData = [
     jobs: 5,
     industry: "Technology",
     companySize: "1-50",
+    location: "Bhaktapur, Nepal",
   },
   {
     name: "Leapfrog Technology",
@@ -99,6 +108,7 @@ export const companiesData = [
     jobs: 7,
     industry: "Technology",
     companySize: "51-150",
+    location: "Lalitpur, Nepal",
   },
   {
     name: "Cotiviti Nepal",
@@ -108,6 +118,7 @@ export const companiesData = [
     jobs: 12,
     industry: "Healthcare",
     companySize: "501-1000",
+    location: "Kathmandu, Nepal",
   },
   {
     name: "Foodmario",
@@ -117,6 +128,7 @@ export const companiesData = [
     jobs: 8,
     industry: "Food & Beverage",
     companySize: "51-150",
+    location: "Kathmandu, Nepal",
   },
   {
     name: "Fusemachines Nepal",
@@ -126,6 +138,7 @@ export const companiesData = [
     jobs: 9,
     industry: "Technology",
     companySize: "151-250",
+    location: "Kathmandu, Nepal",
   },
   {
     name: "EB Pearls",
@@ -135,6 +148,7 @@ export const companiesData = [
     jobs: 6,
     industry: "Technology",
     companySize: "151-250",
+    location: "Lalitpur, Nepal",
   },
 ];
 
@@ -160,7 +174,7 @@ export const staticCompanySizeLabels = [
   "501-1000",
   "1000-above",
 ];
-export const locations = [
+export const staticLocationLabels = [
   "Kathmandu, Nepal",
   "Lalitpur, Nepal",
   "Bhaktapur, Nepal",

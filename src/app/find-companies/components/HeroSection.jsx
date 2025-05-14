@@ -9,6 +9,7 @@ export default function HeroSection({
   setSearchTerm,
   locationTerm,
   setLocationTerm,
+  onSearchClick,
 }) {
   const [recentSearches, setRecentSearches] = useState([]);
   const [showRecentSearches, setShowRecentSearches] = useState(false);
@@ -38,11 +39,7 @@ export default function HeroSection({
 
     setShowRecentSearches(false);
     setShowLocationDropdown(false);
-
-    const query = `?search=${encodeURIComponent(
-      searchTerm
-    )}&location=${encodeURIComponent(locationTerm)}`;
-    router.push(`/search${query}`);
+    onSearchClick();
   };
 
   const handleRecentSearchClick = (term) => {
@@ -99,7 +96,9 @@ export default function HeroSection({
         <h1 className="font-clash font-[600] text-5xl text-[#25324B] leading-[110%] pb-6">
           Find your{" "}
           <span className="relative">
-            <span className="text-[#26A4FF] z-10 relative">dream companies</span>
+            <span className="text-[#26A4FF] z-10 relative">
+              dream companies
+            </span>
             <Image
               src="/home/Hero/underline.svg"
               alt="underline"
@@ -117,7 +116,7 @@ export default function HeroSection({
           <div
             className="flex flex-col md:flex-row items-stretch justify-between bg-white px-6 py-6 w-full gap-4 md:gap-2"
             style={{
-              boxShadow: 
+              boxShadow:
                 "0px 2.71px 4.4px 0px #C0C0C007, 0px 6.86px 11.12px 0px #C0C0C00A, 0px 14px 22.68px 0px #C0C0C00C, 0px 28.84px 46.72px 0px #C0C0C00F, 0px 79px 128px 0px #C0C0C017",
             }}
           >
