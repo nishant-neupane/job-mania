@@ -1,8 +1,23 @@
 "use client";
 import { MapPin, Search } from "lucide-react";
 import Image from "next/image";
+// import { useEffect, useState } from "react";
 
 const Hero = () => {
+  // const [username, setUsername] = useState("");
+
+  // useEffect(() => {
+  //   const getUsernameFromCookie = () => {
+  //     const match = document.cookie
+  //       .split("; ")
+  //       .find((row) => row.startsWith("username="));
+  //     if (match) {
+  //       const value = match.split("=")[1];
+  //       setUsername(decodeURIComponent(value));
+  //     }
+  //   };
+  //   getUsernameFromCookie();
+  // }, []);
   const handleSubmit = () => {
     console.log("clicked");
   };
@@ -29,6 +44,11 @@ const Hero = () => {
             Great platform for the job seekers that searching for new career
             heights and passionate about startups.
           </p>
+          {/* {username && (
+            <p className="font-epilogue text-[#202430] pt-2">
+              Welcome back, <span className="font-semibold">{username}</span>!
+            </p>
+          )} */}
 
           <div className="mt-8 flex flex-col justify-between md:flex-row items-stretch md:items-center gap-4 md:gap-8 bg-white rounded-lg shadow-md p-4 w-full max-w-3xl">
             <div className="flex justify-center items-center gap-4 w-full md:w-1/3 border-b border-[#D6DDEB]">
