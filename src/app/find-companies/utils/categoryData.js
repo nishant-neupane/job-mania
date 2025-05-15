@@ -1,12 +1,6 @@
 import { companiesData } from "../utils/constants";
 import { jobsData } from "@/app/find-jobs/utils/constants";
-import {
-  PencilRuler,
-  Briefcase,
-  Globe,
-  Building2,
-  Code,
-} from "lucide-react";
+import { PencilRuler, Briefcase, Globe, Building2, Code } from "lucide-react";
 
 export const createCategoryData = () => {
   const uniqueCategories = [...new Set(jobsData.map((job) => job.category))];
@@ -26,9 +20,6 @@ export const createCategoryData = () => {
       case "Sales":
         icon = Building2;
         break;
-      case "HR":
-      case "Finance":
-      case "Content":
       default:
         icon = Briefcase;
     }
@@ -37,33 +28,39 @@ export const createCategoryData = () => {
     jobsData
       .filter((job) => job.category === category)
       .forEach((job) => {
-        companyJobCounts[job.company] = (companyJobCounts[job.company] || 0) + 1;
+        companyJobCounts[job.company] =
+          (companyJobCounts[job.company] || 0) + 1;
       });
 
-    const companiesInCategory = Object.keys(companyJobCounts).map((companyName) => {
-      const company = companiesData.find((c) => c.name === companyName);
-      if (!company) return null;
+    const companiesInCategory = Object.keys(companyJobCounts)
+      .map((companyName) => {
+        const company = companiesData.find((c) => c.name === companyName);
+        if (!company) return null;
 
-      const logo = companyName.charAt(0);
+        const logo = companyName.charAt(0);
+        const colorHash =
+          Math.abs(
+            companyName
+              .split("")
+              .reduce((acc, char) => acc + char.charCodeAt(0), 0)
+          ) % 4;
 
-      const colorHash =
-        Math.abs(
-          companyName
-            .split("")
-            .reduce((acc, char) => acc + char.charCodeAt(0), 0)
-        ) % 4;
+        const bgColor = [
+          "bg-blue-500",
+          "bg-purple-500",
+          "bg-green-500",
+          "bg-orange-500",
+        ][colorHash];
 
-      const bgColorMap = ["bg-blue-500", "bg-purple-500", "bg-green-500", "bg-orange-500"];
-      const bgColor = bgColorMap[colorHash] || "bg-blue-500";
-
-      return {
-        id: company.name.replace(/\s+/g, "-").toLowerCase(),
-        name: company.name,
-        jobs: companyJobCounts[companyName],
-        logo,
-        color: bgColor,
-      };
-    }).filter(Boolean);
+        return {
+          id: company.name.replace(/\s+/g, "-").toLowerCase(),
+          name: company.name,
+          jobs: companyJobCounts[companyName],
+          logo,
+          color: bgColor,
+        };
+      })
+      .filter(Boolean);
 
     companiesInCategory.sort((a, b) => b.jobs - a.jobs);
 
