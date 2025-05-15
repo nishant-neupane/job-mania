@@ -3,6 +3,7 @@ import { useState } from "react";
 import HeroSection from "./components/HeroSection";
 import Search from "./components/Search";
 import RecommendedCompanies from "./components/RecommendedCompanies";
+import CompaniesByCategory from "./components/CompaniesByCategory";
 
 export default function CompanyBoard() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -43,6 +44,7 @@ export default function CompanyBoard() {
         searchTerm={searchTerm}
         locationTerm={locationTerm}
       />
+      <CompaniesByCategory />
     </div>
   );
 }

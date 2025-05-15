@@ -1,5 +1,4 @@
 "use client";
-
 import Image from "next/image";
 import Link from "next/link";
 import { tagColors } from "../utils/constants";
@@ -19,14 +18,16 @@ export default function CompanyCard({ company, viewMode = "grid" }) {
     >
       <Link
         href={`/find-jobs?company=${encodeURIComponent(company.name)}`}
-        className="absolute top-4 right-4 text-sm font-semibold text-[#A88BFF] hover:underline"
+        className="absolute top-4 right-4 text-sm font-semibold text-[#A88BFF] hover:underline hover:text-[#8a6eff] transition-colors"
+        scroll={false}
       >
-        {company.jobs.length} Jobs
+        {company.jobs.length} {company.jobs.length === 1 ? "Job" : "Jobs"}
       </Link>
 
       <Link
         href={`/find-jobs?company=${encodeURIComponent(company.name)}`}
         className={`${isGrid ? "mb-4" : "flex-shrink-0"}`}
+        scroll={false}
       >
         <Image
           src={company.icon}
@@ -38,7 +39,10 @@ export default function CompanyCard({ company, viewMode = "grid" }) {
       </Link>
 
       <div className={`${isGrid ? "flex flex-col flex-1" : "flex-1"}`}>
-        <Link href={`/find-jobs?company=${encodeURIComponent(company.name)}`}>
+        <Link
+          href={`/find-jobs?company=${encodeURIComponent(company.name)}`}
+          scroll={false}
+        >
           <h3 className="font-semibold text-lg text-[#25324B] mb-1 hover:underline">
             {company.name}
           </h3>

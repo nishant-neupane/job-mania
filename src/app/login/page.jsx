@@ -24,24 +24,8 @@ export default function Login() {
         password,
         role: activeTab,
       });
-
-      Cookies.set("access_token", data.access_token + "hello", { expires: 7 });
-      Cookies.set("refresh_token", data.refresh_token + "Nishant", {
-        expires: 7,
-      });
-      Cookies.set("role", data.role);
-      Cookies.set("user_id", data.user_id);
-      Cookies.set("username", data.username);
-
-      // localStorage.setItem("access_token", data.access_token + "hello");
-      // localStorage.setItem("refresh_token", data.refresh_token + "nishant");
-      // localStorage.setItem("role", data.role);
-      // localStorage.setItem("user_id", data.user_id);
-      // localStorage.setItem("username", data.username);
-
+      console.log("data", data);
       setAuth({
-        access_token: data.access_token,
-        refresh_token: data.refresh_token,
         role: data.role,
         user_id: data.user_id,
         username: data.username,

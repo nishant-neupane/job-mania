@@ -6,24 +6,18 @@ export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [auth, setAuth] = useState({
-    access_token: null,
-    refresh_token: null,
     role: null,
     user_id: null,
     username: null,
   });
 
   useEffect(() => {
-    const access_token = Cookies.get("access_token");
-    const refresh_token = Cookies.get("refresh_token");
     const role = Cookies.get("role");
     const user_id = Cookies.get("user_id");
     const username = Cookies.get("username");
 
-    if (access_token && refresh_token) {
+    if (role && user_id && username) {
       setAuth({
-        access_token,
-        refresh_token,
         role,
         user_id,
         username,

@@ -1,3 +1,4 @@
+
 export const tagColors = {
   Fintech: "bg-blue-100 text-blue-600",
   "Payment gateway": "bg-purple-100 text-purple-600",
@@ -176,6 +177,7 @@ export const companiesData = [
     location: "Kathmandu, Nepal",
   },
 ];
+
 
 export const staticIndustryLabels = [
   "Advertising",

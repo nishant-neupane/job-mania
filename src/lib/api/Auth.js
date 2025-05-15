@@ -1,5 +1,3 @@
-import Cookies from "js-cookie";
-
 const API_BASE = "/backend_api";
 
 export async function login({ email, password, userType }) {
@@ -19,12 +17,6 @@ export async function login({ email, password, userType }) {
 
     const data = await response.json();
     if (!response.ok) throw new Error(data.detail || "Login failed");
-
-    Cookies.set("access_token", data.access_token);
-    Cookies.set("refresh_token", data.refresh_token);
-    Cookies.set("role", data.role);
-    Cookies.set("user_id", data.user_id);
-    Cookies.set("username", data.username);
 
     return data;
   } catch (error) {
@@ -96,24 +88,13 @@ export async function verifyOtp({ email, otp }) {
 
 export async function getProfile() {
   try {
-    let token = Cookies.get("access_token");
-
-    if (!token && typeof window !== "undefined") {
-      const authState = JSON.parse(localStorage.getItem("auth"));
-      token = authState?.access_token;
-    }
-
-    if (!token) {
-      throw new Error("Authentication required. Please login again.");
-    }
-
     const response = await fetch(`${API_BASE}/profile`, {
       method: "GET",
       headers: {
-        Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
+        "X-CSRFToken": Cookies.get("csrftoken"),
       },
-      credentials: "include", 
+      credentials: "include",
     });
 
     const data = await response.json();
@@ -121,10 +102,28 @@ export async function getProfile() {
 
     return data;
   } catch (error) {
-    if (error.message.includes("Authentication")) {
-      Cookies.remove("access_token");
-      Cookies.remove("refresh_token");
-    }
+    throw error;
+  }
+}
+
+export async function updateProfile(profileData) {
+  try {
+    const response = await fetch(`${API_BASE}/profile/`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRFToken": Cookies.get("csrftoken"),
+      },
+      credentials: "include",
+      body: JSON.stringify(profileData),
+    });
+
+    const data = await response.json();
+    if (!response.ok)
+      throw new Error(data.detail || "Failed to update profile");
+
+    return data;
+  } catch (error) {
     throw error;
   }
 }
@@ -135,20 +134,9 @@ export async function logout() {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${Cookies.get("access_token")}`,
       },
       credentials: "include",
     });
-
-    Cookies.remove("access_token");
-    Cookies.remove("refresh_token");
-    Cookies.remove("role");
-    Cookies.remove("user_id");
-    Cookies.remove("username");
-
-    if (typeof window !== "undefined") {
-      localStorage.removeItem("auth");
-    }
 
     if (!response.ok) {
       const data = await response.json();
@@ -157,12 +145,6 @@ export async function logout() {
 
     return { success: true };
   } catch (error) {
-    Cookies.remove("access_token");
-    Cookies.remove("refresh_token");
-    Cookies.remove("role");
-    Cookies.remove("user_id");
-    Cookies.remove("username");
-
     throw error;
   }
 }

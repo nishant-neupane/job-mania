@@ -78,9 +78,11 @@ export const filterJobs = (
     categories,
     jobLevels,
     salaryRanges,
+    company,
   }
 ) => {
   return jobs.filter((job) => {
+    const matchesCompany = !company || job.company === company;
     const matchesSearch =
       job.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
       job.company.toLowerCase().includes(searchTerm.toLowerCase());
@@ -118,6 +120,7 @@ export const filterJobs = (
       (salaryRanges.includes("Rs 300,000 or above") && job.salary >= 300000);
 
     return (
+      matchesCompany &&
       matchesSearch &&
       matchesLocation &&
       matchesEmploymentType &&

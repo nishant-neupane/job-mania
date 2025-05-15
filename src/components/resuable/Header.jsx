@@ -2,26 +2,19 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import React, { useContext } from "react";
 import Cookies from "js-cookie";
+import { AuthContext } from "@/context/AuthContext";
 
 const Header = () => {
   const pathname = usePathname();
   const router = useRouter();
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const { auth, setAuth } = useContext(AuthContext);
 
-  // Check auth on mount
-  useEffect(() => {
-    const token = Cookies.get("access_token") || localStorage.getItem("auth");
-    setIsAuthenticated(!!token);
-  }, []);
-
-  // Helper function to determine if a link is active
   const isActive = (path) => pathname === path;
 
   const handleLogout = async () => {
     try {
-      // Optional: send logout request to backend
       await fetch(`${process.env.NEXT_PUBLIC_API_BASE}/logout`, {
         method: "POST",
         headers: {
@@ -31,7 +24,6 @@ const Header = () => {
         credentials: "include",
       });
 
-      // Clear auth data
       Cookies.remove("access_token");
       Cookies.remove("refresh_token");
       Cookies.remove("role");
@@ -39,13 +31,20 @@ const Header = () => {
       Cookies.remove("username");
       localStorage.removeItem("auth");
 
-      setIsAuthenticated(false);
+      setAuth({
+        role: null,
+        user_id: null,
+        username: null,
+      });
+
       router.push("/login");
     } catch (error) {
       console.error("Logout failed:", error.message);
       alert("Logout failed. Please try again.");
     }
   };
+
+  const isAuthenticated = auth.user_id !== null;
 
   return (
     <div className="container pt-4">

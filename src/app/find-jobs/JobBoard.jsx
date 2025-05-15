@@ -5,9 +5,14 @@ import JobList from "./components/JobList";
 import { FilterSection } from "./components/FilterSection";
 import { MobileFilterButton } from "./components/MobileFilterButton";
 import { jobsData } from "./utils/constants";
-import { companiesData } from "../find-companies/utils/constants"; 
+import { companiesData } from "../find-companies/utils/constants";
+import { useSearchParams } from "next/navigation";
 
-export default function JobBoard({ searchParams }) {
+export default function JobBoard() {
+  const searchParams = useSearchParams();
+  const companyParam = searchParams?.get("company") || "";
+  const categoryParam = searchParams?.get("category") || "";
+
   const [searchTerm, setSearchTerm] = useState("");
   const [locationTerm, setLocationTerm] = useState("");
   const [employmentTypes, setEmploymentTypes] = useState([]);
@@ -17,8 +22,6 @@ export default function JobBoard({ searchParams }) {
   const [sortOption, setSortOption] = useState("Most relevant");
   const [showMobileFilters, setShowMobileFilters] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-
-  const companyFilter = searchParams?.company ?? "";
 
   const getCompanyByJobId = (jobId) => {
     return companiesData.find((company) => company.jobs.includes(jobId));
@@ -33,13 +36,22 @@ export default function JobBoard({ searchParams }) {
   };
 
   const filteredJobs = jobsData.filter((job) => {
-    if (companyFilter) {
+    // Filter by company
+    if (companyParam) {
       const company = companiesData.find(
         (c) =>
           c.name.toLowerCase() ===
-          decodeURIComponent(companyFilter).toLowerCase()
+          decodeURIComponent(companyParam).toLowerCase()
       );
       if (!company?.jobs.includes(job.id)) return false;
+    }
+
+    // Filter by category from URL param
+    if (
+      categoryParam &&
+      job.category.toLowerCase() !== categoryParam.toLowerCase()
+    ) {
+      return false;
     }
 
     const matchesSearch =
@@ -89,11 +101,14 @@ export default function JobBoard({ searchParams }) {
   });
 
   useEffect(() => {
-    if (companyFilter) {
-      const companyName = decodeURIComponent(companyFilter);
-      setSearchTerm(companyName);
+    if (companyParam) {
+      setSearchTerm(decodeURIComponent(companyParam));
     }
-  }, [companyFilter]);
+
+    if (categoryParam) {
+      setCategories([decodeURIComponent(categoryParam)]);
+    }
+  }, [companyParam, categoryParam]);
 
   useEffect(() => {
     setCurrentPage(1);
@@ -105,7 +120,8 @@ export default function JobBoard({ searchParams }) {
     jobLevels,
     salaryRanges,
     sortOption,
-    companyFilter,
+    companyParam,
+    categoryParam,
   ]);
 
   useEffect(() => {
@@ -127,7 +143,7 @@ export default function JobBoard({ searchParams }) {
         setSearchTerm={setSearchTerm}
         locationTerm={locationTerm}
         setLocationTerm={setLocationTerm}
-        companyFilter={companyFilter}
+        companyFilter={companyParam}
       />
 
       <div className="container grid grid-cols-1 md:grid-cols-4 gap-y-6 md:gap-6 pt-12">
@@ -149,7 +165,7 @@ export default function JobBoard({ searchParams }) {
           setSalaryRanges={setSalaryRanges}
           toggleFilter={toggleFilter}
           jobsData={jobsData}
-          companyFilter={companyFilter}
+          companyFilter={companyParam}
         />
 
         <JobList
@@ -165,7 +181,7 @@ export default function JobBoard({ searchParams }) {
           setJobLevels={setJobLevels}
           setSalaryRanges={setSalaryRanges}
           getCompanyByJobId={getCompanyByJobId}
-          companyFilter={companyFilter}
+          companyFilter={companyParam}
         />
       </div>
     </div>
