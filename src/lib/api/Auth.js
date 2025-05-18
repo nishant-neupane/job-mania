@@ -1,4 +1,5 @@
 const API_BASE = "/backend_api";
+import Cookies from "js-cookie";
 
 export async function login({ email, password, userType }) {
   try {
@@ -26,7 +27,7 @@ export async function login({ email, password, userType }) {
 
 export async function register({ name, email, password, role }) {
   try {
-    const response = await fetch(`${API_BASE}/register/`, {
+    const response = await fetch(`${API_BASE}/register`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -108,19 +109,28 @@ export async function getProfile() {
 
 export async function updateProfile(profileData) {
   try {
-    const response = await fetch(`${API_BASE}/profile/`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "X-CSRFToken": Cookies.get("csrftoken"),
-      },
+    const isFormData = profileData instanceof FormData;
+
+    const headers = {
+      "X-CSRFToken": Cookies.get("csrftoken"),
+    };
+
+    // Only set Content-Type for JSON, not for FormData
+    if (!isFormData) {
+      headers["Content-Type"] = "application/json";
+    }
+
+    const response = await fetch(`${API_BASE}/profile`, {
+      method: "PUT",
+      headers,
       credentials: "include",
-      body: JSON.stringify(profileData),
+      body: isFormData ? profileData : JSON.stringify(profileData),
     });
 
     const data = await response.json();
-    if (!response.ok)
+    if (!response.ok) {
       throw new Error(data.detail || "Failed to update profile");
+    }
 
     return data;
   } catch (error) {

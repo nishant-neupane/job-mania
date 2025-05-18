@@ -82,6 +82,7 @@ const Header = () => {
                 Browse Companies
               </p>
             </Link>
+            <Link href="/profile">profile</Link>
           </div>
         </div>
 
