@@ -10,7 +10,7 @@ export default function ProfileForm() {
     full_name: "",
     contact_number: "",
     resume_url: "",
-    profile_picture_url: "",
+    profile_picture: "",
     skills: [],
     experience: "",
     education: "",
@@ -33,8 +33,8 @@ export default function ProfileForm() {
         const data = await getProfile();
         setProfile(data);
         setSkillsInput(data.skills?.join(", ") || "");
-        if (data.profile_picture_url) {
-          setPreviewImage(data.profile_picture_url);
+        if (data.profile_picture) {
+          setPreviewImage(data.profile_picture);
         } else {
           setPreviewImage("");
         }
@@ -60,7 +60,7 @@ export default function ProfileForm() {
 
   const cancelEditing = () => {
     setSkillsInput(profile.skills?.join(", ") || "");
-    setPreviewImage(profile.profile_picture_url || "");
+    setPreviewImage(profile.profile_picture || "");
     setIsEditing(false);
     setError("");
     setSuccess("");
@@ -82,7 +82,6 @@ export default function ProfileForm() {
         return;
       }
 
-      // Validate file size (2MB max)
       if (file.size > 2 * 1024 * 1024) {
         setError("Image size should be less than 2MB");
         return;
@@ -96,7 +95,7 @@ export default function ProfileForm() {
 
       setProfile((prev) => ({
         ...prev,
-        profile_picture_url: file,
+        profile_picture: file,
       }));
       setError("");
     }
@@ -113,8 +112,7 @@ export default function ProfileForm() {
     setIsSubmitting(true);
 
     try {
-      // Check if we have a new image file to upload
-      const hasNewImage = profile.profile_picture_url instanceof File;
+      const hasNewImage = profile.profile_picture instanceof File;
 
       if (hasNewImage) {
         const formData = new FormData();
@@ -130,11 +128,16 @@ export default function ProfileForm() {
           .filter(Boolean)
           .forEach((skill) => formData.append("skills[]", skill));
 
-        formData.append("profile_picture_url", profile.profile_picture_url);
+        formData.append("profile_picture", profile.profile_picture);
+
+        // Log FormData contents
+        console.log("Submitting FormData:");
+        for (let [key, value] of formData.entries()) {
+          console.log(`${key}:`, value);
+        }
 
         await updateProfile(formData);
       } else {
-        // Use regular JSON for non-file updates
         const profileData = {
           full_name: profile.full_name,
           contact_number: profile.contact_number,
@@ -147,6 +150,9 @@ export default function ProfileForm() {
             .filter(Boolean),
         };
 
+        // Log JSON data
+        console.log("Submitting JSON profile data:", profileData);
+
         await updateProfile(profileData);
       }
 
@@ -154,13 +160,14 @@ export default function ProfileForm() {
       const updatedData = await getProfile();
       setProfile(updatedData);
       setSkillsInput(updatedData.skills?.join(", ") || "");
-      setPreviewImage(updatedData.profile_picture_url || "");
+      setPreviewImage(updatedData.profile_picture || "");
 
       setSuccess("Profile updated successfully!");
       setIsEditing(false);
       setTimeout(() => setSuccess(""), 3000);
     } catch (err) {
       setError(err.message || "Failed to update profile");
+      console.error("Profile update error:", err);
     } finally {
       setIsSubmitting(false);
     }
@@ -250,7 +257,7 @@ export default function ProfileForm() {
                   className="mt-4 px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 transition-colors text-sm font-medium"
                   disabled={isSubmitting}
                 >
-                  {isSubmitting && profile.profile_picture_url instanceof File
+                  {isSubmitting && profile.profile_picture instanceof File
                     ? "Uploading..."
                     : "Change Photo"}
                 </button>

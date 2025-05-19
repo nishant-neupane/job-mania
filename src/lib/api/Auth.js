@@ -89,7 +89,7 @@ export async function verifyOtp({ email, otp }) {
 
 export async function getProfile() {
   try {
-    const response = await fetch(`${API_BASE}/profile`, {
+    const response = await fetch(`${API_BASE}/users/profile`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -120,7 +120,7 @@ export async function updateProfile(profileData) {
       headers["Content-Type"] = "application/json";
     }
 
-    const response = await fetch(`${API_BASE}/profile`, {
+    const response = await fetch(`${API_BASE}/users/profile`, {
       method: "PUT",
       headers,
       credentials: "include",
