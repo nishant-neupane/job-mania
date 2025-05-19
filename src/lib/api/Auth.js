@@ -1,9 +1,9 @@
-const API_BASE = "/backend_api";
+const API_BASE = "/backend_api/main";
 import Cookies from "js-cookie";
 
 export async function login({ email, password, userType }) {
   try {
-    const response = await fetch(`${API_BASE}/login`, {
+    const response = await fetch(`${API_BASE}/auth/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -27,7 +27,7 @@ export async function login({ email, password, userType }) {
 
 export async function register({ name, email, password, role }) {
   try {
-    const response = await fetch(`${API_BASE}/register`, {
+    const response = await fetch(`${API_BASE}/auth/register`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

@@ -7,7 +7,7 @@ import { AuthContext } from "@/context/AuthContext";
 import Cookies from "js-cookie";
 
 export default function Login() {
-  const [activeTab, setActiveTab] = useState("jobseeker");
+  const [activeTab, setActiveTab] = useState("job_seeker");
   const { setAuth } = useContext(AuthContext);
   const [error, setError] = useState(null);
   const router = useRouter();

@@ -1,20 +1,26 @@
 "use client";
+import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { tagColors } from "../utils/constants";
+import ApplyPopup from "./ApplyPopup";
 
 export default function JobCard({ job, viewMode, getCompanyByJobId }) {
+  const [showApplyPopup, setShowApplyPopup] = useState(false);
+
   // Get company data for this job
   const company = getCompanyByJobId?.(job.id) || {
     name: job.company,
     icon: job.icon,
-    location: job.location
+    location: job.location,
   };
 
   const applyJob = () => {
-    console.log("Job Applied:", job.id);
-    // You might want to add actual application logic here
-    // e.g., API call to submit application
+    setShowApplyPopup(true);
+  };
+
+  const closePopup = () => {
+    setShowApplyPopup(false);
   };
 
   const progressPercentage = Math.min(
@@ -24,7 +30,7 @@ export default function JobCard({ job, viewMode, getCompanyByJobId }) {
 
   return (
     <div className="flex flex-col sm:flex-row items-start gap-6 border-[1px] border-[#D6DDEB] p-6 rounded-lg hover:shadow-md transition-shadow duration-300">
-      {/* Company Logo - Clickable to view company jobs */}
+      {/* Company Logo */}
       <Link href={`/find-jobs?company=${encodeURIComponent(company.name)}`}>
         <div className="flex-shrink-0 cursor-pointer">
           <Image
@@ -39,14 +45,12 @@ export default function JobCard({ job, viewMode, getCompanyByJobId }) {
 
       {/* Job Info Section */}
       <div className="flex-grow w-full">
-        {/* Job Title */}
         <h3 className="font-epilogue font-[600] text-lg !leading-[160%] text-[#25324B] hover:text-[#4640DE] transition-colors">
           {job.title}
         </h3>
 
-        {/* Company Name and Location - Clickable to view company jobs */}
         <div className="font-epilogue font-[400] text-base leading-[160%] text-[#515B6F] pb-3 pt-1">
-          <Link 
+          <Link
             href={`/find-jobs?company=${encodeURIComponent(company.name)}`}
             className="hover:text-[#4640DE] hover:underline transition-colors"
           >
@@ -57,26 +61,22 @@ export default function JobCard({ job, viewMode, getCompanyByJobId }) {
 
         {/* Job Tags */}
         <div className="flex flex-wrap gap-2">
-          {/* Job Type */}
           <span className="font-epilogue font-[600] text-sm leading-[160%] bg-[#56CDAD1A] text-[#56CDAD] px-3 py-1 rounded-full">
             {job.type}
           </span>
-
-          {/* Category and Level */}
           <span className="font-epilogue font-[600] text-sm leading-[160%] bg-[#FFB8361A] text-[#FFB836] px-3 py-1 rounded-full">
             {job.category}
           </span>
           <span className="font-epilogue font-[600] text-sm leading-[160%] bg-[#E051511A] text-[#E05151] px-3 py-1 rounded-full">
-            {job.level === "Entry" ? "Entry Level" : 
-             job.level === "Mid" ? "Mid Level" : "Senior Level"}
+            {job.level === "Entry"
+              ? "Entry Level"
+              : job.level === "Mid"
+              ? "Mid Level"
+              : "Senior Level"}
           </span>
-
-          {/* Salary */}
           <span className="font-epilogue font-[600] text-sm leading-[160%] bg-[#4640DE1A] text-[#4640DE] px-3 py-1 rounded-full">
             Rs {job.salary.toLocaleString()}
           </span>
-
-          {/* Other Tags */}
           {job.tags.map((tag) => (
             <span
               key={tag}
@@ -118,6 +118,10 @@ export default function JobCard({ job, viewMode, getCompanyByJobId }) {
           </p>
         </div>
       </div>
+
+      {showApplyPopup && (
+        <ApplyPopup job={job} company={company} onClose={closePopup} />
+      )}
     </div>
   );
 }
