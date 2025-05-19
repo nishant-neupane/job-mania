@@ -1,9 +1,9 @@
-const API_BASE = "/backend_api/main";
+const API_BASE = "/backend_api";
 import Cookies from "js-cookie";
 
 export async function login({ email, password, userType }) {
   try {
-    const response = await fetch(`${API_BASE}/auth/login`, {
+    const response = await fetch(`${API_BASE}/main/auth/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -27,7 +27,7 @@ export async function login({ email, password, userType }) {
 
 export async function register({ name, email, password, role }) {
   try {
-    const response = await fetch(`${API_BASE}/auth/register`, {
+    const response = await fetch(`${API_BASE}/main/auth/register`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -89,7 +89,7 @@ export async function verifyOtp({ email, otp }) {
 
 export async function getProfile() {
   try {
-    const response = await fetch(`${API_BASE}/users/profile`, {
+    const response = await fetch(`${API_BASE}/main/users/profile`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -120,7 +120,7 @@ export async function updateProfile(profileData) {
       headers["Content-Type"] = "application/json";
     }
 
-    const response = await fetch(`${API_BASE}/users/profile`, {
+    const response = await fetch(`${API_BASE}/main/users/profile`, {
       method: "PUT",
       headers,
       credentials: "include",
@@ -157,4 +157,28 @@ export async function logout() {
   } catch (error) {
     throw error;
   }
+}
+// api/auth.js
+
+export async function submitJobApplication(jobId, coverLetter) {
+  const response = await fetch(`${API_BASE}/institutions/job-applications/`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${Cookies.get("access_token")}`,
+    },
+    credentials: "include",
+    body: JSON.stringify({
+      job_id: jobId,
+      cover_letter: coverLetter || "",
+    }),
+  });
+
+  const result = await response.json();
+
+  if (!response.ok) {
+    throw new Error(result.error || "Submission failed");
+  }
+
+  return result;
 }

@@ -2,21 +2,33 @@
 import { useState, useEffect, useRef } from "react";
 import { Paperclip } from "lucide-react";
 import Image from "next/image";
-import { useCookies } from "react-cookie";
+import Cookies from "js-cookie";
+import { submitJobApplication } from "@/lib/api/Auth";
 
 export default function ApplyPopup({ job, company, onClose }) {
   const [formData, setFormData] = useState({
-    cover_letter: "",
+    fullName: "",
+    email: "",
+    phone: "",
+    currentTitle: "",
+    linkedin: "",
+    portfolio: "",
+    additionalInfo: "",
+    resume: "",
   });
   const [resume, setResume] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [error, setError] = useState(null);
-  const [cookies] = useCookies(["access_token"]);
   const popupRef = useRef(null);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (popupRef.current && !popupRef.current.contains(event.target)) {
+        // console.log("Application data when closed by outside click:", {
+        //   jobId: job.id,
+        //   jobTitle: job.title,
+        //   ...formData,
+        //   resume: resume ? resume.name : null,
+        // });
         onClose();
       }
     };
@@ -28,7 +40,7 @@ export default function ApplyPopup({ job, company, onClose }) {
       document.body.style.overflow = "auto";
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [onClose]);
+  }, [formData, resume, job.id, job.title, onClose]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -42,38 +54,20 @@ export default function ApplyPopup({ job, company, onClose }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
-    setError(null);
 
     try {
-      const formDataToSend = new FormData();
-      formDataToSend.append("job_id", job.id);
-      formDataToSend.append("cover_letter", formData.cover_letter);
-      if (resume) {
-        formDataToSend.append("resume", resume);
-      }
+      console.log("Submitting application with job ID:", job.id);
+      console.log("Cover letter:", formData);
+      console.log("Access token:", Cookies.get("access_token"));
 
-      const response = await fetch("/api/institutions/job-applications/", {
-        method: "POST",
-        headers: {
-          Cookie: `access_token=${cookies.access_token}`,
-        },
-        credentials: "include",
-        body: formDataToSend,
-      });
+      const result = await submitJobApplication(job.id, formData);
 
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || "Failed to submit application");
-      }
-
-      const applicationData = await response.json();
-      console.log("Application submitted successfully:", applicationData);
-
+      console.log("Application submitted:", result);
       alert("Application submitted successfully!");
       onClose();
     } catch (error) {
-      console.error("Submission error:", error);
-      setError(error.message);
+      console.error("Error submitting application:", error);
+      alert(error.message || "An error occurred. Please try again.");
     } finally {
       setIsSubmitting(false);
     }
@@ -86,7 +80,7 @@ export default function ApplyPopup({ job, company, onClose }) {
     >
       <div
         ref={popupRef}
-        className="bg-white p-6 w-full max-w-md relative py-12 max-h-[90vh] overflow-y-auto"
+        className="bg-white p-6 w-full max-w-md relative py-12 max-h-[90vh] overflow-y-auto "
         style={{
           scrollbarWidth: "none",
           msOverflowStyle: "none",
@@ -113,7 +107,10 @@ export default function ApplyPopup({ job, company, onClose }) {
             </div>
           </div>
           <button
-            onClick={onClose}
+            onClick={() => {
+              console.log("Application closed manually for job:", job.title);
+              onClose();
+            }}
             className="text-gray-500 hover:text-gray-700"
             disabled={isSubmitting}
           >
@@ -145,20 +142,104 @@ export default function ApplyPopup({ job, company, onClose }) {
             </p>
           </div>
 
-          {error && <div className="text-red-500 text-sm mb-4">{error}</div>}
-
-          {/* Additional Info (used as cover letter) */}
           <div>
             <label className="font-clash font-[600] text-base leading-[160%] text-[#515B6F]">
-              Cover Letter
+              Full name
             </label>
-            <textarea
-              name="cover_letter"
-              rows={4}
+            <input
+              type="text"
+              name="fullName"
               className="w-full mt-1 p-2 border rounded font-epilogue font-[400] text-sm leading-[160%] text-[#A8ADB7]"
-              placeholder="Write your cover letter here"
+              placeholder="Enter your full name"
               onChange={handleChange}
               required
+            />
+          </div>
+
+          <div>
+            <label className="font-clash font-[600] text-base leading-[160%] text-[#515B6F]">
+              Email address
+            </label>
+            <input
+              type="email"
+              name="email"
+              className="w-full mt-1 p-2 border rounded font-epilogue font-[400] text-sm leading-[160%] text-[#A8ADB7]"
+              placeholder="Enter your email address"
+              onChange={handleChange}
+              required
+            />
+          </div>
+
+          <div>
+            <label className="font-clash font-[600] text-base leading-[160%] text-[#515B6F]">
+              Phone number
+            </label>
+            <input
+              type="tel"
+              name="phone"
+              className="w-full mt-1 p-2 border rounded font-epilogue font-[400] text-sm leading-[160%] text-[#A8ADB7]"
+              placeholder="Enter your phone number"
+              onChange={handleChange}
+              required
+            />
+          </div>
+
+          <div>
+            <label className="font-clash font-[600] text-base leading-[160%] text-[#515B6F]">
+              Current or previous job title
+            </label>
+            <input
+              type="text"
+              name="currentTitle"
+              className="w-full mt-1 p-2 border rounded font-epilogue font-[400] text-sm leading-[160%] text-[#A8ADB7]"
+              placeholder="What is your current or previous job title?"
+              onChange={handleChange}
+            />
+          </div>
+          <div className="h-[1px] w-full bg-[#D6DDEB]" />
+
+          {/* Links */}
+          <h4 className="font-clash font-[700] text-lg leading-[160%] text-[#515B6F] pt-2">
+            LINKS
+          </h4>
+
+          <div>
+            <label className="font-clash font-[600] text-base leading-[160%] text-[#515B6F]">
+              LinkedIn URL
+            </label>
+            <input
+              type="url"
+              name="linkedin"
+              className="w-full mt-1 p-2 border rounded font-epilogue font-[400] text-sm leading-[160%] text-[#A8ADB7]"
+              placeholder="Link to your LinkedIn URL"
+              onChange={handleChange}
+            />
+          </div>
+
+          <div>
+            <label className="font-clash font-[600] text-base leading-[160%] text-[#515B6F]">
+              Portfolio URL
+            </label>
+            <input
+              type="url"
+              name="portfolio"
+              className="w-full mt-1 p-2 border rounded font-epilogue font-[400] text-sm leading-[160%] text-[#A8ADB7]"
+              placeholder="Link to your portfolio"
+              onChange={handleChange}
+            />
+          </div>
+
+          {/* Additional Info */}
+          <div>
+            <label className="font-clash font-[600] text-base leading-[160%] text-[#515B6F]">
+              Additional Information
+            </label>
+            <textarea
+              name="additionalInfo"
+              rows={4}
+              className="w-full mt-1 p-2 border rounded font-epilogue font-[400] text-sm leading-[160%] text-[#A8ADB7]"
+              placeholder="Add a cover letter or anything else you want to share"
+              onChange={handleChange}
             ></textarea>
             <p className="text-xs text-gray-400 text-right mt-1">
               Maximum 500 characters
