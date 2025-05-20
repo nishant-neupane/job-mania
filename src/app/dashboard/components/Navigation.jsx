@@ -9,6 +9,7 @@ import {
   Settings,
   HelpCircle,
 } from "lucide-react";
+import Image from "next/image";
 
 export default function Navigation({ activeNavItem, setActiveNavItem }) {
   const navItems = [
@@ -52,13 +53,13 @@ export default function Navigation({ activeNavItem, setActiveNavItem }) {
         </ul>
 
         <div className="mt-8">
-          <div className="text-xs font-semibold text-gray-500 mb-2 px-3">
+          <div className="font-epilogue font-[600] text-sm leading-6 text-[#202430] mb-2 px-3">
             SETTINGS
           </div>
           <ul className="space-y-2">
             {settingsItems.map((item) => (
               <li key={item.label}>
-                <button className="flex items-center w-full p-3 rounded-lg hover:bg-gray-100 text-gray-700">
+                <button className="flex items-center w-full p-3 rounded-lg hover:bg-gray-100font-epilogue font-[500] text-base leading-6 text-[#7C8493]">
                   <item.icon size={20} className="mr-3" />
                   <span>{item.label}</span>
                 </button>
@@ -72,15 +73,18 @@ export default function Navigation({ activeNavItem, setActiveNavItem }) {
       <div className="p-4 border-t border-purple-100">
         <div className="flex items-center">
           <div className="h-10 w-10 rounded-full bg-purple-600 overflow-hidden">
-            <img
+            <Image
               src="/api/placeholder/40/40"
+              width={40}
+              height={40}
               alt="User Avatar"
-              className="h-full w-full object-cover"
             />
           </div>
           <div className="ml-3">
-            <div className="font-medium text-sm">Subas Kandel</div>
-            <div className="text-xs text-gray-500 truncate">
+            <div className="font-epilogue font-[600] text-lg leading-[160%] text-[#202430]">
+              Subas Kandel
+            </div>
+            <div className="font-epilogue font-[400] text-xs leading-[160%] text-[#202430] truncate">
               kandelsuba89@gmail.com
             </div>
           </div>

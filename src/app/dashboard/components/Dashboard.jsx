@@ -8,9 +8,10 @@ import {
   MoreHorizontal,
   FileText,
   Bell,
+  BellDot,
 } from "lucide-react";
 import Navigation from "./Navigation";
-import DashboardOverview from "./DashboardOverview";
+import DashboardOverview from "./(DashboardOverview)/DashboardOverview";
 import Messages from "./Messages";
 import JobSearch from "./JobSearch";
 import Companies from "./Companies";
@@ -52,9 +53,10 @@ export default function Dashboard() {
             <button className="px-4 py-2 border-[1px] border-[#CCCCF5] font-epilogue font-[700] text-base leading-[160%] text-[#4640DE] hover:bg-[#E9EBFD] rounded-lg flex items-center gap-2">
               Back to homepage
             </button>
-            <button className="p-2 text-gray-500 hover:bg-gray-100 rounded-full">
+            <button className="p-2 text-[#25324B] hover:bg-gray-100 rounded-full">
               {/* <RefreshCw size={20} /> */}
-              <Bell size={20}/>
+              <Bell size={20} />
+              {/* <BellDot size={20} /> */}
             </button>
           </div>
         </header>
