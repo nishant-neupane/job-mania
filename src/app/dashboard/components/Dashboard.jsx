@@ -18,6 +18,8 @@ import Companies from "./Companies";
 import Profile from "./Profile";
 import Application from "./Application";
 import Image from "next/image";
+import Setting from "./Setting";
+import HelpCenter from "./HelpCenter";
 
 export default function Dashboard() {
   const [activeNavItem, setActiveNavItem] = useState("Dashboard");
@@ -68,6 +70,8 @@ export default function Dashboard() {
           {activeNavItem === "Find Jobs" && <JobSearch />}
           {activeNavItem === "Browse Companies" && <Companies />}
           {activeNavItem === "My Public Profile" && <Profile />}
+          {activeNavItem === "Settings" && <Setting />}
+          {activeNavItem === "Help Center" && <HelpCenter />}
         </div>
       </div>
     </div>

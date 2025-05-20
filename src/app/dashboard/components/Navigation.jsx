@@ -59,7 +59,14 @@ export default function Navigation({ activeNavItem, setActiveNavItem }) {
           <ul className="space-y-2">
             {settingsItems.map((item) => (
               <li key={item.label}>
-                <button className="flex items-center w-full p-3 rounded-lg hover:bg-gray-100font-epilogue font-[500] text-base leading-6 text-[#7C8493]">
+                <button
+                  className={`flex items-center w-full p-3 rounded-lg font-epilogue font-[500] text-base leading-6 ${
+                    activeNavItem === item.label
+                      ? "bg-[#E9EBFD] text-[#4640DE]"
+                      : "hover:bg-gray-100 text-[#7C8493]"
+                  }`}
+                  onClick={() => setActiveNavItem(item.label)}
+                >
                   <item.icon size={20} className="mr-3" />
                   <span>{item.label}</span>
                 </button>
