@@ -20,7 +20,7 @@ export default function CompanyList({
     if (sortOption === "Newest") {
       return b.id - a.id;
     } else {
-      return b.rating - a.rating; 
+      return b.rating - a.rating;
     }
   });
 
@@ -103,12 +103,8 @@ export default function CompanyList({
         }`}
       >
         {currentCompanies.length > 0 ? (
-          currentCompanies.map((company) => (
-            <CompanyCard
-              key={company.id}
-              company={company}
-              viewMode={viewMode}
-            />
+          currentCompanies.map((company, index) => (
+            <CompanyCard key={index} company={company} viewMode={viewMode} />
           ))
         ) : (
           <div className="text-center py-10 col-span-2">
