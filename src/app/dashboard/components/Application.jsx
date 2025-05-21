@@ -1,10 +1,14 @@
 import { useState, useEffect } from "react";
+
 import {
   FileText,
   X,
   MoreHorizontal,
   ChevronLeft,
   ChevronRight,
+  Search,
+  Filter,
+  ListFilter,
 } from "lucide-react";
 import { fetchApplications } from "@/app/dashboard/utils/constants";
 import DateFilter from "./(DashboardOverview)/DateFilter";
@@ -107,7 +111,6 @@ export default function Application() {
             setShowDatePicker={setShowDatePicker}
           />
         </div>
-
         {/* Feature Alert */}
         <div className="bg-[#F6F6FD] rounded-lg p-4 mb-6 relative flex items-center">
           <div className="h-10 w-10 rounded-full bg-indigo-100 flex items-center justify-center mr-4">
@@ -127,7 +130,6 @@ export default function Application() {
             <X size={20} strokeWidth={2.5} />
           </button>
         </div>
-
         {/* Tabs */}
         <div className="border-b mb-6">
           <div className="flex items-center">
@@ -155,30 +157,43 @@ export default function Application() {
             ))}
           </div>
         </div>
+        <div className="flex justify-between">
+          <div>
+            <p className="font-epilogue font-[600] text-xl leading-[120%] text-[#25324B] ml-6">
+              Applications History
+            </p>
+          </div>
+          {/* Search + Status Filter */}
 
-        {/* Search + Status Filter */}
-        <div className="flex items-center justify-between mb-4">
-          <input
-            type="text"
-            placeholder="Search by company or role..."
-            className="border px-3 py-2 rounded text-sm w-64"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-          />
-          <select
-            className="border px-3 py-2 rounded text-sm"
-            value={statusFilter}
-            onChange={(e) => setStatusFilter(e.target.value)}
-          >
-            <option value="All">All Statuses</option>
-            {statusList.map((status) => (
-              <option key={status} value={status}>
-                {status}
-              </option>
-            ))}
-          </select>
+          <div className="flex items-center gap-2 mb-4">
+            <div className="w-48 flex items-center border rounded px-3 py-2">
+              <Search className="w-6 h-6 text-[#25324B] mr-2" />
+              <input
+                type="text"
+                placeholder="Search..."
+                className="outline-none w-full font-epilogue font-[500] text-base leading-[160%] text-[#25324B]"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+            </div>
+
+            <div className="w-40 flex items-center border rounded px-3 py-2">
+              <ListFilter className="w-6 h-6 text-[#25324B] mr-2" />
+              <select
+                className="outline-none font-epilogue font-[500] text-base leading-[160%] text-[#25324B] bg-transparent w-full"
+                value={statusFilter}
+                onChange={(e) => setStatusFilter(e.target.value)}
+              >
+                <option value="All">Filter</option>
+                {statusList.map((status) => (
+                  <option key={status} value={status}>
+                    {status}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
         </div>
-
         {/* Applications Table */}
         <div className="bg-white rounded-lg border shadow-sm overflow-hidden">
           <div className="grid grid-cols-12 px-6 py-3 bg-gray-50 border-b text-sm font-medium text-gray-600">
@@ -231,7 +246,6 @@ export default function Application() {
             </div>
           )}
         </div>
-
         {/* Pagination */}
         {totalPages > 0 && (
           <div className="flex justify-center mt-6">
