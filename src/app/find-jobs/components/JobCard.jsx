@@ -8,7 +8,6 @@ import ApplyPopup from "./ApplyPopup";
 export default function JobCard({ job, viewMode, getCompanyByJobId }) {
   const [showApplyPopup, setShowApplyPopup] = useState(false);
 
-  // Get company data for this job
   const company = getCompanyByJobId?.(job.id) || {
     name: job.company,
     icon: job.icon,
@@ -92,12 +91,18 @@ export default function JobCard({ job, viewMode, getCompanyByJobId }) {
 
       {/* Apply Button and Capacity Section */}
       <div className="flex flex-col justify-between items-end w-full sm:w-auto sm:min-w-[180px] mt-4 sm:mt-0">
-        <button
-          onClick={applyJob}
-          className="bg-[#4640DE] text-white font-medium w-full py-2 rounded-sm hover:bg-[#3932b8] transition-colors duration-300 ease-in-out cursor-pointer"
-        >
-          Apply Now
-        </button>
+        {job.applied ? (
+          <span className="bg-gray-300 text-gray-700 font-medium w-full text-center py-2 rounded-sm cursor-default">
+            Applied
+          </span>
+        ) : (
+          <button
+            onClick={applyJob}
+            className="bg-[#4640DE] text-white font-medium w-full py-2 rounded-sm hover:bg-[#3932b8] transition-colors duration-300 ease-in-out cursor-pointer"
+          >
+            Apply Now
+          </button>
+        )}
 
         {/* Capacity Progress Bar */}
         <div className="w-full mt-4">

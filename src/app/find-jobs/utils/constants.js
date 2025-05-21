@@ -20,6 +20,8 @@ export const jobsData = [
     level: "Entry",
     salary: 40000,
     icon: "/jobs/sample.png",
+    applied: true,
+    status: "In Review",
   },
   {
     id: 2,
@@ -34,6 +36,7 @@ export const jobsData = [
     level: "Mid",
     salary: 80000,
     icon: "/jobs/sample.png",
+    applied: false,
   },
   {
     id: 3,
@@ -48,6 +51,8 @@ export const jobsData = [
     level: "Senior",
     salary: 120000,
     icon: "/jobs/sample.png",
+    applied: true,
+    status: "Interviewing",
   },
   {
     id: 4,
@@ -62,6 +67,7 @@ export const jobsData = [
     level: "Mid",
     salary: 95000,
     icon: "/jobs/sample.png",
+    applied: false,
   },
   {
     id: 5,
@@ -76,6 +82,8 @@ export const jobsData = [
     level: "Senior",
     salary: 125000,
     icon: "/jobs/sample.png",
+    applied: true,
+    status: "Assessment",
   },
   {
     id: 6,
@@ -90,6 +98,7 @@ export const jobsData = [
     level: "Senior",
     salary: 180000,
     icon: "/jobs/sample.png",
+    applied: false,
   },
   {
     id: 7,
@@ -104,6 +113,8 @@ export const jobsData = [
     level: "Entry",
     salary: 35000,
     icon: "/jobs/sample.png",
+    applied: true,
+    status: "Offered",
   },
   {
     id: 8,
@@ -118,6 +129,7 @@ export const jobsData = [
     level: "Mid",
     salary: 105000,
     icon: "/jobs/sample.png",
+    applied: false,
   },
   {
     id: 9,
@@ -132,6 +144,7 @@ export const jobsData = [
     level: "Senior",
     salary: 85000,
     icon: "/jobs/sample.png",
+    applied: false,
   },
   {
     id: 10,
@@ -146,6 +159,8 @@ export const jobsData = [
     level: "Mid",
     salary: 60000,
     icon: "/jobs/sample.png",
+    applied: true,
+    status: "Assessment",
   },
   {
     id: 11,
@@ -160,6 +175,7 @@ export const jobsData = [
     level: "Mid",
     salary: 75000,
     icon: "/jobs/sample.png",
+    applied: false,
   },
   {
     id: 12,
@@ -174,6 +190,7 @@ export const jobsData = [
     level: "Mid",
     salary: 85000,
     icon: "/jobs/sample.png",
+    applied: false,
   },
   {
     id: 13,
@@ -188,6 +205,8 @@ export const jobsData = [
     level: "Senior",
     salary: 200000,
     icon: "/jobs/sample.png",
+    applied: true,
+    status: "In Review",
   },
   {
     id: 14,
@@ -202,6 +221,7 @@ export const jobsData = [
     level: "Mid",
     salary: 100000,
     icon: "/jobs/sample.png",
+    applied: false,
   },
   {
     id: 15,
@@ -216,6 +236,7 @@ export const jobsData = [
     level: "Senior",
     salary: 140000,
     icon: "/jobs/sample.png",
+    applied: false,
   },
   {
     id: 16,
@@ -230,6 +251,8 @@ export const jobsData = [
     level: "Entry",
     salary: 70000,
     icon: "/jobs/sample.png",
+    applied: true,
+    status: "Assessment",
   },
   {
     id: 17,
@@ -244,6 +267,7 @@ export const jobsData = [
     level: "Mid",
     salary: 60000,
     icon: "/jobs/sample.png",
+    applied: false,
   },
   {
     id: 18,
@@ -258,6 +282,7 @@ export const jobsData = [
     level: "Senior",
     salary: 145000,
     icon: "/jobs/sample.png",
+    applied: false,
   },
   {
     id: 19,
@@ -272,6 +297,8 @@ export const jobsData = [
     level: "Mid",
     salary: 65000,
     icon: "/jobs/sample.png",
+    applied: true,
+    status: "Hired",
   },
   {
     id: 20,
@@ -286,8 +313,8 @@ export const jobsData = [
     level: "Mid",
     salary: 95000,
     icon: "/jobs/sample.png",
+    applied: false,
   },
-  // Newly added jobs below
   {
     id: 21,
     title: "UX Researcher",
@@ -301,6 +328,7 @@ export const jobsData = [
     level: "Mid",
     salary: 90000,
     icon: "/jobs/sample.png",
+    applied: false,
   },
   {
     id: 22,
@@ -315,6 +343,8 @@ export const jobsData = [
     level: "Senior",
     salary: 160000,
     icon: "/jobs/sample.png",
+    applied: true,
+    status: "Offered",
   },
   {
     id: 23,
@@ -329,6 +359,7 @@ export const jobsData = [
     level: "Mid",
     salary: 75000,
     icon: "/jobs/sample.png",
+    applied: false,
   },
   {
     id: 24,
@@ -343,6 +374,7 @@ export const jobsData = [
     level: "Senior",
     salary: 110000,
     icon: "/jobs/sample.png",
+    applied: false,
   },
   {
     id: 25,
@@ -357,6 +389,8 @@ export const jobsData = [
     level: "Senior",
     salary: 175000,
     icon: "/jobs/sample.png",
+    applied: true,
+    status: "Interviewing",
   },
   {
     id: 26,
@@ -371,6 +405,7 @@ export const jobsData = [
     level: "Mid",
     salary: 95000,
     icon: "/jobs/sample.png",
+    applied: false,
   },
   {
     id: 27,
@@ -385,6 +420,7 @@ export const jobsData = [
     level: "Mid",
     salary: 70000,
     icon: "/jobs/sample.png",
+    applied: false,
   },
   {
     id: 28,
@@ -399,6 +435,8 @@ export const jobsData = [
     level: "Mid",
     salary: 90000,
     icon: "/jobs/sample.png",
+    applied: true,
+    status: "In Review",
   },
   {
     id: 29,
@@ -413,6 +451,7 @@ export const jobsData = [
     level: "Entry",
     salary: 55000,
     icon: "/jobs/sample.png",
+    applied: false,
   },
   {
     id: 30,
@@ -427,6 +466,7 @@ export const jobsData = [
     level: "Mid",
     salary: 95000,
     icon: "/jobs/sample.png",
+    applied: false,
   },
   {
     id: 31,
@@ -441,6 +481,8 @@ export const jobsData = [
     level: "Mid",
     salary: 85000,
     icon: "/jobs/sample.png",
+    applied: true,
+    status: "Offered",
   },
   {
     id: 32,
@@ -455,7 +497,8 @@ export const jobsData = [
     level: "Senior",
     salary: 190000,
     icon: "/jobs/sample.png",
-  }
+    applied: false,
+  },
 ];
 
 export const locations = [
