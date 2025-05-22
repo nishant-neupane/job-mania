@@ -1,10 +1,9 @@
 import { useState } from "react";
 import { Calendar } from "lucide-react";
+import Image from "next/image";
 
 export default function ProfileTab() {
-  const [profilePhoto, setProfilePhoto] = useState(
-    "https://i.pravatar.cc/150?img=32"
-  );
+  const [profilePhoto, setProfilePhoto] = useState("/hero.jpg");
   const [fullName, setFullName] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
@@ -92,7 +91,9 @@ export default function ProfileTab() {
           </p>
         </div>
         <div className="flex items-center gap-6">
-          <img
+          <Image
+            height={144}
+            width={144}
             src={profilePhoto}
             alt="Profile"
             className="w-36 h-36 rounded-full object-cover"

@@ -76,12 +76,11 @@ export default function Navigation({ activeNavItem, setActiveNavItem }) {
         </div>
       </nav>
 
-      {/* User Profile */}
       <div className="p-4 border-t border-purple-100">
         <div className="flex items-center">
           <div className="h-10 w-10 rounded-full bg-purple-600 overflow-hidden">
             <Image
-              src="/api/placeholder/40/40"
+              src="/hero.jpg"
               width={40}
               height={40}
               alt="User Avatar"
