@@ -18,7 +18,7 @@ import Companies from "./Companies";
 import Profile from "./Profile";
 import Application from "./Application";
 import Image from "next/image";
-import Setting from "./Setting";
+import Setting from "./Setting/Setting";
 import HelpCenter from "./HelpCenter";
 
 export default function Dashboard() {
@@ -63,7 +63,7 @@ export default function Dashboard() {
           </div>
         </header>
 
-        <div className="p-6">
+        <div className="">
           {activeNavItem === "Dashboard" && <DashboardOverview />}
           {activeNavItem === "Messages" && <Messages />}
           {activeNavItem === "My Applications" && <Application />}
