@@ -103,7 +103,7 @@ export default function LoginDetailsTab() {
           )}
           <button
             onClick={handleEmailUpdate}
-            className="bg-[#4640DE] text-white font-epilogue font-medium text-base px-6 py-3 mt-2"
+            className="bg-[#4640DE] text-white font-epilogue font-medium text-base px-6 py-3 mt-2 hover:scale-[1.03] transition-all duration-300 ease-in-out"
           >
             Update Email
           </button>
@@ -162,7 +162,7 @@ export default function LoginDetailsTab() {
 
           <button
             onClick={handlePasswordChange}
-            className="bg-[#4640DE] text-white font-epilogue font-medium text-base px-6 py-3"
+            className="bg-[#4640DE] text-white font-epilogue font-medium text-base px-6 py-3 hover:scale-[1.03] transition-all duration-300 ease-in-out"
           >
             Change Password
           </button>
@@ -170,7 +170,7 @@ export default function LoginDetailsTab() {
       </div>
 
       <div className="flex justify-end">
-        <button className="font-epilogue font-semibold text-base text-[#FF6550] hover:underline flex items-center gap-1 justify-center">
+        <button className="font-epilogue font-semibold text-base text-[#FF6550] flex items-center gap-1 justify-center hover:scale-[1.03] transition-all duration-300 ease-in-out">
           Close Account <CircleAlert color="#FF6550" size={20} />
         </button>
       </div>

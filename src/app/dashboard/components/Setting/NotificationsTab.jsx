@@ -22,20 +22,22 @@ export default function NotificationsTab() {
   return (
     <div className="p-8 bg-white rounded-md">
       <div className="mb-6 border-b pb-6">
-        <h2 className="text-lg font-semibold text-gray-900 mb-1">
+        <h2 className="font-epilogue font-[600] text-lg leading-[160%] text-[#202430] mb-1">
           Basic Information
         </h2>
-        <p className="text-sm text-gray-500">
+        <p className="font-epilogue font-[400] text-base leading-[160%] text-[#515B6F]">
           This is your personal information that you can update anytime.
         </p>
-      </div>    
+      </div>
 
       <div className="flex space-x-10">
         <div className="w-1/3">
-          <p className="text-sm font-medium text-gray-900 mb-1">
+          <p className="font-epilogue font-[600] text-base leading-[160%] text-[#25324B] mb-1">
             Notifications
           </p>
-          <p className="text-sm text-gray-500">Customize your preferences</p>
+          <p className="font-epilogue font-[400] text-base leading-[160%] text-[#515B6F] max-w-[250px]">
+            Customize your preferred notification settings
+          </p>
         </div>
 
         <div className="space-y-4">
@@ -43,17 +45,17 @@ export default function NotificationsTab() {
             {
               key: "applications",
               label: "Applications",
-              desc: "Notifications for jobs you have applied to",
+              desc: "These are notifications for jobs that you have applied to",
             },
             {
               key: "jobs",
               label: "Jobs",
-              desc: "Notifications for job openings matching your profile",
+              desc: "These are notifications for jobs that you have applied to",
             },
             {
               key: "recommendations",
               label: "Recommendations",
-              desc: "Personalized recommendations from recruiters",
+              desc: "These are notifications for jobs that you have applied to",
             },
           ].map(({ key, label, desc }) => (
             <label
@@ -67,8 +69,12 @@ export default function NotificationsTab() {
                 className="mt-1 h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
               />
               <div>
-                <p className="text-sm font-medium text-gray-900">{label}</p>
-                <p className="text-sm text-gray-500">{desc}</p>
+                <p className="font-epilogue font-[500] text-base leading-[160%] text-[#25324B]">
+                  {label}
+                </p>
+                <p className="font-epilogue font-[400] text-base leading-[160%] text-[#515B6F] max-w-[330px]">
+                  {desc}
+                </p>
               </div>
             </label>
           ))}
@@ -76,7 +82,7 @@ export default function NotificationsTab() {
           <div className="pt-2">
             <button
               onClick={handleUpdate}
-              className="px-4 py-2 bg-[#2E60F3] text-white text-sm rounded shadow hover:bg-blue-700 transition-all"
+              className="bg-[#4640DE] text-white font-epilogue font-medium text-base px-6 py-3 hover:scale-[1.03] transition-all duration-300 ease-in-out"
             >
               Update Email
             </button>
