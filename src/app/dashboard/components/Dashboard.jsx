@@ -10,16 +10,15 @@ import {
   Bell,
   BellDot,
 } from "lucide-react";
-import Navigation from "./Navigation";
-import DashboardOverview from "./(DashboardOverview)/DashboardOverview";
-import Messages from "./Messages";
-import JobSearch from "./JobSearch";
-import Companies from "./Companies";
-import Profile from "./Profile";
-import Application from "./Application";
+import Navigation from "./Navigation/Navigation";
+import DashboardOverview from "./DashboardOverview/DashboardOverview";
 import Image from "next/image";
-import Setting from "./Setting/Setting";
+import Messages from "./Message/Messages";
+import Application from "./Application/Application";
+import Companies from "./Companies/Companies";
+import Profile from "./Profile/Profile";
 import HelpCenter from "./HelpCenter/HelpCenter";
+import JobSearch from "./Job/JobSearch";
 
 export default function Dashboard() {
   const [activeNavItem, setActiveNavItem] = useState("Dashboard");

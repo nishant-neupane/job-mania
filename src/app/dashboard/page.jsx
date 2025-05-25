@@ -1,6 +1,6 @@
 import React from "react";
 import Dashboard from "./components/Dashboard";
-import Navigation from "./components/Navigation";
+import Navigation from "./components/Navigation/Navigation";
 
 const page = () => {
   return (

@@ -11,8 +11,8 @@ import {
   ListFilter,
 } from "lucide-react";
 import { fetchApplications } from "@/app/dashboard/utils/constants";
-import DateFilter from "./(DashboardOverview)/DateFilter";
 import { subDays } from "date-fns";
+import DateFilter from "../DashboardOverview/DateFilter";
 
 const PAGE_SIZE = 6;
 

@@ -180,10 +180,10 @@ export default function HelpCenter() {
 
         <div className="w-full md:w-3/4 p-6">
           <div className="flex items-center justify-between mb-4">
-            <label className="text-sm text-gray-500 flex items-center space-x-2">
+            <label className="font-epilogue font-[400] text-base leading-[160%] text-[#7C8493] flex items-center space-x-2">
               <span>Sort by:</span>
               <select
-                className="text-sm text-gray-700 border border-gray-300 rounded px-2 py-1"
+                className="font-[500] text-[#25324B] rounded px-2 py-1"
                 value={sortOption}
                 onChange={(e) => setSortOption(e.target.value)}
               >
