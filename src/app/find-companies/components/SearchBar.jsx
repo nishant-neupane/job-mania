@@ -102,7 +102,7 @@ export default function SearchBar({
   }, [storageKey]);
 
   return (
-    <div className="w-full flex items-center justify-center pt-6 pb-3">
+    <div className="container flex items-center justify-center pt-6 pb-3">
       <div
         className="flex flex-col md:flex-row items-stretch justify-between bg-white px-6 py-6 w-full gap-4 md:gap-2"
         style={{

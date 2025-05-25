@@ -70,7 +70,7 @@ export default function ProfileTab() {
   };
 
   return (
-    <div className="p-6 border border-gray-200 rounded-lg">
+    <div className="p-6">
       <div className="mb-6 border-b pb-6">
         <h2 className="font-epilogue font-[600] text-lg leading-[160%] text-[#202430] mb-1">
           Basic Information
@@ -90,7 +90,7 @@ export default function ProfileTab() {
             help recruiters recognize you!
           </p>
         </div>
-        <div className="flex items-center gap-6">
+        <div className="flex flex-col sm:flex-row sm:items-center gap-6">
           <Image
             height={144}
             width={144}
@@ -121,7 +121,7 @@ export default function ProfileTab() {
           Personal Details
         </p>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div className="col-span-2">
+          <div className="sm:col-span-2">
             <label className="block font-epilogue font-[600] text-base text-[#515B6F] mb-1">
               Full Name <span className="text-[#FF6550]">*</span>
             </label>

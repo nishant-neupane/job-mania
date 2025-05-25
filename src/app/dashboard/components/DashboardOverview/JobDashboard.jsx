@@ -85,18 +85,20 @@ export default function JobDashboard({
             Jobs Applied Status
           </h3>
 
-          <div className="flex items-center">
-            <div className="relative w-48 h-48">
-              <div
-                className="w-full h-full rounded-full"
-                style={{
-                  background: `conic-gradient(#4640DE 0% 60%, #E9EBFD 60% 100%)`,
-                }}
-              ></div>
-              <div className="absolute top-4 left-4 right-4 bottom-4 bg-white rounded-full"></div>
+          <div className="flex flex-col sm:flex-row sm:items-center">
+            <div className=" flex items-center justify-center">
+              <div className="relative w-48 h-48">
+                <div
+                  className="w-full h-full rounded-full"
+                  style={{
+                    background: `conic-gradient(#4640DE 0% 60%, #E9EBFD 60% 100%)`,
+                  }}
+                ></div>
+                <div className="absolute top-4 left-4 right-4 bottom-4 bg-white rounded-full"></div>
+              </div>
             </div>
 
-            <div className="ml-4">
+            <div className="sm:ml-4 pt-6">
               <div className="flex items-center mb-2">
                 <div className="h-5 w-5 bg-[#4640DE] mr-2 rounded-md" />
                 <div className="flex flex-col ml-2">

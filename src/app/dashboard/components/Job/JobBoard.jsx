@@ -137,7 +137,7 @@ export default function JobBoard() {
   }, [showMobileFilters]);
 
   return (
-    <div className="">
+    <div className="container">
       <SearchBar
         searchTerm={searchTerm}
         setSearchTerm={setSearchTerm}

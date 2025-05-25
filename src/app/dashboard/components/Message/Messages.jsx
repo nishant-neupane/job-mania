@@ -280,7 +280,7 @@ export default function Messages() {
   };
 
   return (
-    <div className="flex max-h-[80vh] bg-gray-100">
+    <div className="flex h-screen sm:max-h-[80vh] bg-gray-100">
       {/* Sidebar */}
       {(showConversationList || !isMobile) && (
         <div
@@ -396,7 +396,6 @@ export default function Messages() {
             </div>
           </div>
 
-          {/* Messages - fixed height and scroll */}
           <div
             className="flex-1 overflow-y-auto p-4 bg-gray-50"
             style={{ maxHeight: "calc(80vh - 136px)" }}

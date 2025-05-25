@@ -8,11 +8,11 @@ export default function HeroSection({
   locationTerm,
   setLocationTerm,
   onSearchClick,
-  type = "job" // Default to job search
+  type = "job"
 }) {
   return (
     <div className="bg-[#F8F8FD]">
-      <div className="container text-center py-12 flex flex-col justify-center">
+      <div className="text-center py-12 flex flex-col justify-center">
         <h1 className="font-clash font-[600] text-5xl text-[#25324B] leading-[110%] pb-6">
           Find your{" "}
           <span className="relative">

@@ -20,7 +20,7 @@ export default function NotificationsTab() {
   };
 
   return (
-    <div className="p-8 bg-white rounded-md">
+    <div className="p-6 rounded-md">
       <div className="mb-6 border-b pb-6">
         <h2 className="font-epilogue font-[600] text-lg leading-[160%] text-[#202430] mb-1">
           Basic Information
@@ -30,12 +30,12 @@ export default function NotificationsTab() {
         </p>
       </div>
 
-      <div className="flex space-x-10">
-        <div className="w-1/3">
+      <div className="flex flex-col sm:flex-row sm:space-x-10">
+        <div className="sm:w-1/3 pb-6 sm:pb-0">
           <p className="font-epilogue font-[600] text-base leading-[160%] text-[#25324B] mb-1">
             Notifications
           </p>
-          <p className="font-epilogue font-[400] text-base leading-[160%] text-[#515B6F] max-w-[250px]">
+          <p className="font-epilogue font-[400] text-base leading-[160%] text-[#515B6F] sm:max-w-[250px]">
             Customize your preferred notification settings
           </p>
         </div>

@@ -18,16 +18,17 @@ export default function DashboardOverview() {
   const [currentDate, setCurrentDate] = useState(new Date());
 
   return (
-    <div className="bg-gray-50 p-6">
-      <div className="flex justify-between">
-        <div className="mb-8">
-          <h2 className="font-semibold text-2xl text-[#25324B]">
+    <div className="bg-gray-50 container mx-auto py-6">
+      <div className="flex justify-between sm:flex-row flex-col">
+        <div className="mb-6">
+          <h2 className="font-clash font-semibold text-2xl text-[#25324B]">
             Good morning, Subas
           </h2>
           <p className="text-base text-[#7C8493]">
             Here is what's happening with your job search applications.
           </p>
         </div>
+        
         <DateFilter
           dateRange={dateRange}
           setDateRange={setDateRange}

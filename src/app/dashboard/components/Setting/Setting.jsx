@@ -9,7 +9,7 @@ export default function Settings() {
   const [activeTab, setActiveTab] = useState("My Profile");
 
   return (
-    <div className="">
+    <div className="container mx-auto">
       <SettingsTabs activeTab={activeTab} setActiveTab={setActiveTab} />
 
       {activeTab === "My Profile" && <ProfileTab />}

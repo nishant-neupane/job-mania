@@ -27,7 +27,7 @@ const RecommendedCompanies = () => {
     } else if (sortOption === "Highest rated") {
       return b.rating - a.rating;
     } else {
-      return 0; 
+      return 0;
     }
   });
 
@@ -39,8 +39,7 @@ const RecommendedCompanies = () => {
   );
   const totalPages = Math.ceil(sortedCompanies.length / companiesPerPage);
 
-  useEffect(() => {
-  }, [industries, companySizes, sortOption]);
+  useEffect(() => {}, [industries, companySizes, sortOption]);
 
   return (
     <div className="container py-8">
@@ -54,7 +53,7 @@ const RecommendedCompanies = () => {
           </p>
         </div>
 
-        <div>
+        <div className="hidden sm:block">
           <label className="mr-2 text-sm text-gray-600">Sort by:</label>
           <select
             value={sortOption}
@@ -70,12 +69,8 @@ const RecommendedCompanies = () => {
 
       {currentCompanies.length > 0 ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-          {currentCompanies.map((company,index) => (
-            <CompanyCard
-              key={index}
-              company={company}
-              viewMode="recommended" 
-            />
+          {currentCompanies.map((company, index) => (
+            <CompanyCard key={index} company={company} viewMode="recommended" />
           ))}
         </div>
       ) : (

@@ -62,7 +62,7 @@ const Search = ({
 
   return (
     <div>
-      <div className="container grid grid-cols-1 md:grid-cols-4 gap-y-6 md:gap-6 pt-12">
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-y-6 md:gap-6 pt-12">
         <MobileFilterButton
           showMobileFilters={showMobileFilters}
           setShowMobileFilters={setShowMobileFilters}

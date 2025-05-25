@@ -137,7 +137,7 @@ export default function JobBoard() {
   }, [showMobileFilters]);
 
   return (
-    <div className="">
+    <div className="px-4">
       <HeroSection
         searchTerm={searchTerm}
         setSearchTerm={setSearchTerm}
@@ -146,7 +146,7 @@ export default function JobBoard() {
         companyFilter={companyParam}
       />
 
-      <div className="container grid grid-cols-1 md:grid-cols-4 gap-y-6 md:gap-6 pt-12">
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-y-6 md:gap-6 pt-12">
         <MobileFilterButton
           showMobileFilters={showMobileFilters}
           setShowMobileFilters={setShowMobileFilters}

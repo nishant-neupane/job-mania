@@ -148,7 +148,7 @@ export default function HelpCenter() {
   });
 
   return (
-    <div className="p-6">
+    <div className="container mx-auto py-6">
       {showContactPopup && (
         <ContactPopup
           contactForm={contactForm}

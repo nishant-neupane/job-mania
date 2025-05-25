@@ -15,7 +15,7 @@ export default function Navigation({ activeNavItem, setActiveNavItem }) {
   const navItems = [
     { label: "Dashboard", icon: Home },
     { label: "Messages", icon: MessageSquare, badge: 1 },
-    { label: "My Applications", icon: FileText },
+    { label: "Applications", icon: FileText },
     { label: "Find Jobs", icon: Search },
     { label: "Browse Companies", icon: Building2 },
     { label: "My Public Profile", icon: User },
@@ -28,7 +28,7 @@ export default function Navigation({ activeNavItem, setActiveNavItem }) {
 
   return (
     <>
-      <nav className="flex-1 p-4">
+      <nav className="flex-1 py-4 px-3">
         <ul className="space-y-2">
           {navItems.map((item) => (
             <li key={item.label}>

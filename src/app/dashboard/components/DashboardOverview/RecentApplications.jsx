@@ -47,7 +47,7 @@ export default function RecentApplications() {
 
   return (
     <div className="bg-white rounded-lg p-6 shadow-sm border">
-      <h3 className="mb-6 font-epilogue font-[600] text-xl leading-[120%] text-[#25324B]">
+      <h3 className="mb-6 font-epilogue font-semibold text-xl text-[#25324B]">
         Recent Applications History
       </h3>
       <div className="h-[1px] bg-[#D6DDEB] w-full my-6" />
@@ -55,12 +55,12 @@ export default function RecentApplications() {
         {applications.map((app, index) => (
           <div
             key={index}
-            className={`p-4 rounded-lg flex justify-between items-center ${
+            className={`p-4 rounded-lg flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 ${
               index % 2 === 0 ? "bg-[#F8F8FD]" : "bg-white"
             }`}
           >
             <div className="flex items-center">
-              <div className="mr-4">
+              <div className="mr-4 shrink-0">
                 <Image
                   src={app.icon}
                   alt="Company Logo"
@@ -69,32 +69,35 @@ export default function RecentApplications() {
                 />
               </div>
               <div>
-                <div className="font-epilogue font-[700] text-lg leading-[120%] text-[#25324B] mb-1">
+                <div className="font-epilogue font-bold text-lg text-[#25324B] mb-1">
                   {app.position}
                 </div>
-                <div className="font-epilogue font-[400] text-base leading-[160%] text-[#7C8493]">
+                <div className="font-epilogue font-normal text-base text-[#7C8493]">
                   {app.company} • {app.location} • {app.type}
                 </div>
               </div>
             </div>
-            <div className="mr-6">
-              <div className="font-epilogue font-[500] text-base leading-[120%] text-[#25324B] mb-1">
+
+            <div className="flex flex-col sm:items-end">
+              <div className="font-epilogue font-medium text-base text-[#25324B] mb-1">
                 Date Applied
               </div>
-              <div className="font-epilogue font-[400] text-base leading-[120%] text-[#7C8493]">
+              <div className="font-epilogue font-normal text-base text-[#7C8493]">
                 {app.date}
               </div>
             </div>
-            <div className="mr-4">
+
+            <div className="sm:self-center">
               <span
-                className={`font-epilogue fonr-[600] text-sm leading-[160%] px-3 py-2 rounded-full ${getStatusColor(
+                className={`font-epilogue font-semibold text-sm px-3 py-2 rounded-full ${getStatusColor(
                   app.status
                 )}`}
               >
                 {app.status}
               </span>
             </div>
-            <div className="flex items-center">
+
+            <div className="sm:self-center hidden sm:block">
               <button className="p-1 text-[#25324B] hover:text-[#4f5ce1]">
                 <MoreHorizontal size={18} />
               </button>
@@ -103,7 +106,7 @@ export default function RecentApplications() {
         ))}
       </div>
       <div className="mt-6 flex justify-center">
-        <button className="flex items-center font-epilogue fonr-[600] text-base leading-[160%] text-[#4640DE]">
+        <button className="flex items-center font-epilogue font-semibold text-base text-[#4640DE]">
           View all applications history
           <ArrowRight size={16} className="ml-1" />
         </button>
