@@ -19,7 +19,7 @@ import Profile from "./Profile";
 import Application from "./Application";
 import Image from "next/image";
 import Setting from "./Setting/Setting";
-import HelpCenter from "./HelpCenter";
+import HelpCenter from "./HelpCenter/HelpCenter";
 
 export default function Dashboard() {
   const [activeNavItem, setActiveNavItem] = useState("Dashboard");
@@ -29,7 +29,7 @@ export default function Dashboard() {
       {/* Sidebar */}
       <div className="w-64 bg-white border-r border-purple-100 flex flex-col">
         <div className="p-6 border-b border-purple-100">
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 my-1">
             <Image src="/logo.png" alt="Logo" width={216} height={40} />
             {/* <div className="h-8 w-8 rounded-full bg-purple-600 flex items-center justify-center">
               <span className="text-white text-lg font-bold">J</span>

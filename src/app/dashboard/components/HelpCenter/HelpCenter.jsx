@@ -144,7 +144,7 @@ export default function HelpCenter() {
       : article.category === activeCategory
   ).sort((a, b) => {
     if (sortOption === "az") return a.title.localeCompare(b.title);
-    return 0; // default relevance
+    return 0;
   });
 
   return (
@@ -165,15 +165,17 @@ export default function HelpCenter() {
               setSearchQuery(e.target.value);
             }}
           />
-          <CategoryList
-            categories={CATEGORIES}
-            activeCategory={activeCategory}
-            onCategorySelect={(category) => {
-              setActiveCategory(category);
-              setSearchQuery("");
-            }}
-          />
-          <ContactCard onContactClick={() => setShowContactPopup(true)} />
+          <div className="flex flex-col justify-between h-[75vh]">
+            <CategoryList
+              categories={CATEGORIES}
+              activeCategory={activeCategory}
+              onCategorySelect={(category) => {
+                setActiveCategory(category);
+                setSearchQuery("");
+              }}
+            />
+            <ContactCard onContactClick={() => setShowContactPopup(true)} />
+          </div>
         </div>
 
         <div className="w-full md:w-3/4 p-6">
