@@ -1,3 +1,4 @@
+"use client";
 import { useState, useEffect } from "react";
 import {
   FileText,
@@ -11,7 +12,7 @@ import {
 } from "lucide-react";
 import { fetchApplications } from "@/app/dashboard/utils/constants";
 import { subDays } from "date-fns";
-import DateFilter from "../DashboardOverview/DateFilter";
+import DateFilter from "../dashboard-overview/component/DateFilter";
 
 const PAGE_SIZE = 6;
 

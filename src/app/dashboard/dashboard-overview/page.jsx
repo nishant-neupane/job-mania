@@ -1,10 +1,10 @@
 "use client";
 import { useState } from "react";
 import { subDays } from "date-fns";
-import DateFilter from "./DateFilter";
-import StatsCards from "./StatsCards";
-import RecentApplications from "./RecentApplications";
-import JobDashboard from "./JobDashboard";
+import DateFilter from "./component/DateFilter";
+import StatsCards from "./component/StatsCards";
+import RecentApplications from "./component/RecentApplications";
+import JobDashboard from "./component/JobDashboard";
 
 export default function DashboardOverview() {
   const [dateRange, setDateRange] = useState([
@@ -28,7 +28,7 @@ export default function DashboardOverview() {
             Here is what's happening with your job search applications.
           </p>
         </div>
-        
+
         <DateFilter
           dateRange={dateRange}
           setDateRange={setDateRange}

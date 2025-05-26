@@ -10,20 +10,33 @@ import {
   HelpCircle,
 } from "lucide-react";
 import Image from "next/image";
+import { usePathname, useRouter } from "next/navigation";
 
-export default function Navigation({ activeNavItem, setActiveNavItem }) {
+export default function Navigation({ closeSidebar }) {
+  const router = useRouter();
+  const pathname = usePathname();
+
   const navItems = [
-    { label: "Dashboard", icon: Home },
-    { label: "Messages", icon: MessageSquare, badge: 1 },
-    { label: "Applications", icon: FileText },
-    { label: "Find Jobs", icon: Search },
-    { label: "Browse Companies", icon: Building2 },
-    { label: "My Public Profile", icon: User },
+    { label: "Dashboard", icon: Home, path: "/dashboard/dashboard-overview" },
+    {
+      label: "Messages",
+      icon: MessageSquare,
+      badge: 1,
+      path: "/dashboard/messages",
+    },
+    { label: "Applications", icon: FileText, path: "/dashboard/application" },
+    { label: "Find Jobs", icon: Search, path: "/dashboard/job" },
+    {
+      label: "Browse Companies",
+      icon: Building2,
+      path: "/dashboard/companies",
+    },
+    { label: "My Public Profile", icon: User, path: "/dashboard/profile" },
   ];
 
   const settingsItems = [
-    { label: "Settings", icon: Settings },
-    { label: "Help Center", icon: HelpCircle },
+    { label: "Settings", icon: Settings, path: "/dashboard/setting" },
+    { label: "Help Center", icon: HelpCircle, path: "/dashboard/help-center" },
   ];
 
   return (
@@ -34,14 +47,17 @@ export default function Navigation({ activeNavItem, setActiveNavItem }) {
             <li key={item.label}>
               <button
                 className={`flex items-center w-full p-3 rounded-lg font-epilogue font-[500] text-base leading-[160%] ${
-                  activeNavItem === item.label
+                  pathname === item.path
                     ? "bg-[#E9EBFD] text-[#4640DE]"
                     : "hover:bg-gray-100 text-[#7C8493]"
                 }`}
-                onClick={() => setActiveNavItem(item.label)}
+                onClick={() => {
+                  router.push(item.path);
+                  closeSidebar?.();
+                }}
               >
                 <item.icon size={20} className="mr-3" />
-                <span className="">{item.label}</span>
+                <span>{item.label}</span>
                 {item.badge && (
                   <span className="ml-auto bg-purple-600 text-white w-5 h-5 flex items-center justify-center rounded-full text-xs">
                     {item.badge}
@@ -61,11 +77,14 @@ export default function Navigation({ activeNavItem, setActiveNavItem }) {
               <li key={item.label}>
                 <button
                   className={`flex items-center w-full p-3 rounded-lg font-epilogue font-[500] text-base leading-6 ${
-                    activeNavItem === item.label
+                    pathname === item.path
                       ? "bg-[#E9EBFD] text-[#4640DE]"
                       : "hover:bg-gray-100 text-[#7C8493]"
                   }`}
-                  onClick={() => setActiveNavItem(item.label)}
+                  onClick={() => {
+                    router.push(item.path);
+                    closeSidebar?.();
+                  }}
                 >
                   <item.icon size={20} className="mr-3" />
                   <span>{item.label}</span>
@@ -79,12 +98,7 @@ export default function Navigation({ activeNavItem, setActiveNavItem }) {
       <div className="p-4 border-t border-purple-100">
         <div className="flex items-center">
           <div className="h-10 w-10 rounded-full bg-purple-600 overflow-hidden">
-            <Image
-              src="/hero.jpg"
-              width={40}
-              height={40}
-              alt="User Avatar"
-            />
+            <Image src="/hero.jpg" width={40} height={40} alt="User Avatar" />
           </div>
           <div className="ml-3">
             <div className="font-epilogue font-[600] text-lg leading-[160%] text-[#202430]">

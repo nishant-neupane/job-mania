@@ -1,13 +1,5 @@
-import React from "react";
-import Dashboard from "./components/Dashboard";
-import Navigation from "./components/Navigation/Navigation";
+import DashboardLayout from "./layout";
 
-const page = () => {
-  return (
-    <div>
-      <Dashboard />
-    </div>
-  );
-};
-
-export default page;
+export default function page({ children }) {
+  return <DashboardLayout>{children}</DashboardLayout>;
+}
