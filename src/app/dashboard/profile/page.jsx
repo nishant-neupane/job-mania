@@ -7,7 +7,6 @@ import SkillsSection from "./component/SkillsSection";
 import PortfolioSection from "./component/PortfolioSection ";
 import ContactInfo from "./component/ContactInfo";
 import SocialLinks from "./component/SocialLinks";
-import PeopleViewed from "./component/PeopleViewed";
 
 const ProfilePage = () => {
   return (
@@ -26,7 +25,6 @@ const ProfilePage = () => {
           <div className="space-y-6">
             <ContactInfo />
             <SocialLinks />
-            <PeopleViewed />
           </div>
         </div>
       </div>

@@ -29,9 +29,9 @@ const SkillsSection = () => {
       </div>
 
       <div className="flex flex-wrap gap-2">
-        {skills.map((skill) => (
+        {skills.map((skill, index) => (
           <span
-            key={skill}
+            key={index}
             className="px-6 py-2.5 bg-[#F8F8FD] text-[#4640DE] font-epilogue font-[400] text-base leading-[160%]"
           >
             {skill}
