@@ -1,11 +1,9 @@
 "use client";
 import React, { useState } from "react";
-import { Plus, SquarePen } from "lucide-react";
+import { Plus, SquarePen, Trash2, X } from "lucide-react";
 
 const ExperienceSection = () => {
-  const [showAll, setShowAll] = useState(false);
-
-  const experiences = [
+  const [experiences, setExperiences] = useState([
     {
       id: 1,
       company: "Twitter",
@@ -32,41 +30,110 @@ const ExperienceSection = () => {
     },
     {
       id: 3,
-      company: "Meta",
-      logo: "https://upload.wikimedia.org/wikipedia/commons/0/05/Meta_Platforms_Logo_2021.svg",
-      role: "UX Designer",
+      company: "GoDaddy",
+      logo: "https://cdn.worldvectorlogo.com/logos/godaddy-2.svg",
+      role: "Growth Marketing Designer",
       type: "Full-Time",
-      location: "London, UK",
-      duration: "May 2019 – May 2021",
-      period: "2y",
+      location: "Manchester, UK",
+      duration: "Jun 2011 – May 2019",
+      period: "8y",
       description:
-        "Led cross-functional teams to create accessible design systems across Meta's web apps for a better user experience.",
+        "Developed digital marketing strategies, activation plans, proposals, contests and promotions for client initiatives.",
     },
     {
       id: 4,
-      company: "Shopify",
-      logo: "https://upload.wikimedia.org/wikipedia/commons/3/3c/Shopify_logo_2018.svg",
-      role: "Design Lead",
-      type: "Contract",
-      location: "Remote",
-      duration: "Jan 2021 – Dec 2022",
-      period: "2y",
+      company: "GoDaddy",
+      logo: "https://cdn.worldvectorlogo.com/logos/godaddy-2.svg",
+      role: "Growth Marketing Designer",
+      type: "Full-Time",
+      location: "Manchester, UK",
+      duration: "Jun 2011 – May 2019",
+      period: "8y",
       description:
-        "Directed e-commerce platform redesign, improving conversion by 15% using modern design practices and A/B testing.",
+        "Developed digital marketing strategies, activation plans, proposals, contests and promotions for client initiatives.",
     },
     {
       id: 5,
-      company: "Figma",
-      logo: "https://upload.wikimedia.org/wikipedia/commons/3/33/Figma-logo.svg",
-      role: "Interface Designer",
+      company: "GoDaddy",
+      logo: "https://cdn.worldvectorlogo.com/logos/godaddy-2.svg",
+      role: "Growth Marketing Designer",
       type: "Full-Time",
-      location: "Berlin, Germany",
-      duration: "Jan 2023 – Present",
-      period: "1y 5m",
+      location: "Manchester, UK",
+      duration: "Jun 2011 – May 2019",
+      period: "8y",
       description:
-        "Crafted collaborative UI/UX workflows and helped launch a new prototyping tool used by over 100,000 users.",
+        "Developed digital marketing strategies, activation plans, proposals, contests and promotions for client initiatives.",
     },
-  ];
+  ]);
+
+  const [showAll, setShowAll] = useState(false);
+  const [editingId, setEditingId] = useState(null);
+  const [form, setForm] = useState({
+    id: null,
+    company: "",
+    logo: "",
+    role: "",
+    type: "",
+    location: "",
+    duration: "",
+    period: "",
+    description: "",
+  });
+
+  const handleInputChange = (e) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
+
+  const startAdd = () => {
+    setForm({
+      id: null,
+      company: "",
+      logo: "",
+      role: "",
+      type: "",
+      location: "",
+      duration: "",
+      period: "",
+      description: "",
+    });
+    setEditingId("new");
+  };
+
+  const startEdit = (exp) => {
+    setForm(exp);
+    setEditingId(exp.id);
+  };
+
+  const cancelEdit = () => {
+    setEditingId(null);
+    setForm({
+      id: null,
+      company: "",
+      logo: "",
+      role: "",
+      type: "",
+      location: "",
+      duration: "",
+      period: "",
+      description: "",
+    });
+  };
+
+  const saveExperience = () => {
+    if (editingId === "new") {
+      setExperiences([...experiences, { ...form, id: Date.now() }]);
+    } else {
+      setExperiences(
+        experiences.map((exp) => (exp.id === editingId ? form : exp))
+      );
+    }
+    cancelEdit();
+  };
+
+  const deleteExperience = (id) => {
+    setExperiences(experiences.filter((exp) => exp.id !== id));
+    cancelEdit();
+  };
 
   const visibleExperiences = showAll ? experiences : experiences.slice(0, 2);
 
@@ -76,7 +143,10 @@ const ExperienceSection = () => {
         <h2 className="font-epilogue font-semibold text-xl text-[#25324B]">
           Experiences
         </h2>
-        <button className="p-2 border border-[#D6DDEB] hover:bg-[#4640DE] text-[#4640DE] hover:text-white hover:border-[#4640DE]">
+        <button
+          onClick={startAdd}
+          className="p-2 border border-[#D6DDEB] hover:bg-[#4640DE] text-[#4640DE] hover:text-white hover:border-[#4640DE]"
+        >
           <Plus size={20} />
         </button>
       </div>
@@ -96,32 +166,118 @@ const ExperienceSection = () => {
             className="w-12 h-12 rounded-full object-cover bg-gray-100"
           />
           <div className="flex-1">
-            <div className="flex justify-between">
-              <div>
-                <h3 className="font-epilogue font-[600] text-lg leading-[160%] text-[#25324B] mb-1">
-                  {exp.role}
-                </h3>
-                <p className="font-epilogue font-[400] text-base leading-[160%] text-[#515B6F] mb-1">
-                  <span className="font-[500] text-[#25324B]">
-                    {exp.company}
-                  </span>{" "}
-                  <span className="text-[#A8ADB7] text-sm">●</span> {exp.type}{" "}
-                  <span className="text-[#A8ADB7] text-sm">●</span>{" "}
-                  {exp.duration} ({exp.period})
-                </p>
-                <p className="font-epilogue font-[400] text-base leading-[160%] text-[#7C8493] mb-1">
-                  {exp.location}
-                </p>
-              </div>
-              <div>
-                <button className="p-2 border border-[#D6DDEB] hover:bg-[#4640DE] text-[#4640DE] hover:text-white hover:border-[#4640DE]">
-                  <SquarePen size={16} />
-                </button>
-              </div>
-            </div>
-            <p className="font-epilogue font-[400] text-base leading-[160%] text-[#25324B] mt-2">
-              {exp.description}
-            </p>
+            {editingId === exp.id ? (
+              <>
+                <div className="grid grid-cols-2 gap-3 mb-2">
+                  <input
+                    name="company"
+                    value={form.company}
+                    onChange={handleInputChange}
+                    placeholder="Company"
+                    className="border p-2 rounded"
+                  />
+                  <input
+                    name="role"
+                    value={form.role}
+                    onChange={handleInputChange}
+                    placeholder="Role"
+                    className="border p-2 rounded"
+                  />
+                  <input
+                    name="type"
+                    value={form.type}
+                    onChange={handleInputChange}
+                    placeholder="Type"
+                    className="border p-2 rounded"
+                  />
+                  <input
+                    name="location"
+                    value={form.location}
+                    onChange={handleInputChange}
+                    placeholder="Location"
+                    className="border p-2 rounded"
+                  />
+                  <input
+                    name="duration"
+                    value={form.duration}
+                    onChange={handleInputChange}
+                    placeholder="Duration"
+                    className="border p-2 rounded"
+                  />
+                  <input
+                    name="period"
+                    value={form.period}
+                    onChange={handleInputChange}
+                    placeholder="Period"
+                    className="border p-2 rounded"
+                  />
+                  <input
+                    name="logo"
+                    value={form.logo}
+                    onChange={handleInputChange}
+                    placeholder="Logo URL"
+                    className="col-span-2 border p-2 rounded"
+                  />
+                  <textarea
+                    name="description"
+                    value={form.description}
+                    onChange={handleInputChange}
+                    placeholder="Description"
+                    className="col-span-2 border p-2 rounded"
+                  />
+                </div>
+                <div className="flex gap-2">
+                  <button
+                    onClick={saveExperience}
+                    className="bg-[#4640DE] text-white px-4 py-1 rounded"
+                  >
+                    Save
+                  </button>
+                  <button
+                    onClick={cancelEdit}
+                    className="border border-gray-400 px-4 py-1 rounded"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    onClick={() => deleteExperience(exp.id)}
+                    className="flex items-center gap-1 text-red-500 hover:underline"
+                  >
+                    <Trash2 size={16} />
+                    Delete
+                  </button>
+                </div>
+              </>
+            ) : (
+              <>
+                <div className="flex justify-between">
+                  <div>
+                    <h3 className="font-epilogue font-semibold text-lg text-[#25324B] mb-1">
+                      {exp.role}
+                    </h3>
+                    <p className="text-base text-[#515B6F] mb-1">
+                      <span className="font-medium text-[#25324B]">
+                        {exp.company}
+                      </span>{" "}
+                      <span className="text-[#A8ADB7] text-sm">●</span>{" "}
+                      {exp.type}{" "}
+                      <span className="text-[#A8ADB7] text-sm">●</span>{" "}
+                      {exp.duration} ({exp.period})
+                    </p>
+                    <p className="text-[#7C8493]">{exp.location}</p>
+                  </div>
+                  <div>
+                    <button
+                      onClick={() => startEdit(exp)}
+                      className="p-2 border border-[#D6DDEB] hover:bg-[#4640DE] text-[#4640DE] hover:text-white hover:border-[#4640DE]"
+                    >
+                      <SquarePen size={16} />
+                    </button>
+                  </div>
+                </div>
+                <p className="text-[#25324B] mt-2">{exp.description}</p>
+              </>
+            )}
           </div>
         </div>
       ))}
@@ -136,6 +292,84 @@ const ExperienceSection = () => {
               ? "Show less experiences"
               : `Show ${experiences.length - 2} more experiences`}
           </button>
+        </div>
+      )}
+
+      {editingId === "new" && (
+        <div className="border-t pt-6 mt-6">
+          <h3 className="text-lg font-semibold mb-4">Add Experience</h3>
+          <div className="grid grid-cols-2 gap-3 mb-2">
+            <input
+              name="company"
+              value={form.company}
+              onChange={handleInputChange}
+              placeholder="Company"
+              className="border p-2 rounded"
+            />
+            <input
+              name="role"
+              value={form.role}
+              onChange={handleInputChange}
+              placeholder="Role"
+              className="border p-2 rounded"
+            />
+            <input
+              name="type"
+              value={form.type}
+              onChange={handleInputChange}
+              placeholder="Type"
+              className="border p-2 rounded"
+            />
+            <input
+              name="location"
+              value={form.location}
+              onChange={handleInputChange}
+              placeholder="Location"
+              className="border p-2 rounded"
+            />
+            <input
+              name="duration"
+              value={form.duration}
+              onChange={handleInputChange}
+              placeholder="Duration"
+              className="border p-2 rounded"
+            />
+            <input
+              name="period"
+              value={form.period}
+              onChange={handleInputChange}
+              placeholder="Period"
+              className="border p-2 rounded"
+            />
+            <input
+              name="logo"
+              value={form.logo}
+              onChange={handleInputChange}
+              placeholder="Logo URL"
+              className="col-span-2 border p-2 rounded"
+            />
+            <textarea
+              name="description"
+              value={form.description}
+              onChange={handleInputChange}
+              placeholder="Description"
+              className="col-span-2 border p-2 rounded"
+            />
+          </div>
+          <div className="flex gap-2">
+            <button
+              onClick={saveExperience}
+              className="bg-[#4640DE] text-white px-4 py-1 rounded"
+            >
+              Save
+            </button>
+            <button
+              onClick={cancelEdit}
+              className="border border-gray-400 px-4 py-1 rounded"
+            >
+              Cancel
+            </button>
+          </div>
         </div>
       )}
     </div>

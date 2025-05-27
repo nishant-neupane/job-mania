@@ -1,11 +1,12 @@
 "use client";
 import React, { useState } from "react";
-import { Plus, SquarePen } from "lucide-react";
+import { Plus, SquarePen, Trash2, Save } from "lucide-react";
 
 const EducationSection = () => {
   const [showAll, setShowAll] = useState(false);
-
-  const educations = [
+  const [editingId, setEditingId] = useState(null);
+  const [showAddForm, setShowAddForm] = useState(false);
+  const [educations, setEducations] = useState([
     {
       id: 1,
       university: "Harvard University",
@@ -24,36 +25,44 @@ const EducationSection = () => {
       description:
         "Focused on strategic management, entrepreneurship, and data-driven decision-making in a global business context.",
     },
-    {
-      id: 3,
-      university: "Stanford University",
-      logo: "https://upload.wikimedia.org/wikipedia/en/b/b7/Stanford_University_seal_2003.svg",
-      degree: "Master of Science - MS, Computer Science",
-      duration: "2014 - 2016",
-      description:
-        "Specialized in human-computer interaction and machine learning, developing scalable applications with real-world impact.",
-    },
-    {
-      id: 4,
-      university: "Massachusetts Institute of Technology (MIT)",
-      logo: "https://upload.wikimedia.org/wikipedia/commons/0/0c/MIT_logo.svg",
-      degree: "Bachelor of Science - BS, Electrical Engineering",
-      duration: "2010 - 2014",
-      description:
-        "Built strong technical foundation in circuits, signal processing, and embedded systems with hands-on lab experience.",
-    },
-    {
-      id: 5,
-      university: "University of Oxford",
-      logo: "https://upload.wikimedia.org/wikipedia/en/d/db/Coat_of_arms_of_the_University_of_Oxford.svg",
-      degree: "Doctor of Philosophy - PhD, Artificial Intelligence",
-      duration: "2022 - Present",
-      description:
-        "Conducting advanced research in natural language processing and neural networks with applications in education technology.",
-    },
-  ];
+  ]);
+
+  const [newEducation, setNewEducation] = useState({
+    university: "",
+    logo: "",
+    degree: "",
+    duration: "",
+    description: "",
+  });
 
   const visibleEducations = showAll ? educations : educations.slice(0, 2);
+
+  const handleDelete = (id) => {
+    setEducations((prev) => prev.filter((edu) => edu.id !== id));
+  };
+
+  const handleAddEducation = () => {
+    if (
+      newEducation.university &&
+      newEducation.logo &&
+      newEducation.degree &&
+      newEducation.duration
+    ) {
+      const newEntry = {
+        id: Date.now(),
+        ...newEducation,
+      };
+      setEducations((prev) => [...prev, newEntry]);
+      setNewEducation({
+        university: "",
+        logo: "",
+        degree: "",
+        duration: "",
+        description: "",
+      });
+      setShowAddForm(false);
+    }
+  };
 
   return (
     <div className="bg-white rounded-lg shadow-sm p-6 border border-[#D6DDEB]">
@@ -61,10 +70,68 @@ const EducationSection = () => {
         <h2 className="font-epilogue font-semibold text-xl text-[#25324B]">
           Education
         </h2>
-        <button className="p-2 border border-[#D6DDEB] hover:bg-[#4640DE] text-[#4640DE] hover:text-white hover:border-[#4640DE]">
+        <button
+          onClick={() => setShowAddForm(!showAddForm)}
+          className="p-2 border border-[#D6DDEB] hover:bg-[#4640DE] text-[#4640DE] hover:text-white hover:border-[#4640DE]"
+        >
           <Plus size={20} />
         </button>
       </div>
+
+      {showAddForm && (
+        <div className="mb-6 p-4 border border-gray-200 rounded-md bg-gray-50">
+          <input
+            type="text"
+            placeholder="University"
+            className="w-full mb-2 p-2 border rounded"
+            value={newEducation.university}
+            onChange={(e) =>
+              setNewEducation({ ...newEducation, university: e.target.value })
+            }
+          />
+          <input
+            type="text"
+            placeholder="Logo URL"
+            className="w-full mb-2 p-2 border rounded"
+            value={newEducation.logo}
+            onChange={(e) =>
+              setNewEducation({ ...newEducation, logo: e.target.value })
+            }
+          />
+          <input
+            type="text"
+            placeholder="Degree"
+            className="w-full mb-2 p-2 border rounded"
+            value={newEducation.degree}
+            onChange={(e) =>
+              setNewEducation({ ...newEducation, degree: e.target.value })
+            }
+          />
+          <input
+            type="text"
+            placeholder="Duration"
+            className="w-full mb-2 p-2 border rounded"
+            value={newEducation.duration}
+            onChange={(e) =>
+              setNewEducation({ ...newEducation, duration: e.target.value })
+            }
+          />
+          <textarea
+            placeholder="Description"
+            className="w-full mb-2 p-2 border rounded"
+            value={newEducation.description}
+            onChange={(e) =>
+              setNewEducation({ ...newEducation, description: e.target.value })
+            }
+          />
+          <button
+            onClick={handleAddEducation}
+            className="px-4 py-2 bg-[#4640DE] text-white rounded hover:bg-[#3730a3]"
+          >
+            Add Education
+          </button>
+        </div>
+      )}
 
       {visibleEducations.map((edu, index) => (
         <div
@@ -81,22 +148,67 @@ const EducationSection = () => {
             className="w-12 h-12 rounded-full object-cover bg-gray-100"
           />
           <div className="flex-1">
-            <div className="flex justify-between">
+            <div className="flex justify-between items-start">
               <div>
-                <h3 className="font-epilogue font-[600] text-lg leading-[160%] text-[#25324B] mb-1">
-                  {edu.university}
-                </h3>
-                <p className="font-epilogue font-[400] text-base leading-[160%] text-[#515B6F] mb-1">
-                  {edu.degree}
-                </p>
-                <p className="font-epilogue font-[400] text-base leading-[160%] text-[#7C8493] mb-1">
-                  {edu.duration}
-                </p>
+                {editingId === edu.id ? (
+                  <>
+                    <input
+                      type="text"
+                      value={edu.university}
+                      className="font-epilogue text-lg text-[#25324B] mb-1 border-b border-gray-300"
+                      readOnly
+                    />
+                    <input
+                      type="text"
+                      value={edu.degree}
+                      className="font-epilogue text-base text-[#515B6F] mb-1 border-b border-gray-300"
+                      readOnly
+                    />
+                    <input
+                      type="text"
+                      value={edu.duration}
+                      className="font-epilogue text-base text-[#7C8493] mb-1 border-b border-gray-300"
+                      readOnly
+                    />
+                  </>
+                ) : (
+                  <>
+                    <h3 className="font-epilogue font-[600] text-lg leading-[160%] text-[#25324B] mb-1">
+                      {edu.university}
+                    </h3>
+                    <p className="font-epilogue font-[400] text-base leading-[160%] text-[#515B6F] mb-1">
+                      {edu.degree}
+                    </p>
+                    <p className="font-epilogue font-[400] text-base leading-[160%] text-[#7C8493] mb-1">
+                      {edu.duration}
+                    </p>
+                  </>
+                )}
               </div>
-              <div>
-                <button className="p-2 border border-[#D6DDEB] hover:bg-[#4640DE] text-[#4640DE] hover:text-white hover:border-[#4640DE]">
-                  <SquarePen size={16} />
-                </button>
+              <div className="flex gap-2">
+                {editingId === edu.id ? (
+                  <>
+                    <button
+                      onClick={() => setEditingId(null)}
+                      className="p-2 border border-green-500 hover:bg-green-500 text-green-600 hover:text-white hover:border-green-500"
+                    >
+                      <Save size={16} />
+                    </button>
+                    <button
+                      onClick={() => handleDelete(edu.id)}
+                      className="p-2 border border-red-500 hover:bg-red-500 text-red-600 hover:text-white hover:border-red-500"
+                    >
+                      <Trash2 size={16} />
+                    </button>
+                  </>
+                ) : (
+                  <button
+                    onClick={() => setEditingId(edu.id)}
+                    className="p-2 border border-[#D6DDEB] hover:bg-[#4640DE] text-[#4640DE] hover:text-white hover:border-[#4640DE]"
+                  >
+                    <SquarePen size={16} />
+                  </button>
+                )}
               </div>
             </div>
             {edu.description && (

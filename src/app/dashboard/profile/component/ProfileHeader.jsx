@@ -1,12 +1,68 @@
-import React from "react";
+"use client";
+import React, { useState, useRef } from "react";
 import { MapPin, Flag, SquarePen } from "lucide-react";
 
 const ProfileHeader = () => {
+  const [isEditing, setIsEditing] = useState(false);
+  const [profile, setProfile] = useState({
+    name: "John Doe",
+    title: "Product Designer",
+    company: "Twitter",
+    location: "California, United States",
+  });
+  const [tempProfile, setTempProfile] = useState(profile);
+  const [bgImage, setBgImage] = useState("/profile/bg.png");
+  const fileInputRef = useRef(null);
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setTempProfile({ ...tempProfile, [name]: value });
+  };
+
+  const saveChanges = () => {
+    setProfile(tempProfile);
+    setIsEditing(false);
+  };
+
+  const handleBgChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setBgImage(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+    // Reset the file input so the same file can be selected again
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
+  };
+
+  const triggerFileInput = () => {
+    fileInputRef.current?.click();
+  };
+
   return (
     <div className="bg-white rounded-lg shadow-sm overflow-hidden border border-[#D6DDEB]">
-      <div className="h-48 bg-[url('/profile/bg.png')] bg-cover bg-center relative">
+      <div
+        className="h-48 bg-cover bg-center relative"
+        style={{ backgroundImage: `url(${bgImage})` }}
+      >
         <div className="absolute top-5 right-5 flex space-x-2">
-          <button className="p-2 border border-[#A8ADB7]/50 hover:bg-white text-[#F8F8FD] hover:text-black">
+          <input
+            type="file"
+            accept="image/*"
+            id="bgUpload"
+            className="hidden"
+            onChange={handleBgChange}
+            ref={fileInputRef}
+          />
+          <button
+            onClick={triggerFileInput}
+            className="p-2 border border-[#A8ADB7]/50 hover:bg-white text-[#F8F8FD] hover:text-black"
+            title="Change Background Image"
+          >
             <SquarePen size={24} />
           </button>
         </div>
@@ -26,28 +82,89 @@ const ProfileHeader = () => {
             <div className="grid md:grid-cols-[20%_40%_40%] gap-4">
               <div className="hidden md:block"></div>
               <div className="mb-4">
-                <h1 className="font-clash font-[600] text-2xl text-[#25324B] leading-[120%] mb-1">
-                  John Doe
-                </h1>
-                <p className="font-epilogue font-[400] text-lg leading-[160%] text-[#7C8493] mb-2">
-                  Product Designer at{" "}
-                  <span className="font-[500] text-[#25324B]">Twitter</span>
-                </p>
-                <p className="font-epilogue font-[400] text-lg leading-[160%] text-[#7C8493] mb-3 flex gap-2 items-center">
-                  <MapPin strokeWidth={2} />
-                  <span>San Francisco, California, United States</span>
-                </p>
+                {isEditing ? (
+                  <>
+                    <input
+                      name="name"
+                      value={tempProfile.name}
+                      onChange={handleInputChange}
+                      className="font-clash font-[600] text-xl text-[#25324B] mb-2 border p-2 w-full"
+                    />
+                    <input
+                      name="title"
+                      value={tempProfile.title}
+                      onChange={handleInputChange}
+                      className="font-epilogue font-[400] text-lg text-[#7C8493] mb-2 border p-2 w-full"
+                      placeholder="Job Title"
+                    />
+                    <input
+                      name="company"
+                      value={tempProfile.company}
+                      onChange={handleInputChange}
+                      className="font-epilogue font-[400] text-lg text-[#7C8493] mb-2 border p-2 w-full"
+                      placeholder="Company"
+                    />
+                    <input
+                      name="location"
+                      value={tempProfile.location}
+                      onChange={handleInputChange}
+                      className="font-epilogue font-[400] text-lg text-[#7C8493] mb-3 border p-2 w-full"
+                      placeholder="Location"
+                    />
+                  </>
+                ) : (
+                  <>
+                    <h1 className="font-clash font-[600] text-2xl text-[#25324B] mb-1">
+                      {profile.name}
+                    </h1>
+                    <p className="font-epilogue font-[400] text-lg text-[#7C8493] mb-2">
+                      {profile.title} at{" "}
+                      <span className="font-[500] text-[#25324B]">
+                        {profile.company}
+                      </span>
+                    </p>
+                    <p className="font-epilogue font-[400] text-lg text-[#7C8493] mb-3 flex gap-2 items-center">
+                      <MapPin strokeWidth={2} />
+                      <span>{profile.location}</span>
+                    </p>
+                  </>
+                )}
+
                 <div className="flex items-center justify-between flex-wrap gap-4">
-                  <div className="flex items-center font-epilogue font-[600] text-sm md:text-base leading-[160%] text-[#56CDAD] bg-[#56CDAD1A] px-6 py-3">
+                  <div className="flex items-center font-epilogue font-[600] text-sm md:text-base text-[#56CDAD] bg-[#56CDAD1A] px-6 py-3">
                     <Flag size={16} className="mr-2" />
                     OPEN FOR OPPORTUNITIES
                   </div>
                 </div>
               </div>
-              <div className="flex items-start justify-start md:justify-end mr-6">
-                <button className="px-6 py-3 font-epilogue font-[700] text-base leading-[160%] text-[#4640DE] border-[1px] border-[#CCCCF5] hover:scale-[1.03] transition-all duration-300 ease-in-out">
-                  Edit Profile
-                </button>
+
+              <div className="flex items-start justify-start md:justify-end mr-6 space-x-2">
+                {isEditing ? (
+                  <>
+                    <button
+                      onClick={saveChanges}
+                      className="px-6 py-3 font-epilogue font-[700] text-base text-white bg-[#4640DE] hover:bg-[#3730c4] transition-all rounded"
+                    >
+                      Save
+                    </button>
+                    <button
+                      onClick={() => {
+                        setIsEditing(false);
+                        setTempProfile(profile);
+                      }}
+                      className="px-6 py-3 font-epilogue font-[700] text-base text-[#4640DE] border border-[#CCCCF5] hover:bg-[#f0f0ff] rounded"
+                    >
+                      Cancel
+                    </button>
+                  </>
+                ) : (
+                  <button
+                    onClick={() => setIsEditing(true)}
+                    className="px-6 py-3 font-epilogue font-[700] text-base text-[#4640DE] border border-[#CCCCF5] hover:scale-[1.03] transition-all duration-300 ease-in-out"
+                  >
+                    Edit Profile
+                  </button>
+                )}
               </div>
             </div>
           </div>
