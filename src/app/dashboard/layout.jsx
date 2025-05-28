@@ -12,6 +12,7 @@ import {
   HelpCircle,
   Menu,
   X,
+  LogOut, 
 } from "lucide-react";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
@@ -64,10 +65,14 @@ export default function Layout({ children }) {
     setSidebarOpen(false);
   }
 
+  const handleLogout = () => {
+    console.log("User logged out");
+  };
+
   return (
     <div className="min-h-screen overflow-hidden bg-gray-50">
       <div
-        className={`fixed top-0 left-0 z-20 h-full w-64 bg-white border-r border-purple-100 transform transition-transform duration-300 ease-in-out ${
+        className={`fixed top-0 left-0 z-20 h-full w-64 bg-white border-r border-purple-100 transform transition-transform duration-300 ease-in-out flex flex-col justify-between ${
           sidebarOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"
         }`}
       >
@@ -137,7 +142,17 @@ export default function Layout({ children }) {
         </nav>
 
         {/* User Profile in Sidebar */}
-        <div className="p-4 border-t border-purple-100">
+        <div className="p-4">
+          {currentSlug === "profile" && (
+            <button
+              onClick={handleLogout}
+              className="border border-[#E2E7F5] shadow-[-8px_8px_40px_0px_#00000014;] mb-3 w-full flex items-center justify-start gap-2 py-5 rounded-lg font-epilogue font-[500] text-base leading-[160%] text-[#FF6550] hover:scale-[1.03] transition-all duration-300 ease-in-out"
+            >
+              <LogOut size={20} className="mr-3 ml-5" />
+              <span>Logout</span>
+            </button>
+          )}
+
           <div className="flex items-center">
             <div className="h-10 w-10 rounded-full bg-purple-600 overflow-hidden">
               <Image src="/hero.jpg" width={40} height={40} alt="User Avatar" />
@@ -187,7 +202,6 @@ export default function Layout({ children }) {
           </div>
         </header>
 
-        {/* Page content */}
         <main className="h-[calc(100vh-80px)] overflow-y-auto">{children}</main>
       </div>
     </div>

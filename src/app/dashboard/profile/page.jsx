@@ -4,7 +4,7 @@ import AboutSection from "./component/AboutSection";
 import ExperienceSection from "./component/ExperienceSection";
 import EducationSection from "./component/EducationSection";
 import SkillsSection from "./component/SkillsSection";
-import PortfolioSection from "./component/PortfolioSection ";
+import PortfolioSection from "./component/PortfolioSection";
 import ContactInfo from "./component/ContactInfo";
 import SocialLinks from "./component/SocialLinks";
 
