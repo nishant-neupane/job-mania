@@ -1,6 +1,36 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { Plus, SquarePen, Trash2, X } from "lucide-react";
+
+const Modal = ({ isOpen, onClose, children }) => {
+  if (!isOpen) return null;
+
+  const handleBackdropClick = (e) => {
+    if (e.target === e.currentTarget) {
+      onClose();
+    }
+  };
+
+  return (
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
+      onClick={handleBackdropClick}
+    >
+      <div
+        className="bg-white p-6 rounded-lg w-full max-w-2xl shadow-lg relative"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <button
+          onClick={onClose}
+          className="absolute top-3 right-3 text-gray-500 hover:text-red-500"
+        >
+          <X size={20} />
+        </button>
+        {children}
+      </div>
+    </div>
+  );
+};
 
 const ExperienceSection = () => {
   const [experiences, setExperiences] = useState([
@@ -28,42 +58,6 @@ const ExperienceSection = () => {
       description:
         "Developed digital marketing strategies, activation plans, proposals, contests and promotions for client initiatives.",
     },
-    {
-      id: 3,
-      company: "GoDaddy",
-      logo: "https://cdn.worldvectorlogo.com/logos/godaddy-2.svg",
-      role: "Growth Marketing Designer",
-      type: "Full-Time",
-      location: "Manchester, UK",
-      duration: "Jun 2011 – May 2019",
-      period: "8y",
-      description:
-        "Developed digital marketing strategies, activation plans, proposals, contests and promotions for client initiatives.",
-    },
-    {
-      id: 4,
-      company: "GoDaddy",
-      logo: "https://cdn.worldvectorlogo.com/logos/godaddy-2.svg",
-      role: "Growth Marketing Designer",
-      type: "Full-Time",
-      location: "Manchester, UK",
-      duration: "Jun 2011 – May 2019",
-      period: "8y",
-      description:
-        "Developed digital marketing strategies, activation plans, proposals, contests and promotions for client initiatives.",
-    },
-    {
-      id: 5,
-      company: "GoDaddy",
-      logo: "https://cdn.worldvectorlogo.com/logos/godaddy-2.svg",
-      role: "Growth Marketing Designer",
-      type: "Full-Time",
-      location: "Manchester, UK",
-      duration: "Jun 2011 – May 2019",
-      period: "8y",
-      description:
-        "Developed digital marketing strategies, activation plans, proposals, contests and promotions for client initiatives.",
-    },
   ]);
 
   const [showAll, setShowAll] = useState(false);
@@ -72,6 +66,7 @@ const ExperienceSection = () => {
     id: null,
     company: "",
     logo: "",
+    logoFile: null,
     role: "",
     type: "",
     location: "",
@@ -79,9 +74,30 @@ const ExperienceSection = () => {
     period: "",
     description: "",
   });
+  
+  const fileInputRef = useRef(null);
 
   const handleInputChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
+  };
+
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setForm({
+          ...form,
+          logo: reader.result,
+          logoFile: file
+        });
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const triggerFileInput = () => {
+    fileInputRef.current.click();
   };
 
   const startAdd = () => {
@@ -89,6 +105,7 @@ const ExperienceSection = () => {
       id: null,
       company: "",
       logo: "",
+      logoFile: null,
       role: "",
       type: "",
       location: "",
@@ -100,7 +117,10 @@ const ExperienceSection = () => {
   };
 
   const startEdit = (exp) => {
-    setForm(exp);
+    setForm({
+      ...exp,
+      logoFile: null // Reset file when starting edit
+    });
     setEditingId(exp.id);
   };
 
@@ -110,6 +130,7 @@ const ExperienceSection = () => {
       id: null,
       company: "",
       logo: "",
+      logoFile: null,
       role: "",
       type: "",
       location: "",
@@ -120,11 +141,15 @@ const ExperienceSection = () => {
   };
 
   const saveExperience = () => {
+    const experienceToSave = { ...form };
+    // Remove the logoFile from the saved experience as we don't need to store the File object
+    delete experienceToSave.logoFile;
+    
     if (editingId === "new") {
-      setExperiences([...experiences, { ...form, id: Date.now() }]);
+      setExperiences([...experiences, { ...experienceToSave, id: Date.now() }]);
     } else {
       setExperiences(
-        experiences.map((exp) => (exp.id === editingId ? form : exp))
+        experiences.map((exp) => (exp.id === editingId ? experienceToSave : exp))
       );
     }
     cancelEdit();
@@ -145,7 +170,7 @@ const ExperienceSection = () => {
         </h2>
         <button
           onClick={startAdd}
-          className="p-2 border border-[#D6DDEB] hover:bg-[#4640DE] text-[#4640DE] hover:text-white hover:border-[#4640DE]"
+          className="p-2 border border-[#D6DDEB] hover:bg-[#4640DE] text-[#4640DE] hover:text-white hover:border-[#4640DE] rounded"
         >
           <Plus size={20} />
         </button>
@@ -166,118 +191,31 @@ const ExperienceSection = () => {
             className="w-12 h-12 rounded-full object-cover bg-gray-100"
           />
           <div className="flex-1">
-            {editingId === exp.id ? (
-              <>
-                <div className="grid grid-cols-2 gap-3 mb-2">
-                  <input
-                    name="company"
-                    value={form.company}
-                    onChange={handleInputChange}
-                    placeholder="Company"
-                    className="border p-2 rounded"
-                  />
-                  <input
-                    name="role"
-                    value={form.role}
-                    onChange={handleInputChange}
-                    placeholder="Role"
-                    className="border p-2 rounded"
-                  />
-                  <input
-                    name="type"
-                    value={form.type}
-                    onChange={handleInputChange}
-                    placeholder="Type"
-                    className="border p-2 rounded"
-                  />
-                  <input
-                    name="location"
-                    value={form.location}
-                    onChange={handleInputChange}
-                    placeholder="Location"
-                    className="border p-2 rounded"
-                  />
-                  <input
-                    name="duration"
-                    value={form.duration}
-                    onChange={handleInputChange}
-                    placeholder="Duration"
-                    className="border p-2 rounded"
-                  />
-                  <input
-                    name="period"
-                    value={form.period}
-                    onChange={handleInputChange}
-                    placeholder="Period"
-                    className="border p-2 rounded"
-                  />
-                  <input
-                    name="logo"
-                    value={form.logo}
-                    onChange={handleInputChange}
-                    placeholder="Logo URL"
-                    className="col-span-2 border p-2 rounded"
-                  />
-                  <textarea
-                    name="description"
-                    value={form.description}
-                    onChange={handleInputChange}
-                    placeholder="Description"
-                    className="col-span-2 border p-2 rounded"
-                  />
-                </div>
-                <div className="flex gap-2">
-                  <button
-                    onClick={saveExperience}
-                    className="bg-[#4640DE] text-white px-4 py-1 rounded"
-                  >
-                    Save
-                  </button>
-                  <button
-                    onClick={cancelEdit}
-                    className="border border-gray-400 px-4 py-1 rounded"
-                  >
-                    Cancel
-                  </button>
-                  <button
-                    onClick={() => deleteExperience(exp.id)}
-                    className="flex items-center gap-1 text-red-500 hover:underline"
-                  >
-                    <Trash2 size={16} />
-                    Delete
-                  </button>
-                </div>
-              </>
-            ) : (
-              <>
-                <div className="flex justify-between">
-                  <div>
-                    <h3 className="font-epilogue font-semibold text-lg text-[#25324B] mb-1">
-                      {exp.role}
-                    </h3>
-                    <p className="text-base text-[#515B6F] mb-1">
-                      <span className="font-medium text-[#25324B]">
-                        {exp.company}
-                      </span>{" "}
-                      <span className="text-[#A8ADB7] text-sm">●</span>{" "}
-                      {exp.type}{" "}
-                      <span className="text-[#A8ADB7] text-sm">●</span>{" "}
-                      {exp.duration} ({exp.period})
-                    </p>
-                    <p className="text-[#7C8493]">{exp.location}</p>
-                  </div>
-                  <div>
-                    <button
-                      onClick={() => startEdit(exp)}
-                      className="p-2 border border-[#D6DDEB] hover:bg-[#4640DE] text-[#4640DE] hover:text-white hover:border-[#4640DE]"
-                    >
-                      <SquarePen size={16} />
-                    </button>
-                  </div>
-                </div>
-                <p className="text-[#25324B] mt-2">{exp.description}</p>
-              </>
-            )}
+            <div className="flex justify-between">
+              <div>
+                <h3 className="font-epilogue font-semibold text-lg text-[#25324B] mb-1">
+                  {exp.role}
+                </h3>
+                <p className="text-base text-[#515B6F] mb-1">
+                  <span className="font-medium text-[#25324B]">
+                    {exp.company}
+                  </span>{" "}
+                  <span className="text-[#A8ADB7] text-sm">●</span> {exp.type}{" "}
+                  <span className="text-[#A8ADB7] text-sm">●</span>{" "}
+                  {exp.duration} ({exp.period})
+                </p>
+                <p className="text-[#7C8493]">{exp.location}</p>
+              </div>
+              <div>
+                <button
+                  onClick={() => startEdit(exp)}
+                  className="p-2 border border-[#D6DDEB] hover:bg-[#4640DE] text-[#4640DE] hover:text-white hover:border-[#4640DE] rounded"
+                >
+                  <SquarePen size={16} />
+                </button>
+              </div>
+            </div>
+            <p className="text-[#25324B] mt-2">{exp.description}</p>
           </div>
         </div>
       ))}
@@ -295,83 +233,124 @@ const ExperienceSection = () => {
         </div>
       )}
 
-      {editingId === "new" && (
-        <div className="border-t pt-6 mt-6">
-          <h3 className="text-lg font-semibold mb-4">Add Experience</h3>
-          <div className="grid grid-cols-2 gap-3 mb-2">
+      {/* Modal for Add/Edit Experience */}
+      <Modal
+        isOpen={
+          editingId === "new" || (editingId !== null && editingId !== undefined)
+        }
+        onClose={cancelEdit}
+      >
+        <h3 className="text-lg font-semibold mb-4">
+          {editingId === "new" ? "Add Experience" : "Edit Experience"}
+        </h3>
+        <div className="grid grid-cols-2 gap-3 mb-2">
+          <input
+            name="company"
+            value={form.company}
+            onChange={handleInputChange}
+            placeholder="Company"
+            className="border p-2 rounded"
+          />
+          <input
+            name="role"
+            value={form.role}
+            onChange={handleInputChange}
+            placeholder="Role"
+            className="border p-2 rounded"
+          />
+          <input
+            name="type"
+            value={form.type}
+            onChange={handleInputChange}
+            placeholder="Type"
+            className="border p-2 rounded"
+          />
+          <input
+            name="location"
+            value={form.location}
+            onChange={handleInputChange}
+            placeholder="Location"
+            className="border p-2 rounded"
+          />
+          <input
+            name="duration"
+            value={form.duration}
+            onChange={handleInputChange}
+            placeholder="Duration"
+            className="border p-2 rounded"
+          />
+          <input
+            name="period"
+            value={form.period}
+            onChange={handleInputChange}
+            placeholder="Period"
+            className="border p-2 rounded"
+          />
+          
+          {/* Logo upload section */}
+          <div className="col-span-2">
             <input
-              name="company"
-              value={form.company}
-              onChange={handleInputChange}
-              placeholder="Company"
-              className="border p-2 rounded"
+              type="file"
+              ref={fileInputRef}
+              onChange={handleFileChange}
+              accept="image/*"
+              className="hidden"
             />
-            <input
-              name="role"
-              value={form.role}
-              onChange={handleInputChange}
-              placeholder="Role"
-              className="border p-2 rounded"
-            />
-            <input
-              name="type"
-              value={form.type}
-              onChange={handleInputChange}
-              placeholder="Type"
-              className="border p-2 rounded"
-            />
-            <input
-              name="location"
-              value={form.location}
-              onChange={handleInputChange}
-              placeholder="Location"
-              className="border p-2 rounded"
-            />
-            <input
-              name="duration"
-              value={form.duration}
-              onChange={handleInputChange}
-              placeholder="Duration"
-              className="border p-2 rounded"
-            />
-            <input
-              name="period"
-              value={form.period}
-              onChange={handleInputChange}
-              placeholder="Period"
-              className="border p-2 rounded"
-            />
-            <input
-              name="logo"
-              value={form.logo}
-              onChange={handleInputChange}
-              placeholder="Logo URL"
-              className="col-span-2 border p-2 rounded"
-            />
-            <textarea
-              name="description"
-              value={form.description}
-              onChange={handleInputChange}
-              placeholder="Description"
-              className="col-span-2 border p-2 rounded"
-            />
+            <div className="flex items-center gap-3">
+              <button
+                type="button"
+                onClick={triggerFileInput}
+                className="border p-2 rounded bg-gray-100 hover:bg-gray-200"
+              >
+                Upload Logo
+              </button>
+              {form.logo && (
+                <div className="flex items-center gap-2">
+                  <img 
+                    src={form.logo} 
+                    alt="Logo preview" 
+                    className="w-10 h-10 rounded-full object-cover"
+                  />
+                  <span className="text-sm text-gray-500">
+                    {form.logoFile ? form.logoFile.name : "Current logo"}
+                  </span>
+                </div>
+              )}
+            </div>
           </div>
-          <div className="flex gap-2">
-            <button
-              onClick={saveExperience}
-              className="bg-[#4640DE] text-white px-4 py-1 rounded"
-            >
-              Save
-            </button>
-            <button
-              onClick={cancelEdit}
-              className="border border-gray-400 px-4 py-1 rounded"
-            >
-              Cancel
-            </button>
-          </div>
+          
+          <textarea
+            name="description"
+            value={form.description}
+            onChange={handleInputChange}
+            placeholder="Description"
+            className="col-span-2 border p-2 rounded"
+          />
         </div>
-      )}
+        <div className="flex gap-2">
+          <button
+            onClick={saveExperience}
+            className="bg-[#4640DE] text-white px-4 py-1 rounded"
+          >
+            Save
+          </button>
+          <button
+            onClick={cancelEdit}
+            className="border border-gray-400 px-4 py-1 rounded"
+          >
+            Cancel
+          </button>
+          {editingId !== "new" && (
+            <button
+              onClick={() => deleteExperience(form.id)}
+              className="flex items-center gap-1 text-red-500 hover:underline"
+            >
+              <Trash2 size={16} />
+              Delete
+            </button>
+          )}
+        </div>
+      </Modal>
     </div>
   );
 };
