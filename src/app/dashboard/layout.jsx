@@ -34,6 +34,7 @@ export default function Layout({ children }) {
     profile: "My Public Profile",
     setting: "Settings",
     "help-center": "Help Center",
+    "job-description": "Job Description",
   };
 
   const pageTitle = titleMap[currentSlug] || currentSlug;
@@ -202,7 +203,7 @@ export default function Layout({ children }) {
           </div>
         </header>
 
-        <main className="h-[calc(100vh-80px)] overflow-y-auto">{children}</main>
+        <main className="h-[calc(100vh-80px)] overflow-y-auto bg-white">{children}</main>
       </div>
     </div>
   );

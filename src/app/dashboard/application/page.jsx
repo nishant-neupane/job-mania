@@ -92,7 +92,7 @@ export default function Application() {
   };
 
   return (
-    <div className="flex h-screen bg-gray-50 ">
+    <div className="flex h-screen">
       <div className="flex-1 overflow-auto container mx-auto py-6">
         {/* Welcome */}
         <div className="flex flex-col sm:flex-row justify-between mb-6">

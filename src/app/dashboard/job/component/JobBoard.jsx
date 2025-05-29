@@ -1,12 +1,12 @@
 "use client";
 import { useState, useEffect } from "react";
-import JobList from "@/app/find-jobs/components/JobList";
-import { FilterSection } from "@/app/find-jobs/components/FilterSection";
-import { MobileFilterButton } from "@/app/find-jobs/components/MobileFilterButton";
+import JobList from "@/app/find-jobs/component/JobList";
+import { FilterSection } from "@/app/find-jobs/component/FilterSection";
+import { MobileFilterButton } from "@/app/find-jobs/component/MobileFilterButton";
 import { jobsData } from "@/app/find-jobs/utils/constants";
 import { companiesData } from "@/app/find-companies/utils/constants";
 import { useSearchParams } from "next/navigation";
-import SearchBar from "@/app/find-jobs/components/SearchBar";
+import SearchBar from "@/app/find-jobs/component/SearchBar";
 
 export default function JobBoard() {
   const searchParams = useSearchParams();
