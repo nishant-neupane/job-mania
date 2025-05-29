@@ -26,10 +26,14 @@ export default function JobCard({ job, viewMode, getCompanyByJobId }) {
     100,
     Math.round((job.applicants / job.capacity) * 100)
   );
-
+  const Description = () => {
+    window.location.href = `/dashboard/job/component/${job.id}/job-description`;
+  };
   return (
-    <div className="flex flex-col sm:flex-row items-start gap-6 border-[1px] border-[#D6DDEB] p-6 rounded-lg hover:shadow-md transition-shadow duration-300">
-      {/* Company Logo */}
+    <div
+      onClick={() => Description()}
+      className="flex flex-col sm:flex-row items-start gap-6 border-[1px] border-[#D6DDEB] p-6 rounded-lg hover:shadow-md transition-shadow duration-300 cursor-pointer"
+    >
       <Link href={`/find-jobs?company=${encodeURIComponent(company.name)}`}>
         <div className="flex-shrink-0 cursor-pointer">
           <Image
@@ -89,8 +93,7 @@ export default function JobCard({ job, viewMode, getCompanyByJobId }) {
         </div>
       </div>
 
-      {/* Apply Button and Capacity Section */}
-      <div className="flex flex-col justify-between items-end w-full sm:w-auto sm:min-w-[180px] mt-4 sm:mt-0">
+      <div className="flex flex-col justify-between items-end w-full sm:w-auto sm:min-w-[180px] mt-4 sm:mt-0 font-epilogue font-[600] text-sm leading-[160%]">
         {job.applied ? (
           <span className="bg-gray-300 text-gray-700 font-medium w-full text-center py-2 rounded-sm cursor-default">
             Applied

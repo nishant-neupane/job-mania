@@ -1,9 +1,9 @@
 "use client";
 import { useState, useEffect } from "react";
-import HeroSection from "./components/HeroSection";
-import JobList from "./components/JobList";
-import { FilterSection } from "./components/FilterSection";
-import { MobileFilterButton } from "./components/MobileFilterButton";
+import HeroSection from "./component/HeroSection";
+import JobList from "./component/JobList";
+import { FilterSection } from "./component/FilterSection";
+import { MobileFilterButton } from "./component/MobileFilterButton";
 import { jobsData } from "./utils/constants";
 import { companiesData } from "../find-companies/utils/constants";
 import { useSearchParams } from "next/navigation";
