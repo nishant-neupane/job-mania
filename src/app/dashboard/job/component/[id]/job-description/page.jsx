@@ -18,7 +18,7 @@ import {
   Star,
   CircleCheck,
 } from "lucide-react";
-import { jobsData } from "@/app/find-jobs/utils/constants";
+import { jobsData, tagColors } from "@/app/find-jobs/utils/constants";
 
 // Icon mapping
 const iconComponents = {
@@ -91,6 +91,10 @@ export default function Description({ params }) {
     setIsApplied(true);
     setTimeout(() => setIsApplied(false), 3000);
   };
+  const progressPercentage = Math.min(
+    100,
+    Math.round((job.applicants / job.capacity) * 100)
+  );
 
   // Responsibilities array
   const responsibilities = [
@@ -128,27 +132,27 @@ export default function Description({ params }) {
   return (
     <div className="container">
       <div className="bg-[#F8F8FD] p-8">
-        <div className="flex items-center justify-between p-6 bg-white border border-[#D6DDEB]">
-          <div className="flex items-center space-x-4">
-            <div>
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-4 sm:p-6 bg-white border border-[#D6DDEB] gap-4">
+          <div className="flex items-start sm:items-center space-x-4 w-full sm:w-auto">
+            <div className="hidden sm:block min-w-[64px]">
               <Image
                 src={job.icon || "/logo.png"}
                 alt="Company Logo"
                 width={64}
                 height={64}
-                className="object-cover"
+                className="object-cover w-12 h-12 sm:w-16 sm:h-16"
               />
             </div>
-            <div>
-              <h1 className="font-clash font-[600] text-[32px] leading-[120%] text-[#25324B]">
+            <div className="flex-1 sm:flex-none">
+              <h1 className="font-clash font-[600] text-xl sm:text-[32px] leading-[120%] text-[#25324B]">
                 {job.title}
               </h1>
-              <p className="font-epilogue font-[400] text-xl leading-[160%] text-[#515B6F]">
+              <p className="font-epilogue font-[400] text-sm sm:text-xl leading-[160%] text-[#515B6F]">
                 {job.company} • {job.location} • {job.type}
               </p>
             </div>
           </div>
-          <div className="flex justify-center items-center space-x-6">
+          <div className="flex justify-between sm:justify-center items-center w-full sm:w-auto space-x-2 sm:space-x-6 border-t sm:border-t-0 pt-4 sm:pt-0">
             <div className="relative">
               <button
                 onClick={() => alert("Location feature coming soon!")}
@@ -160,7 +164,7 @@ export default function Description({ params }) {
             <hr className="hidden sm:block h-[32px] w-[1px] bg-[#D6DDEB]" />
             <button
               onClick={handleApply}
-              className={`px-8 py-2.5 font-semibold transition-all ${
+              className={`px-4 sm:px-8 py-2 text-sm sm:text-base font-semibold transition-all ${
                 isApplied
                   ? "bg-green-500 text-white"
                   : "bg-[#4640DE] text-white hover:bg-gray-50"
@@ -174,127 +178,182 @@ export default function Description({ params }) {
 
       <div className="flex flex-col xl:flex-row">
         {/* Main Content */}
-        <div className="flex-1  p-6">
+        <div className="flex-1 p-6">
           {/* Description */}
-          <section className="mb-8">
-            <h2 className="font-epilogue font-[600] text-[32px] leading-[120%] text-[#25324B] mb-4">
-              Description
-            </h2>
-            <p className="font-epilogue font-[400] text-base leading-[160%] text-[#515B6F] mb-6">
-              We are looking for a talented {job.title} to join our team at{" "}
-              {job.company}. This is a {job.type.toLowerCase()} position based
-              in {job.location.split(",")[0]}.
-              {job.level &&
-                ` This is an ${job.level.toLowerCase()} level position.`}
-            </p>
-          </section>
+          <div className="flex flex-col lg:flex-row gap-8">
+            {/* Main Content */}
+            <div className="flex-1">
+              <section className="mb-8">
+                <h2 className="font-epilogue font-[600] text-xl sm:text-2xl leading-[120%] text-[#25324B] mb-4">
+                  Description
+                </h2>
+                <p className="font-epilogue font-[400] text-sm sm:text-base leading-[160%] text-[#515B6F] mb-6">
+                  We are looking for a talented {job.title} to join our team at{" "}
+                  {job.company}. This is a {job.type.toLowerCase()} position
+                  based in {job.location.split(",")[0]}.
+                  {job.level &&
+                    ` This is an ${job.level.toLowerCase()} level position.`}
+                </p>
+              </section>
 
-          {/* Responsibilities */}
-          <section className="mb-8">
-            <h2 className="font-epilogue font-[600] text-[32px] leading-[120%] text-[#25324B] mb-4">
-              Responsibilities
-            </h2>
-            <ul className="space-y-3">
-              {responsibilities.map((item, index) => (
-                <li
-                  key={index}
-                  className="flex items-center gap-2 font-epilogue font-[400] text-base leading-[160%] text-[#515B6F]"
-                >
-                  <CircleCheck size={20} color="#56CDAD" /> {item}
-                </li>
-              ))}
-            </ul>
-          </section>
+              {/* Responsibilities */}
+              <section className="mb-8">
+                <h2 className="font-epilogue font-[600] text-xl sm:text-2xl leading-[120%] text-[#25324B] mb-4">
+                  Responsibilities
+                </h2>
+                <ul className="space-y-3">
+                  {responsibilities.map((item, index) => (
+                    <li
+                      key={index}
+                      className="flex items-start sm:items-center gap-2 font-epilogue font-[400] text-sm sm:text-base leading-[160%] text-[#515B6F]"
+                    >
+                      <CircleCheck
+                        size={20}
+                        color="#56CDAD"
+                        className="flex-shrink-0 mt-1 sm:mt-0"
+                      />
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </section>
 
-          {/* Who You Are */}
-          <section className="mb-8">
-            <h2 className="font-epilogue font-[600] text-[32px] leading-[120%] text-[#25324B] mb-4">
-              Who You Are
-            </h2>
-            <ul className="space-y-3">
-              {whoYouAre.map((item, index) => (
-                <li
-                  key={index}
-                  className="flex items-center gap-2 font-epilogue font-[400] text-base leading-[160%] text-[#515B6F]"
-                >
-                  <CircleCheck size={20} color="#56CDAD" /> {item}
-                </li>
-              ))}
-            </ul>
-          </section>
+              {/* Who You Are */}
+              <section className="mb-8">
+                <h2 className="font-epilogue font-[600] text-xl sm:text-2xl leading-[120%] text-[#25324B] mb-4">
+                  Who You Are
+                </h2>
+                <ul className="space-y-3">
+                  {whoYouAre.map((item, index) => (
+                    <li
+                      key={index}
+                      className="flex items-start sm:items-center gap-2 font-epilogue font-[400] text-sm sm:text-base leading-[160%] text-[#515B6F]"
+                    >
+                      <CircleCheck
+                        size={20}
+                        color="#56CDAD"
+                        className="flex-shrink-0 mt-1 sm:mt-0"
+                      />
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </section>
 
-          {/* Nice-To-Haves */}
-          <section className="mb-8">
-            <h2 className="font-epilogue font-[600] text-[32px] leading-[120%] text-[#25324B] mb-4">
-              Nice-To-Haves
-            </h2>
-            <ul className="space-y-3">
-              {niceToHaves.map((item, index) => (
-                <li
-                  key={index}
-                  className="flex items-center gap-2 font-epilogue font-[400] text-base leading-[160%] text-[#515B6F]"
-                >
-                  <CircleCheck size={20} color="#56CDAD" /> {item}
-                </li>
-              ))}
-            </ul>
-          </section>
-          {/* Sidebar */}
-          <div className="w-full md:w-80 p-6">
-            <div className="bg-white rounded-lg p-4 mb-6">
-              <h3 className="font-semibold mb-4">About this role</h3>
-              <div className="space-y-3 text-sm">
-                <div className="flex justify-between">
-                  <span className="text-gray-600">Applied</span>
-                  <span className="font-medium">{job.applicants} people</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-600 flex items-center">
-                    <Clock size={16} className="mr-1" />
-                    Capacity
-                  </span>
-                  <span className="font-medium">{job.capacity} spots</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-600">Job Type</span>
-                  <span className="font-medium">{job.type}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-600">Level</span>
-                  <span className="font-medium">{job.level}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-600">Salary</span>
-                  <span className="font-medium">${job.salary} USD</span>
-                </div>
-              </div>
+              {/* Nice-To-Haves */}
+              <section className="mb-8">
+                <h2 className="font-epilogue font-[600] text-xl sm:text-2xl leading-[120%] text-[#25324B] mb-4">
+                  Nice-To-Haves
+                </h2>
+                <ul className="space-y-3">
+                  {niceToHaves.map((item, index) => (
+                    <li
+                      key={index}
+                      className="flex items-start sm:items-center gap-2 font-epilogue font-[400] text-sm sm:text-base leading-[160%] text-[#515B6F]"
+                    >
+                      <CircleCheck
+                        size={20}
+                        color="#56CDAD"
+                        className="flex-shrink-0 mt-1 sm:mt-0"
+                      />
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </section>
             </div>
 
-            <div className="bg-white rounded-lg p-4 mb-6">
-              <h3 className="font-semibold mb-4">Categories</h3>
-              <div className="flex flex-wrap gap-2">
-                {job.tags.map((tag, index) => (
-                  <span
-                    key={index}
-                    className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm"
-                  >
-                    {tag}
-                  </span>
-                ))}
-              </div>
-            </div>
+            {/* Sidebar */}
+            <div className="w-full lg:w-80">
+              <div className="border-b border-[#D6DDEB] p-4 sm:p-6">
+                <h3 className="font-clash font-[600] text-xl sm:text-2xl leading-[120%] text-[#25324B] mb-4">
+                  About this role
+                </h3>
+                <div className="space-y-3 text-sm">
+                  <div className="py-4 sm:py-6 px-4 w-full bg-[#F8F8FD] rounded">
+                    <p className="mb-3 sm:mb-4">
+                      <span className="font-epilogue font-[600] text-sm sm:text-base leading-[160%] text-[#25324B]">
+                        {job.applicants} Applied
+                      </span>{" "}
+                      <span className="font-[400] text-[#7C8493]">
+                        of {job.capacity} capacity
+                      </span>
+                    </p>
+                    <div className="w-full h-2 bg-[#D6DDEB] rounded-full">
+                      <div
+                        className="h-full bg-[#56CDAD] rounded-full"
+                        style={{ width: `${progressPercentage}%` }}
+                      />
+                    </div>
+                  </div>
 
-            <div className="bg-white rounded-lg p-4">
-              <h3 className="font-semibold mb-4">Required Skills</h3>
-              <div className="flex flex-wrap gap-2">
-                {requiredSkills.map((skill, index) => (
-                  <span
-                    key={index}
-                    className="inline-block px-3 py-1 bg-purple-100 text-purple-800 rounded-full text-sm"
-                  >
-                    {skill}
-                  </span>
-                ))}
+                  <div className="flex justify-between py-2 ">
+                    <span className="font-epilogue font-[400] text-sm sm:text-base leading-[160%] text-[#515B6F]">
+                      Apply Before
+                    </span>
+                    <span className="font-epilogue font-[600] text-sm sm:text-base leading-[160%] text-[#25324B]">
+                      {job.type}
+                    </span>
+                  </div>
+                  <div className="flex justify-between py-2 ">
+                    <span className="font-epilogue font-[400] text-sm sm:text-base leading-[160%] text-[#515B6F]">
+                      Job Posted On
+                    </span>
+                    <span className="font-epilogue font-[600] text-sm sm:text-base leading-[160%] text-[#25324B]">
+                      {job.level}
+                    </span>
+                  </div>
+                  <div className="flex justify-between py-2 ">
+                    <span className="font-epilogue font-[400] text-sm sm:text-base leading-[160%] text-[#515B6F]">
+                      Job Type
+                    </span>
+                    <span className="font-epilogue font-[600] text-sm sm:text-base leading-[160%] text-[#25324B]">
+                      {job.type}
+                    </span>
+                  </div>
+                  <div className="flex justify-between py-2">
+                    <span className="font-epilogue font-[400] text-sm sm:text-base leading-[160%] text-[#515B6F]">
+                      Salary
+                    </span>
+                    <span className="font-epilogue font-[600] text-sm sm:text-base leading-[160%] text-[#25324B]">
+                      Rs. {job.salary}
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="p-4 sm:p-6 border-b border-[#D6DDEB]">
+                <h3 className="font-clash font-[600] text-xl sm:text-2xl leading-[120%] text-[#25324B] mb-4">
+                  Categories
+                </h3>
+                <div className="flex flex-wrap gap-2">
+                  {job.tags.map((tag, index) => (
+                    <span
+                      key={tag}
+                      className={`font-epilogue font-[600] text-xs sm:text-sm leading-[160%] px-2 sm:px-3 py-1 rounded-full ${
+                        tagColors[tag] || "bg-gray-100 text-gray-800"
+                      }`}
+                    >
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              </div>
+
+              <div className=" border-b border-[#D6DDEB] p-4 sm:p-6 mb-6">
+                <h3 className="font-clash font-[600] text-xl sm:text-2xl leading-[120%] text-[#25324B] mb-4">
+                  Required Skills
+                </h3>
+                <div className="flex flex-wrap gap-2">
+                  {requiredSkills.map((skill, index) => (
+                    <span
+                      key={index}
+                      className="inline-block px-2 sm:px-3 py-1 font-epilogue font-[400] text-sm sm:text-base leading-[160%] text-[#4640DE] bg-[#F8F8FD] rounded"
+                    >
+                      {skill}
+                    </span>
+                  ))}
+                </div>
               </div>
             </div>
           </div>
@@ -338,12 +397,12 @@ export default function Description({ params }) {
                   className="rounded-md"
                 />
                 <div>
-                  <h3 className="font-epilogue font-semibold text-[32px] text-[#25324B]">
+                  <h3 className="font-epilogue font-semibold text-[32px] text-[#25324B] leading-7">
                     {job.company}
                   </h3>
                   <a
                     href="#"
-                    className="font-epilogue font-[600] text-base text-[#4640DE] leading-[160%]"
+                    className="font-epilogue font-[600] text-sm sm:text-base text-[#4640DE] leading-[160%]"
                   >
                     Read more about {job.company} →
                   </a>
