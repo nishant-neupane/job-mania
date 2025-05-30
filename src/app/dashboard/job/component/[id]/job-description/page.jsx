@@ -1,5 +1,6 @@
 "use client";
 import React, { useState } from "react";
+import { use } from "react";
 import Image from "next/image";
 import {
   Share2,
@@ -19,9 +20,67 @@ import {
 } from "lucide-react";
 import { jobsData } from "@/app/find-jobs/utils/constants";
 
+// Icon mapping
+const iconComponents = {
+  share: Share2,
+  clock: Clock,
+  calendar: Calendar,
+  trending: TrendingUp,
+  home: Home,
+  heart: Heart,
+  check: CircleCheck,
+};
+
+// Perks data
+const perksData = [
+  {
+    title: "Full Healthcare",
+    description:
+      "We believe in thriving communities and that starts with our team being happy and healthy.",
+    icon: "🩺",
+  },
+  {
+    title: "Unlimited Vacation",
+    description:
+      "We believe you should have a flexible schedule that makes space for family, wellness, and fun.",
+    icon: "🏖️",
+  },
+  {
+    title: "Remote Working",
+    description:
+      "You know how you perform your best. Work from home, coffee shop or anywhere when you feel like it.",
+    icon: "☕",
+  },
+  {
+    title: "Commuter Benefits",
+    description:
+      "We’re grateful for all the time and energy each team member puts into getting to work every day.",
+    icon: "🚗",
+  },
+  {
+    title: "Skill Development",
+    description:
+      "We believe in always learning and leveling up our skills. Whether it’s a conference or online course.",
+    icon: "🎓",
+  },
+  {
+    title: "We give back.",
+    description:
+      "We anonymously match any donation our employees make (up to $/€ 600) so they can support the organizations they care about most–times two.",
+    icon: "🤝",
+  },
+  {
+    title: "Team Summits",
+    description:
+      "Every 6 months we have a full team summit where we have fun, reflect, and plan for the upcoming quarter.",
+    icon: "📅",
+  },
+];
+
 export default function Description({ params }) {
+  const unwrappedParams = use(params);
   const [isApplied, setIsApplied] = useState(false);
-  const jobId = parseInt(params.id);
+  const jobId = parseInt(unwrappedParams.id);
   const job = jobsData.find((job) => job.id === jobId);
 
   if (!job) {
@@ -32,6 +91,39 @@ export default function Description({ params }) {
     setIsApplied(true);
     setTimeout(() => setIsApplied(false), 3000);
   };
+
+  // Responsibilities array
+  const responsibilities = [
+    "Develop and implement strategies to achieve company goals",
+    "Collaborate with cross-functional teams to deliver projects",
+    "Monitor and report on performance metrics",
+    job.category === "Technology" &&
+      "Write clean, maintainable, and efficient code",
+  ].filter(Boolean);
+
+  // Who You Are array
+  const whoYouAre = [
+    "You have excellent communication and collaboration skills",
+    `You're passionate about ${job.category.toLowerCase()}`,
+    "You're a problem solver with a growth mindset",
+  ];
+
+  // Nice-To-Haves array
+  const niceToHaves = [
+    "Experience with related tools and technologies",
+    job.category === "Technology"
+      ? "Open source contributions"
+      : "Published work in the field",
+  ];
+
+  // Required skills based on category
+  const requiredSkills = [
+    ...(job.category === "Technology"
+      ? ["Programming", "Problem Solving"]
+      : ["Creativity", "UI/UX"]),
+    "Communication",
+    "Teamwork",
+  ];
 
   return (
     <div className="container">
@@ -80,12 +172,12 @@ export default function Description({ params }) {
         </div>
       </div>
 
-      <div className="flex flex-col md:flex-row">
+      <div className="flex flex-col xl:flex-row">
         {/* Main Content */}
-        <div className="flex-1 p-6">
+        <div className="flex-1  p-6">
           {/* Description */}
           <section className="mb-8">
-            <h2 className="font-epilogue font-[600] text-2xl leading-[120%] text-[#25324B] mb-4">
+            <h2 className="font-epilogue font-[600] text-[32px] leading-[120%] text-[#25324B] mb-4">
               Description
             </h2>
             <p className="font-epilogue font-[400] text-base leading-[160%] text-[#515B6F] mb-6">
@@ -99,238 +191,197 @@ export default function Description({ params }) {
 
           {/* Responsibilities */}
           <section className="mb-8">
-            <h2 className="font-epilogue font-[600] text-2xl leading-[120%] text-[#25324B] mb-4">
+            <h2 className="font-epilogue font-[600] text-[32px] leading-[120%] text-[#25324B] mb-4">
               Responsibilities
             </h2>
-            <ul className="space-y-3 text-gray-700">
-              <li className="flex items-center gap-2 font-epilogue font-[400] text-base leading-[160%] text-[#515B6F]">
-                <CircleCheck size={20} color="#56CDAD" /> Develop and implement
-                strategies to achieve company goals
-              </li>
-              <li className="flex items-center gap-2 font-epilogue font-[400] text-base leading-[160%] text-[#515B6F]">
-                <CircleCheck size={20} color="#56CDAD" /> Collaborate with
-                cross-functional teams to deliver projects
-              </li>
-              <li className="flex items-center gap-2 font-epilogue font-[400] text-base leading-[160%] text-[#515B6F]">
-                <CircleCheck size={20} color="#56CDAD" /> Monitor and report on
-                performance metrics
-              </li>
-              {job.category === "Technology" && (
-                <li className="flex items-center gap-2 font-epilogue font-[400] text-base leading-[160%] text-[#515B6F]">
-                  <CircleCheck size={20} color="#56CDAD" /> Write clean,
-                  maintainable, and efficient code
+            <ul className="space-y-3">
+              {responsibilities.map((item, index) => (
+                <li
+                  key={index}
+                  className="flex items-center gap-2 font-epilogue font-[400] text-base leading-[160%] text-[#515B6F]"
+                >
+                  <CircleCheck size={20} color="#56CDAD" /> {item}
                 </li>
-              )}
+              ))}
             </ul>
           </section>
 
           {/* Who You Are */}
           <section className="mb-8">
-            <h2 className="text-xl font-semibold mb-4">Who You Are</h2>
-            <ul className="space-y-3 text-gray-700">
-              <li className="flex items-start">
-                <span className="w-2 h-2 bg-purple-600 rounded-full mt-2 mr-3 flex-shrink-0"></span>
-                You have excellent communication and collaboration skills
-              </li>
-              <li className="flex items-start">
-                <span className="w-2 h-2 bg-purple-600 rounded-full mt-2 mr-3 flex-shrink-0"></span>
-                You're passionate about {job.category.toLowerCase()}
-              </li>
-              <li className="flex items-start">
-                <span className="w-2 h-2 bg-purple-600 rounded-full mt-2 mr-3 flex-shrink-0"></span>
-                You're a problem solver with a growth mindset
-              </li>
+            <h2 className="font-epilogue font-[600] text-[32px] leading-[120%] text-[#25324B] mb-4">
+              Who You Are
+            </h2>
+            <ul className="space-y-3">
+              {whoYouAre.map((item, index) => (
+                <li
+                  key={index}
+                  className="flex items-center gap-2 font-epilogue font-[400] text-base leading-[160%] text-[#515B6F]"
+                >
+                  <CircleCheck size={20} color="#56CDAD" /> {item}
+                </li>
+              ))}
             </ul>
           </section>
 
           {/* Nice-To-Haves */}
           <section className="mb-8">
-            <h2 className="text-xl font-semibold mb-4">Nice-To-Haves</h2>
-            <ul className="space-y-3 text-gray-700">
-              <li className="flex items-start">
-                <span className="w-2 h-2 bg-gray-400 rounded-full mt-2 mr-3 flex-shrink-0"></span>
-                Experience with related tools and technologies
-              </li>
-              <li className="flex items-start">
-                <span className="w-2 h-2 bg-gray-400 rounded-full mt-2 mr-3 flex-shrink-0"></span>
-                {job.category === "Technology"
-                  ? "Open source contributions"
-                  : "Published work in the field"}
-              </li>
+            <h2 className="font-epilogue font-[600] text-[32px] leading-[120%] text-[#25324B] mb-4">
+              Nice-To-Haves
+            </h2>
+            <ul className="space-y-3">
+              {niceToHaves.map((item, index) => (
+                <li
+                  key={index}
+                  className="flex items-center gap-2 font-epilogue font-[400] text-base leading-[160%] text-[#515B6F]"
+                >
+                  <CircleCheck size={20} color="#56CDAD" /> {item}
+                </li>
+              ))}
             </ul>
           </section>
+          {/* Sidebar */}
+          <div className="w-full md:w-80 p-6">
+            <div className="bg-white rounded-lg p-4 mb-6">
+              <h3 className="font-semibold mb-4">About this role</h3>
+              <div className="space-y-3 text-sm">
+                <div className="flex justify-between">
+                  <span className="text-gray-600">Applied</span>
+                  <span className="font-medium">{job.applicants} people</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-gray-600 flex items-center">
+                    <Clock size={16} className="mr-1" />
+                    Capacity
+                  </span>
+                  <span className="font-medium">{job.capacity} spots</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-gray-600">Job Type</span>
+                  <span className="font-medium">{job.type}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-gray-600">Level</span>
+                  <span className="font-medium">{job.level}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-gray-600">Salary</span>
+                  <span className="font-medium">${job.salary} USD</span>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-white rounded-lg p-4 mb-6">
+              <h3 className="font-semibold mb-4">Categories</h3>
+              <div className="flex flex-wrap gap-2">
+                {job.tags.map((tag, index) => (
+                  <span
+                    key={index}
+                    className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm"
+                  >
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            <div className="bg-white rounded-lg p-4">
+              <h3 className="font-semibold mb-4">Required Skills</h3>
+              <div className="flex flex-wrap gap-2">
+                {requiredSkills.map((skill, index) => (
+                  <span
+                    key={index}
+                    className="inline-block px-3 py-1 bg-purple-100 text-purple-800 rounded-full text-sm"
+                  >
+                    {skill}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </div>
 
           {/* Perks & Benefits */}
-          <section className="mb-8">
-            <h2 className="text-xl font-semibold mb-4">Perks & Benefits</h2>
-            <p className="text-gray-600 mb-6">
-              This position comes with several perks and benefits.
-            </p>
+          <section className="mb-12">
+            <h2 className="mb-6">
+              <p className="font-epilogue font-semibold text-[32px] text-[#25324B] mb-2">
+                Perks & Benefits
+              </p>
+              <p className="font-epilogue font-normal text-base text-[#515B6F]">
+                This job comes with several perks and benefits
+              </p>
+            </h2>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="text-center">
-                <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mx-auto mb-3">
-                  <Heart className="text-blue-600" size={24} />
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+              {perksData.map((perk, index) => (
+                <div key={index} className="p-4 ">
+                  <div className="text-3xl mb-2">{perk.icon}</div>
+                  <h3 className="font-clash font-[600] text-base leading-[120%] text-[#25324B] mb-1">
+                    {perk.title}
+                  </h3>
+                  <p className="font-epilogue font-normal text-base text-[#515B6F]">
+                    {perk.description}
+                  </p>
                 </div>
-                <h3 className="font-semibold mb-2">Full Healthcare</h3>
-                <p className="text-sm text-gray-600">
-                  Comprehensive health coverage for you and your family.
-                </p>
-              </div>
-
-              <div className="text-center">
-                <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mx-auto mb-3">
-                  <Calendar className="text-purple-600" size={24} />
-                </div>
-                <h3 className="font-semibold mb-2">Flexible Time Off</h3>
-                <p className="text-sm text-gray-600">
-                  Take time when you need it with our unlimited PTO policy.
-                </p>
-              </div>
-
-              <div className="text-center">
-                <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mx-auto mb-3">
-                  <TrendingUp className="text-green-600" size={24} />
-                </div>
-                <h3 className="font-semibold mb-2">Career Growth</h3>
-                <p className="text-sm text-gray-600">
-                  Opportunities for professional development and advancement.
-                </p>
-              </div>
-
-              <div className="text-center">
-                <div className="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center mx-auto mb-3">
-                  <Home className="text-orange-600" size={24} />
-                </div>
-                <h3 className="font-semibold mb-2">Remote Options</h3>
-                <p className="text-sm text-gray-600">
-                  Work from anywhere with our flexible remote policy.
-                </p>
-              </div>
+              ))}
             </div>
           </section>
 
           {/* Company Info */}
-          <section className="bg-gray-50 rounded-lg p-6">
-            <div className="flex items-center space-x-4 mb-4">
-              <div className="w-12 h-12 bg-purple-600 rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-lg">
-                  {job.company.charAt(0)}
-                </span>
+          <section className="p-6 flex flex-col md:flex-row items-start gap-6">
+            {/* Left Column */}
+            <div className="flex-1">
+              <div className="flex items-center space-x-4 mb-4">
+                <Image
+                  src={job.icon || "/logo.png"}
+                  alt="Company Logo"
+                  width={48}
+                  height={48}
+                  className="rounded-md"
+                />
+                <div>
+                  <h3 className="font-epilogue font-semibold text-[32px] text-[#25324B]">
+                    {job.company}
+                  </h3>
+                  <a
+                    href="#"
+                    className="font-epilogue font-[600] text-base text-[#4640DE] leading-[160%]"
+                  >
+                    Read more about {job.company} →
+                  </a>
+                </div>
               </div>
-              <div>
-                <h3 className="text-xl font-semibold">{job.company}</h3>
-                <p className="text-gray-600">
-                  {job.category} •{" "}
-                  {job.capacity <= 5
-                    ? "Small"
-                    : job.capacity <= 10
-                    ? "Medium"
-                    : "Large"}
-                </p>
-              </div>
+              <p className="font-epilogue font-[400] text-base text-[#515B6F] leading-[160%]">
+                {job.company} is a technology company that builds economic
+                infrastructure for the internet. Businesses of every size—from
+                new startups to public companies—use our software to accept
+                payments and manage their businesses online.
+              </p>
             </div>
-            <p className="text-gray-700 mb-4">
-              {job.company} is a leading company in the{" "}
-              {job.category.toLowerCase()} space. We're committed to innovation
-              and excellence in everything we do.
-            </p>
-            <div className="grid grid-cols-3 gap-4">
-              <img
-                src="https://images.unsplash.com/photo-1497366216548-37526070297c?w=200&h=120&fit=crop"
-                alt="Office"
-                className="w-full h-20 object-cover rounded-lg"
-              />
-              <img
-                src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=200&h=120&fit=crop"
-                alt="Team"
-                className="w-full h-20 object-cover rounded-lg"
-              />
-              <img
-                src="https://images.unsplash.com/photo-1556761175-4b46a572b786?w=200&h=120&fit=crop"
-                alt="Workspace"
-                className="w-full h-20 object-cover rounded-lg"
-              />
-            </div>
-          </section>
-        </div>
 
-        {/* Sidebar */}
-        <div className="w-full md:w-80 bg-gray-50 p-6">
-          <div className="bg-white rounded-lg p-4 mb-6">
-            <h3 className="font-semibold mb-4">About this role</h3>
-            <div className="space-y-3 text-sm">
-              <div className="flex justify-between">
-                <span className="text-gray-600">Applied</span>
-                <span className="font-medium">{job.applicants} people</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-gray-600 flex items-center">
-                  <Clock size={16} className="mr-1" />
-                  Capacity
-                </span>
-                <span className="font-medium">{job.capacity} spots</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-gray-600">Job Type</span>
-                <span className="font-medium">{job.type}</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-gray-600">Level</span>
-                <span className="font-medium">{job.level}</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-gray-600">Salary</span>
-                <span className="font-medium">${job.salary} USD</span>
-              </div>
-            </div>
-          </div>
-
-          <div className="bg-white rounded-lg p-4 mb-6">
-            <h3 className="font-semibold mb-4">Categories</h3>
-            <div className="flex flex-wrap gap-2">
-              {job.tags.map((tag, index) => (
-                <span
+            {/* Right Column: Images */}
+            <div className="grid grid-cols-2 gap-3 w-full md:w-1/2">
+              {[
+                {
+                  src: "https://images.unsplash.com/photo-1497366216548-37526070297c?w=200&h=120&fit=crop",
+                  alt: "Office",
+                },
+                {
+                  src: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=200&h=120&fit=crop",
+                  alt: "Team",
+                },
+                {
+                  src: "https://images.unsplash.com/photo-1556761175-4b46a572b786?w=200&h=120&fit=crop",
+                  alt: "Workspace",
+                },
+              ].map((image, index) => (
+                <img
                   key={index}
-                  className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm"
-                >
-                  {tag}
-                </span>
+                  src={image.src}
+                  alt={image.alt}
+                  className="w-full h-24 object-cover rounded-md"
+                />
               ))}
             </div>
-          </div>
-
-          <div className="bg-white rounded-lg p-4">
-            <h3 className="font-semibold mb-4">Required Skills</h3>
-            <div className="flex flex-wrap gap-2">
-              {job.category === "Technology" && (
-                <>
-                  <span className="inline-block px-3 py-1 bg-purple-100 text-purple-800 rounded-full text-sm">
-                    Programming
-                  </span>
-                  <span className="inline-block px-3 py-1 bg-purple-100 text-purple-800 rounded-full text-sm">
-                    Problem Solving
-                  </span>
-                </>
-              )}
-              {job.category === "Design" && (
-                <>
-                  <span className="inline-block px-3 py-1 bg-purple-100 text-purple-800 rounded-full text-sm">
-                    Creativity
-                  </span>
-                  <span className="inline-block px-3 py-1 bg-purple-100 text-purple-800 rounded-full text-sm">
-                    UI/UX
-                  </span>
-                </>
-              )}
-              <span className="inline-block px-3 py-1 bg-purple-100 text-purple-800 rounded-full text-sm">
-                Communication
-              </span>
-              <span className="inline-block px-3 py-1 bg-purple-100 text-purple-800 rounded-full text-sm">
-                Teamwork
-              </span>
-            </div>
-          </div>
+          </section>
         </div>
       </div>
     </div>
