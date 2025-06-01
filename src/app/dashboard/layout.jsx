@@ -35,6 +35,7 @@ export default function Layout({ children }) {
     setting: "Settings",
     "help-center": "Help Center",
     "job-description": "Job Description",
+    "company-description": "company Description",
   };
 
   const pageTitle = titleMap[currentSlug] || currentSlug;
